@@ -4,139 +4,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#173b32">
-<title>NFC Restaurant</title>
+<title>Ресторан</title>
 <style>
-:root{--green:#173b32;--cream:#f5f1e8;--ink:#202722;--muted:#68736d}
 *{box-sizing:border-box}
-body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,sans-serif}
-.wrap{width:min(100% - 32px,680px);margin:auto;padding:28px 0 48px}
-.hero{background:var(--green);color:white;border-radius:26px;padding:34px 26px;text-align:center}
-.mark{font-size:38px}
-.eyebrow{color:#d8c49f;font-size:12px;letter-spacing:2px;text-transform:uppercase}
-h1{font-size:clamp(30px,8vw,44px)}
-.intro{color:#e2e9e4;line-height:1.6}
-.section-title{font-size:19px;margin:28px 2px 12px}
-.card{background:white;border:1px solid #e9e4d9;border-radius:18px;padding:18px;margin:10px 0}
-.wifi{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.muted{color:var(--muted);font-size:14px;line-height:1.5}
-button{border:0;border-radius:12px;background:var(--green);color:white;padding:12px 16px;font-weight:bold}
-button:disabled{opacity:.4}
-.links{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.links a{text-align:center;padding:15px 10px;background:white;border:1px solid #e9e4d9;border-radius:14px;color:var(--green);text-decoration:none;font-weight:bold}
-.links a[hidden]{display:none}
-footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
-@media(max-width:420px){.wifi{align-items:flex-start;flex-direction:column}}
+body{margin:0;background:#f5f1e8;color:#222;font-family:Arial,sans-serif;padding:20px}
+.container{max-width:700px;margin:auto}
+.hero{background:#173e35;color:white;padding:45px 25px;border-radius:28px;text-align:center;margin-bottom:25px}
+.hero h1{font-size:36px;margin:20px 0}
+.hero p{font-size:18px;color:#d6dfd8}
+.section{margin:25px 0}
+.section h2{font-size:22px}
+.card{background:white;padding:20px;border-radius:20px;margin:12px 0;word-break:break-word}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.link{display:block;text-decoration:none;color:#173e35;background:white;padding:17px;border-radius:16px;text-align:center;font-weight:bold}
+button{border:0;background:#173e35;color:white;padding:13px 18px;border-radius:12px;font-weight:bold}
+.muted{color:#777}
+footer{text-align:center;color:#888;padding:25px}
 </style>
 </head>
 <body>
-<main class="wrap">
-<header class="hero">
-<div class="mark">🍽️</div>
-<p class="eyebrow">Добро пожаловать</p>
-<h1 id="restaurant-name">Загрузка...</h1>
-<p class="intro" id="description">Загружаем информацию ресторана</p>
-</header>
-
-<h2 class="section-title">📶 Wi-Fi для гостей</h2>
-<section class="card wifi">
-<div>
-<strong id="wifi-name">Загрузка...</strong>
-<div class="muted" id="wifi-password">Подождите...</div>
+<div class="container">
+<div class="hero">
+<div style="font-size:40px">🍽️</div>
+<p style="letter-spacing:4px">ДОБРО ПОЖАЛОВАТЬ</p>
+<h1 id="name">Загрузка...</h1>
+<p id="description"></p>
 </div>
-<button id="copy-button" disabled>Копировать пароль</button>
-</section>
 
-<h2 class="section-title">🔗 Полезные ссылки</h2>
-<nav class="links">
-<a id="menu-link" hidden>📖 Меню</a>
-<a id="maps-link" hidden>📍 Как добраться</a>
-<a id="whatsapp-link" hidden>💬 WhatsApp</a>
-<a id="instagram-link" hidden>📷 Instagram</a>
-<a id="phone-link" hidden>📞 Позвонить</a>
-</nav>
+<div id="wifiSection" class="section" style="display:none">
+<h2>📶 Wi-Fi для гостей</h2>
+<div class="card">
+<strong id="wifiName"></strong>
+<p id="wifiPassword"></p>
+<button onclick="copyPassword()">Копировать пароль</button>
+</div>
+</div>
 
-<h2 class="section-title">📍 Адрес</h2>
-<section class="card">
-<p class="muted" id="address">Загружаем адрес...</p>
-</section>
+<div id="linksSection" class="section" style="display:none">
+<h2>🔗 Полезные ссылки</h2>
+<div class="grid" id="links"></div>
+</div>
 
-<p class="muted" id="status" role="status">Подключаемся к базе данных...</p>
+<div id="addressSection" class="section" style="display:none">
+<h2>📍 Адрес</h2>
+<div class="card" id="address"></div>
+</div>
+
 <footer>NFC Restaurant · Информация ресторана в одном месте</footer>
-</main>
+<p id="status" class="muted"></p>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = "https://pyeydqohexospkzzehtz.supabase.co";
-const SUPABASE_KEY = "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc";
+const client=window.supabase.createClient(
+"https://pyeydqohexospkzzehtz.supabase.co",
+"sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
+);
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const businessId="d9be3b99-2ac3-42ef-8426-aa98c8de93d7";
+let wifiPass="";
 
-const slug = new URLSearchParams(location.search).get("slug") || "demo-restaurant";
+async function load(){
+try{
+const {data,error}=await client
+.from("businesses")
+.select("*")
+.eq("id",businessId)
+.single();
 
-function showLink(id, url) {
-  const el = document.getElementById(id);
-  if (url) {
-    el.href = url;
-    el.target = "_blank";
-    el.rel = "noopener noreferrer";
-    el.hidden = false;
-  } else {
-    el.hidden = true;
-  }
+if(error)throw error;
+
+document.getElementById("name").textContent=data.name||"Ресторан";
+document.getElementById("description").textContent=data.description||"";
+document.getElementById("status").textContent="Информация ресторана загружена.";
+
+if(data.wifi_name||data.wifi_password){
+document.getElementById("wifiSection").style.display="block";
+document.getElementById("wifiName").textContent=data.wifi_name||"Wi-Fi";
+wifiPass=data.wifi_password||"";
+document.getElementById("wifiPassword").textContent="Пароль: "+(wifiPass||"не указан");
 }
 
-async function loadRestaurant() {
-  const status = document.getElementById("status");
+const links=[];
 
-  try {
-    const { data, error } = await db
-      .from("public_businesses")
-      .select("name,description,phone,address,instagram_url,whatsapp_url,menu_url,maps_url,wifi_ssid,wifi_password")
-      .eq("slug", slug)
-      .maybeSingle();
+if(data.menu_url)links.push(["📖 Меню",data.menu_url]);
+if(data.phone)links.push(["📞 Позвонить","tel:"+data.phone]);
+if(data.instagram)links.push(["📸 Instagram",data.instagram.startsWith("http")?data.instagram:"https://instagram.com/"+data.instagram.replace("@","")]);
+if(data.whatsapp)links.push(["💬 WhatsApp",data.whatsapp.startsWith("http")?data.whatsapp:"https://wa.me/"+data.whatsapp.replace(/\D/g,"")]);
+if(data.maps_url)links.push(["📍 Google Maps",data.maps_url]);
+if(data.two_gis_url)links.push(["🗺️ 2ГИС",data.two_gis_url]);
 
-    if (error) throw error;
-    if (!data) throw new Error("Ресторан не найден или не опубликован.");
-
-    document.getElementById("restaurant-name").textContent = data.name || "Ресторан";
-    document.title = data.name || "NFC Restaurant";
-    document.getElementById("description").textContent =
-      data.description || "Добро пожаловать! Рады видеть вас.";
-    document.getElementById("wifi-name").textContent =
-      data.wifi_ssid || "Wi-Fi пока не указан";
-    document.getElementById("wifi-password").textContent =
-      data.wifi_password ? "Пароль: " + data.wifi_password : "Пароль пока не добавлен";
-    document.getElementById("address").textContent =
-      data.address || "Адрес пока не указан";
-
-    showLink("menu-link", data.menu_url);
-    showLink("maps-link", data.maps_url);
-    showLink("whatsapp-link", data.whatsapp_url);
-    showLink("instagram-link", data.instagram_url);
-    showLink("phone-link", data.phone ? "tel:" + data.phone : null);
-
-    const copyButton = document.getElementById("copy-button");
-    if (data.wifi_password) {
-      copyButton.disabled = false;
-      copyButton.onclick = async () => {
-        try {
-          await navigator.clipboard.writeText(data.wifi_password);
-          copyButton.textContent = "Скопировано ✓";
-        } catch {
-          copyButton.textContent = "Не удалось скопировать";
-        }
-      };
-    }
-
-    status.textContent = "Информация ресторана загружена.";
-  } catch (error) {
-    console.error(error);
-    status.textContent = "Не удалось загрузить данные: " + error.message;
-  }
+if(links.length){
+document.getElementById("linksSection").style.display="block";
+const container=document.getElementById("links");
+links.forEach(([label,url])=>{
+const a=document.createElement("a");
+a.className="link";
+a.href=url;
+a.textContent=label;
+a.target="_blank";
+a.rel="noopener";
+container.appendChild(a);
+});
 }
 
-loadRestaurant();
+if(data.address){
+document.getElementById("addressSection").style.display="block";
+document.getElementById("address").textContent=data.address;
+}
+
+}catch(e){
+document.getElementById("status").textContent="Ошибка: "+e.message;
+}
+}
+
+function copyPassword(){
+if(!wifiPass){alert("Пароль не указан");return;}
+navigator.clipboard.writeText(wifiPass)
+.then(()=>alert("Пароль скопирован"))
+.catch(()=>alert("Не удалось скопировать"));
+}
+
+load();
 </script>
 </body>
 </html>
