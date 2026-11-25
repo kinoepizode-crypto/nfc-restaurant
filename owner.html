@@ -37,6 +37,7 @@ button{background:#111;color:white;border:0;font-weight:bold;cursor:pointer}
 <input id="instagram" placeholder="Instagram">
 <input id="whatsapp" placeholder="WhatsApp">
 <input id="maps_url" placeholder="Ссылка на Google Maps">
+<input id="two_gis_url" placeholder="Ссылка на 2ГИС">
 <button onclick="save()">Сохранить</button>
 <button onclick="logout()" style="background:#555">Выйти</button>
 </div>
@@ -99,7 +100,8 @@ async function loadBusiness(){
 
     const fields=[
       "name","description","wifi_name","wifi_password",
-      "menu_url","phone","address","instagram","whatsapp","maps_url"
+      "menu_url","phone","address","instagram","whatsapp",
+      "maps_url","two_gis_url"
     ];
 
     fields.forEach(key=>{
@@ -120,7 +122,8 @@ async function save(){
   try{
     const fields=[
       "name","description","wifi_name","wifi_password",
-      "menu_url","phone","address","instagram","whatsapp","maps_url"
+      "menu_url","phone","address","instagram","whatsapp",
+      "maps_url","two_gis_url"
     ];
 
     const updates={};
