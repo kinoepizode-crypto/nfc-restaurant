@@ -6,34 +6,53 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Админ-панель</title>
 <style>
-body{font-family:Arial;background:#f1f3f5;padding:20px;color:#111}
+body{font-family:Arial;background:#f1f3f5;padding:15px;color:#111}
 .box{max-width:600px;margin:auto;background:white;padding:20px;border-radius:18px}
-input,button{width:100%;padding:14px;margin:8px 0;box-sizing:border-box;border-radius:10px;border:1px solid #ddd;font-size:16px}
+input,textarea,button{width:100%;padding:13px;margin:7px 0;box-sizing:border-box;border-radius:10px;border:1px solid #ddd;font-size:16px}
+textarea{min-height:75px}
 button{background:#111;color:white;border:0}
 #admin{display:none}
 #status{white-space:pre-wrap}
+h3{margin-top:25px}
 </style>
 </head>
 <body>
 <div class="box">
 <h2>Администратор</h2>
+
 <div id="login">
 <input id="email" placeholder="Email" type="email">
 <input id="password" placeholder="Пароль" type="password">
 <button onclick="login()">Войти</button>
 </div>
+
 <div id="admin">
 <h3>Добавить ресторан</h3>
+
 <input id="restaurant" placeholder="Название ресторана">
-<input id="slug" placeholder="Адрес (например coffee-bishkek)">
+<input id="slug" placeholder="Адрес ссылки (например coffee-bishkek)">
+<textarea id="description" placeholder="Описание ресторана"></textarea>
+<input id="address" placeholder="Физический адрес">
+<input id="phone" placeholder="Телефон">
+<input id="wifi_name" placeholder="Название Wi-Fi">
+<input id="wifi_password" placeholder="Пароль Wi-Fi">
+<input id="menu_url" placeholder="Ссылка на меню">
+<input id="instagram" placeholder="Ссылка на Instagram">
+<input id="whatsapp" placeholder="Ссылка на WhatsApp">
+<input id="maps_url" placeholder="Ссылка Google Maps">
+<input id="two_gis_url" placeholder="Ссылка 2GIS">
+
 <button onclick="createBusiness()">Создать ресторан</button>
+
 <h3>Рестораны</h3>
 <button onclick="loadBusinesses()">Обновить список</button>
 <div id="list"></div>
 <button onclick="logout()">Выйти</button>
 </div>
+
 <p id="status"></p>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const client=window.supabase.createClient(
@@ -41,7 +60,9 @@ const client=window.supabase.createClient(
 "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
 );
 
-function msg(t){document.getElementById("status").textContent=t;}
+function msg(t){
+document.getElementById("status").textContent=t;
+}
 
 async function login(){
 msg("Вход...");
@@ -59,7 +80,7 @@ if(p.role!=="admin")throw new Error("Нет прав администратор�
 
 document.getElementById("login").style.display="none";
 document.getElementById("admin").style.display="block";
-msg("Вход администратора успешен");
+msg("Вход успешен");
 loadBusinesses();
 }catch(e){msg("Ошибка: "+e.message);}
 }
@@ -70,15 +91,29 @@ try{
 const name=document.getElementById("restaurant").value.trim();
 const slug=document.getElementById("slug").value.trim()
 .toLowerCase().replace(/[^a-z0-9-]/g,"-");
-if(!name||!slug)throw new Error("Заполните оба поля");
+
+if(!name||!slug)throw new Error("Заполни название и адрес ссылки");
+
+const fields=[
+"description","address","phone","wifi_name","wifi_password",
+"menu_url","instagram","whatsapp","maps_url","two_gis_url"
+];
+const business={name,slug};
+
+fields.forEach(id=>{
+business[id]=document.getElementById(id).value.trim()||null;
+});
 
 const {data,error}=await client.from("businesses")
-.insert({name:name,slug:slug})
-.select("id,name,slug").single();
+.insert(business).select("id,name,slug").single();
+
 if(error)throw error;
 
-msg("Создано: "+data.name+"\nID: "+data.id+"\nSlug: "+data.slug);
+msg("Ресторан создан: "+data.name+"\nСсылка: "+data.slug);
+document.querySelectorAll("#admin input,#admin textarea")
+.forEach(el=>el.value="");
 loadBusinesses();
+
 }catch(e){msg("Ошибка: "+e.message);}
 }
 
@@ -87,13 +122,15 @@ try{
 const {data,error}=await client.from("businesses")
 .select("id,name,slug").order("created_at",{ascending:false});
 if(error)throw error;
-document.getElementById("list").innerHTML="";
+
+const list=document.getElementById("list");
+list.innerHTML="";
 data.forEach(b=>{
 const div=document.createElement("div");
 div.style.padding="12px";
 div.style.borderBottom="1px solid #ddd";
 div.textContent=b.name+" | "+(b.slug||"без ссылки");
-document.getElementById("list").appendChild(div);
+list.appendChild(div);
 });
 }catch(e){msg("Ошибка списка: "+e.message);}
 }
