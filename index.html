@@ -5,316 +5,183 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f4f1e8">
-<meta name="color-scheme" content="light">
-<title>NFC SMART — Информация о компании</title>
-
+<title>NFC SMART</title>
 <style>
 *{box-sizing:border-box}
 :root{
-  color-scheme:only light;
-  --bg:#f4f1e8;
-  --panel:#fffdf8;
-  --soft:#e8eee2;
-  --green:#647b4f;
-  --green-dark:#344b35;
-  --text:#26352a;
-  --muted:#788476;
-  --border:rgba(67,86,58,.13);
+--bg:#f4f1e8;--panel:#fffdf8;--soft:#e8eee2;
+--green:#647b4f;--dark:#344b35;--text:#26352a;
+--muted:#788476;--border:rgba(67,86,58,.13)
 }
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif;min-height:100vh;
-}
-button,a{font:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
 .container{width:min(100% - 32px,760px);margin:auto}
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:23px 0;
-}
-.brand{font-size:20px;font-weight:900;letter-spacing:1.5px;color:var(--green-dark)}
+.topbar{padding:23px 0}
+.brand{font-size:20px;font-weight:900;letter-spacing:1.5px;color:var(--dark)}
 .brand span{color:#82956a}
-.hero{
-  position:relative;overflow:hidden;padding:38px 28px 32px;
-  border-radius:27px;
-  background:linear-gradient(135deg,#e4eadb,#d4dfca 55%,#c5d3b9);
-  border:1px solid rgba(83,108,70,.16);
-  box-shadow:0 16px 42px rgba(66,79,54,.10);
-}
-.hero:before{
-  content:"";position:absolute;width:260px;height:260px;
-  right:-90px;top:-110px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,.65),transparent 70%);
-}
-.eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  color:#536b48;font-size:11px;font-weight:800;letter-spacing:2px;
-}
+.hero{position:relative;overflow:hidden;padding:38px 28px 32px;border-radius:27px;background:linear-gradient(135deg,#e4eadb,#d4dfca 55%,#c5d3b9);border:1px solid rgba(83,108,70,.16);box-shadow:0 16px 42px rgba(66,79,54,.10)}
+.hero:before{content:"";position:absolute;width:260px;height:260px;right:-90px;top:-110px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.65),transparent 70%)}
+.eyebrow{display:flex;align-items:center;gap:8px;color:#536b48;font-size:11px;font-weight:800;letter-spacing:2px}
 .dot{width:7px;height:7px;background:#7b985e;border-radius:50%}
-.hero h1{
-  position:relative;z-index:1;
-  font-size:clamp(30px,7vw,48px);
-  line-height:1.08;letter-spacing:-1.5px;
-  margin:22px 0 12px;overflow-wrap:anywhere;color:#263b2b;
-}
-.hero p{
-  position:relative;z-index:1;color:#53644f;
-  font-size:15px;line-height:1.65;margin:0;
-  max-width:520px;white-space:pre-wrap;
-}
-.hero-bottom{
-  position:relative;z-index:1;margin-top:28px;
-  display:flex;align-items:center;gap:10px;
-  color:#43583d;font-size:12px;
-}
-.nfc-icon{
-  width:38px;height:38px;border-radius:12px;
-  display:grid;place-items:center;
-  background:rgba(255,255,255,.48);font-size:21px;
-}
+.hero h1{position:relative;font-size:clamp(30px,7vw,48px);line-height:1.08;letter-spacing:-1.5px;margin:22px 0 12px;overflow-wrap:anywhere;color:#263b2b}
+.hero p{position:relative;color:#53644f;font-size:15px;line-height:1.65;margin:0;white-space:pre-wrap}
+.hero-bottom{position:relative;margin-top:28px;display:flex;align-items:center;gap:10px;color:#43583d;font-size:12px}
+.nfc-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.48);font-size:21px}
 .section{margin-top:28px}
-.section-title{
-  font-size:17px;font-weight:800;margin:0 0 14px;
-  display:flex;align-items:center;gap:9px;color:var(--green-dark);
-}
-.section-title span{font-size:19px}
-.card{
-  background:var(--panel);border:1px solid var(--border);
-  padding:19px;border-radius:19px;
-  box-shadow:0 8px 24px rgba(66,79,54,.045);
-}
+.section-title{font-size:17px;font-weight:800;margin:0 0 14px;display:flex;align-items:center;gap:9px;color:var(--dark)}
+.card{background:var(--panel);border:1px solid var(--border);padding:19px;border-radius:19px;box-shadow:0 8px 24px rgba(66,79,54,.045)}
 .wifi-name{font-size:17px;font-weight:800;margin:0 0 7px}
 .wifi-password{color:var(--muted);font-size:14px;overflow-wrap:anywhere}
-.copy{
-  margin-top:14px;border:0;border-radius:12px;
-  background:var(--green);color:white;
-  padding:12px 16px;font-weight:750;cursor:pointer;
-}
+.copy{margin-top:14px;border:0;border-radius:12px;background:var(--green);color:white;padding:12px 16px;font-weight:750;cursor:pointer}
 .links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.link{
-  min-height:83px;display:flex;align-items:center;gap:12px;
-  padding:15px;text-decoration:none;color:var(--text);
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:17px;transition:.18s;
-  box-shadow:0 6px 18px rgba(66,79,54,.035);
-}
-.link:active{transform:scale(.98)}
-.link-icon{
-  flex:0 0 42px;width:42px;height:42px;
-  display:grid;place-items:center;border-radius:13px;
-  background:var(--soft);font-size:20px;
-}
+.link{min-height:83px;display:flex;align-items:center;gap:12px;padding:15px;text-decoration:none;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:17px;box-shadow:0 6px 18px rgba(66,79,54,.035)}
+.link-icon{flex:0 0 42px;width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--soft);font-size:20px}
 .link-label{font-size:13px;font-weight:750;line-height:1.35;overflow-wrap:anywhere}
-.link-arrow{margin-left:auto;color:var(--muted);font-size:17px}
+.link-arrow{margin-left:auto;color:var(--muted)}
 .address-card{display:flex;gap:13px;align-items:flex-start}
-.address-icon{
-  width:42px;height:42px;flex:0 0 42px;
-  border-radius:13px;display:grid;place-items:center;
-  background:var(--soft);font-size:20px;
-}
+.address-icon{width:42px;height:42px;flex:0 0 42px;border-radius:13px;display:grid;place-items:center;background:var(--soft);font-size:20px}
 .address-text{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
-.footer{
-  text-align:center;padding:38px 0 28px;
-  color:#899184;font-size:12px;
-}
+.footer{text-align:center;padding:38px 0 28px;color:#899184;font-size:12px}
 .footer strong{color:var(--green);letter-spacing:1px}
-#status{color:var(--muted);font-size:13px;text-align:center;margin:12px 0}
-@media(max-width:390px){
-  .container{width:min(100% - 22px,760px)}
-  .hero{padding:30px 21px}
-  .links{gap:8px}
-  .link{padding:12px;gap:9px}
-  .link-icon{width:36px;height:36px;flex-basis:36px}
-}
+#status{color:#9b573d;font-size:13px;text-align:center;margin:12px 0;overflow-wrap:anywhere}
+@media(max-width:390px){.container{width:min(100% - 22px,760px)}.hero{padding:30px 21px}.links{gap:8px}.link{padding:12px;gap:9px}.link-icon{width:36px;height:36px;flex-basis:36px}}
 </style>
 </head>
-
 <body>
 <div class="container">
-
 <header class="topbar">
-  <div class="brand">NFC <span>SMART</span></div>
+<div class="brand">NFC <span>SMART</span></div>
 </header>
 
 <main>
-  <section class="hero">
-    <div class="eyebrow">
-      <span class="dot"></span>
-      <span>ВАША КОМПАНИЯ ОНЛАЙН</span>
-    </div>
+<section class="hero">
+<div class="eyebrow"><span class="dot"></span> ВАША КОМПАНИЯ ОНЛАЙН</div>
+<h1 id="name">Загрузка...</h1>
+<p id="description"></p>
+<div class="hero-bottom">
+<div class="nfc-icon">⌁</div>
+<span>Вся важная информация в одном месте</span>
+</div>
+</section>
 
-    <h1 id="name">Загрузка...</h1>
-    <p id="description"></p>
+<section id="wifiSection" class="section" style="display:none">
+<h2 class="section-title">📶 Wi-Fi для гостей</h2>
+<div class="card">
+<p class="wifi-name" id="wifiName"></p>
+<div class="wifi-password" id="wifiPassword"></div>
+<button class="copy" onclick="copyPassword()">Скопировать пароль</button>
+</div>
+</section>
 
-    <div class="hero-bottom">
-      <div class="nfc-icon">⌁</div>
-      <span>Вся важная информация в одном месте</span>
-    </div>
-  </section>
+<section id="linksSection" class="section" style="display:none">
+<h2 class="section-title">✦ Связаться с нами</h2>
+<div class="links" id="links"></div>
+</section>
 
-  <section id="wifiSection" class="section" style="display:none">
-    <h2 class="section-title"><span>📶</span> Wi-Fi для гостей</h2>
-    <div class="card">
-      <p class="wifi-name" id="wifiName"></p>
-      <div class="wifi-password" id="wifiPassword"></div>
-      <button class="copy" onclick="copyPassword()">
-        Скопировать пароль
-      </button>
-    </div>
-  </section>
-
-  <section id="linksSection" class="section" style="display:none">
-    <h2 class="section-title"><span>✦</span> Связаться с нами</h2>
-    <div class="links" id="links"></div>
-  </section>
-
-  <section id="addressSection" class="section" style="display:none">
-    <h2 class="section-title"><span>📍</span> Наш адрес</h2>
-    <div class="card address-card">
-      <div class="address-icon">📍</div>
-      <div class="address-text" id="address"></div>
-    </div>
-  </section>
+<section id="addressSection" class="section" style="display:none">
+<h2 class="section-title">📍 Наш адрес</h2>
+<div class="card address-card">
+<div class="address-icon">📍</div>
+<div class="address-text" id="address"></div>
+</div>
+</section>
 </main>
 
 <div id="status"></div>
-
 <footer class="footer">
-  <strong>NFC SMART</strong>
-  <div style="margin-top:8px">
-    Удобная информация о компании в одном касании
-  </div>
+<strong>NFC SMART</strong>
+<div style="margin-top:8px">Удобная информация о компании в одном касании</div>
 </footer>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
 const client=window.supabase.createClient(
-  "https://pyeydqohexospkzzehtz.supabase.co",
-  "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
+"https://pyeydqohexospkzzehtz.supabase.co",
+"sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
 );
 
-const demoBusinessId="d9be3b99-2ac3-42ef-8426-aa98c8de93d7";
+const demoBusinessId="797bc6ec-0df3-4198-bb06-90c1456efc69";
 const requestedSlug=new URLSearchParams(location.search).get("slug");
-
 let wifiPass="";
-let businessData=null;
 
 function addLink(container,label,url,icon){
-  if(!url)return;
-
-  const a=document.createElement("a");
-  a.className="link";
-  a.href=url;
-  a.target="_blank";
-  a.rel="noopener noreferrer";
-
-  const ico=document.createElement("span");
-  ico.className="link-icon";
-  ico.textContent=icon;
-
-  const text=document.createElement("span");
-  text.className="link-label";
-  text.textContent=label;
-
-  const arrow=document.createElement("span");
-  arrow.className="link-arrow";
-  arrow.textContent="↗";
-
-  a.append(ico,text,arrow);
-  container.appendChild(a);
+if(!url)return;
+const a=document.createElement("a");
+a.className="link";
+a.href=url;
+a.target="_blank";
+a.rel="noopener noreferrer";
+const ico=document.createElement("span");
+ico.className="link-icon";
+ico.textContent=icon;
+const text=document.createElement("span");
+text.className="link-label";
+text.textContent=label;
+const arrow=document.createElement("span");
+arrow.className="link-arrow";
+arrow.textContent="↗";
+a.append(ico,text,arrow);
+container.appendChild(a);
 }
 
-function renderBusiness(){
-  if(!businessData)return;
+function renderBusiness(d){
+document.getElementById("name").textContent=d.name||"";
+document.getElementById("description").textContent=d.description||"";
+document.title=(d.name||"Компания")+" — NFC SMART";
 
-  const d=businessData;
+document.getElementById("wifiSection").style.display=
+(d.wifi_name||d.wifi_password)?"block":"none";
+document.getElementById("wifiName").textContent=d.wifi_name||"Wi-Fi";
+wifiPass=d.wifi_password||"";
+document.getElementById("wifiPassword").textContent=
+wifiPass?"Пароль: "+wifiPass:"Пароль не указан";
 
-  document.getElementById("name").textContent=d.name||"";
-  document.getElementById("description").textContent=d.description||"";
-  document.title=(d.name||"Компания")+" — NFC SMART";
+const links=document.getElementById("links");
+links.innerHTML="";
 
-  const wifiSection=document.getElementById("wifiSection");
-  wifiSection.style.display=
-    (d.wifi_name||d.wifi_password)?"block":"none";
-
-  document.getElementById("wifiName").textContent=d.wifi_name||"Wi-Fi";
-  wifiPass=d.wifi_password||"";
-
-  document.getElementById("wifiPassword").textContent=
-    wifiPass ? "Пароль: "+wifiPass : "Пароль не указан";
-
-  const links=document.getElementById("links");
-  links.innerHTML="";
-
-  const items=[
-    ["Меню и услуги",d.menu_url,"📋"],
-    ["Позвонить",d.phone?"tel:"+d.phone:null,"📞"],
-    ["Instagram",d.instagram?
-      (d.instagram.startsWith("http")?d.instagram:
-      "https://instagram.com/"+d.instagram.replace("@","")):null,"📸"],
-    ["WhatsApp",d.whatsapp?
-      (d.whatsapp.startsWith("http")?d.whatsapp:
-      "https://wa.me/"+d.whatsapp.replace(/\D/g,"")):null,"💬"],
-    ["Google Maps",d.maps_url,"🗺️"],
-    ["2ГИС",d.two_gis_url,"📍"]
-  ];
-
-  items.forEach(item=>addLink(links,item[0],item[1],item[2]));
-
-  document.getElementById("linksSection").style.display=
-    links.children.length?"block":"none";
-
-  document.getElementById("addressSection").style.display=
-    d.address?"block":"none";
-
-  document.getElementById("address").textContent=d.address||"";
+const items=[
+["Меню и услуги",d.menu_url,"📋"],
+["Позвонить",d.phone?"tel:"+d.phone:null,"📞"],
+["Instagram",d.instagram?(d.instagram.startsWith("http")?d.instagram:"https://instagram.com/"+d.instagram.replace("@","")):null,"📸"],
+["WhatsApp",d.whatsapp?(d.whatsapp.startsWith("http")?d.whatsapp:"https://wa.me/"+d.whatsapp.replace(/\D/g,"")):null,"💬"],
+["Google Maps",d.maps_url,"🗺️"],
+["2ГИС",d.two_gis_url,"📍"]
+];
+items.forEach(item=>addLink(links,item[0],item[1],item[2]));
+document.getElementById("linksSection").style.display=
+links.children.length?"block":"none";
+document.getElementById("addressSection").style.display=
+d.address?"block":"none";
+document.getElementById("address").textContent=d.address||"";
 }
 
 async function load(){
-  document.getElementById("name").textContent="Загрузка...";
-
-  try{
-    let request=client.from("businesses").select("*");
-
-    if(requestedSlug){
-      request=request.eq("slug",requestedSlug);
-    }else{
-      request=request.eq("id",demoBusinessId);
-    }
-
-    const {data,error}=await request.single();
-
-    if(error)throw error;
-    if(!data)throw new Error("Компания не найдена");
-
-    businessData=data;
-    renderBusiness();
-
-    document.getElementById("status").textContent="";
-  }catch(e){
-    document.getElementById("name").textContent="Компания не найдена";
-    document.getElementById("status").textContent=
-      "Не удалось загрузить информацию. Проверьте ссылку.";
-    console.error(e);
-  }
+try{
+let request=client.from("businesses").select("*");
+if(requestedSlug){
+request=request.eq("slug",requestedSlug);
+}else{
+request=request.eq("id",demoBusinessId);
+}
+const {data,error}=await request.maybeSingle();
+if(error)throw error;
+if(!data)throw new Error("Компания не найдена в базе данных");
+renderBusiness(data);
+document.getElementById("status").textContent="";
+}catch(e){
+document.getElementById("name").textContent="Не удалось загрузить компанию";
+document.getElementById("status").textContent=e.message;
+console.error("NFC SMART:",e);
+}
 }
 
 async function copyPassword(){
-  if(!wifiPass){
-    alert("Пароль не указан");
-    return;
-  }
-
-  try{
-    await navigator.clipboard.writeText(wifiPass);
-    alert("Пароль скопирован!");
-  }catch(e){
-    alert(wifiPass);
-  }
+if(!wifiPass){alert("Пароль не указан");return;}
+try{
+await navigator.clipboard.writeText(wifiPass);
+alert("Пароль скопирован!");
+}catch(e){alert(wifiPass);}
 }
-
 load();
 </script>
 </body>
