@@ -2,140 +2,141 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#173b32">
-  <title>NFC Restaurant</title>
-  <style>
-    :root {
-      --green: #173b32;
-      --cream: #f5f1e8;
-      --ink: #202722;
-      --muted: #68736d;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--cream);
-      color: var(--ink);
-      font-family: Arial, sans-serif;
-    }
-    .wrap {
-      width: min(100% - 32px, 680px);
-      margin: auto;
-      padding: 28px 0 48px;
-    }
-    .hero {
-      background: var(--green);
-      color: white;
-      border-radius: 26px;
-      padding: 34px 26px;
-      text-align: center;
-    }
-    .mark { font-size: 38px; }
-    .eyebrow {
-      color: #d8c49f;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    h1 { font-size: clamp(30px, 8vw, 44px); }
-    .intro { color: #e2e9e4; line-height: 1.6; }
-    .section-title { font-size: 19px; margin: 28px 2px 12px; }
-    .card {
-      background: white;
-      border: 1px solid #e9e4d9;
-      border-radius: 18px;
-      padding: 18px;
-      margin: 10px 0;
-    }
-    .wifi {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-    .muted { color: var(--muted); font-size: 14px; line-height: 1.5; }
-    button {
-      border: 0;
-      border-radius: 12px;
-      background: var(--green);
-      color: white;
-      padding: 12px 16px;
-      font-weight: bold;
-    }
-    button:disabled { opacity: .4; }
-    .links {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .links a {
-      text-align: center;
-      padding: 15px 10px;
-      background: white;
-      border: 1px solid #e9e4d9;
-      border-radius: 14px;
-      color: var(--green);
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .links a[aria-disabled="true"] {
-      opacity: .45;
-      pointer-events: none;
-    }
-    footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 28px;
-    }
-    @media(max-width:420px) {
-      .wifi { align-items: flex-start; flex-direction: column; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#173b32">
+<title>NFC Restaurant</title>
+<style>
+:root{--green:#173b32;--cream:#f5f1e8;--ink:#202722;--muted:#68736d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,sans-serif}
+.wrap{width:min(100% - 32px,680px);margin:auto;padding:28px 0 48px}
+.hero{background:var(--green);color:white;border-radius:26px;padding:34px 26px;text-align:center}
+.mark{font-size:38px}
+.eyebrow{color:#d8c49f;font-size:12px;letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(30px,8vw,44px)}
+.intro{color:#e2e9e4;line-height:1.6}
+.section-title{font-size:19px;margin:28px 2px 12px}
+.card{background:white;border:1px solid #e9e4d9;border-radius:18px;padding:18px;margin:10px 0}
+.wifi{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.muted{color:var(--muted);font-size:14px;line-height:1.5}
+button{border:0;border-radius:12px;background:var(--green);color:white;padding:12px 16px;font-weight:bold}
+button:disabled{opacity:.4}
+.links{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.links a{text-align:center;padding:15px 10px;background:white;border:1px solid #e9e4d9;border-radius:14px;color:var(--green);text-decoration:none;font-weight:bold}
+.links a[hidden]{display:none}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
+@media(max-width:420px){.wifi{align-items:flex-start;flex-direction:column}}
+</style>
 </head>
 <body>
-  <main class="wrap">
-    <header class="hero">
-      <div class="mark">🍽️</div>
-      <p class="eyebrow">Добро пожаловать</p>
-      <h1>Demo Restaurant</h1>
-      <p class="intro">
-        Рады видеть вас! Здесь вы найдёте Wi-Fi,
-        меню и контакты ресторана.
-      </p>
-    </header>
+<main class="wrap">
+<header class="hero">
+<div class="mark">🍽️</div>
+<p class="eyebrow">Добро пожаловать</p>
+<h1 id="restaurant-name">Загрузка...</h1>
+<p class="intro" id="description">Загружаем информацию ресторана</p>
+</header>
 
-    <h2 class="section-title">📶 Wi-Fi для гостей</h2>
-    <section class="card wifi">
-      <div>
-        <strong>Название сети</strong>
-        <div class="muted">Пароль пока не добавлен</div>
-      </div>
-      <button type="button" disabled>Копировать</button>
-    </section>
+<h2 class="section-title">📶 Wi-Fi для гостей</h2>
+<section class="card wifi">
+<div>
+<strong id="wifi-name">Загрузка...</strong>
+<div class="muted" id="wifi-password">Подождите...</div>
+</div>
+<button id="copy-button" disabled>Копировать пароль</button>
+</section>
 
-    <h2 class="section-title">🔗 Полезные ссылки</h2>
-    <nav class="links">
-      <a href="#" aria-disabled="true">📖 Меню</a>
-      <a href="#" aria-disabled="true">📍 Как добраться</a>
-      <a href="#" aria-disabled="true">💬 WhatsApp</a>
-      <a href="#" aria-disabled="true">📷 Instagram</a>
-    </nav>
+<h2 class="section-title">🔗 Полезные ссылки</h2>
+<nav class="links">
+<a id="menu-link" hidden>📖 Меню</a>
+<a id="maps-link" hidden>📍 Как добраться</a>
+<a id="whatsapp-link" hidden>💬 WhatsApp</a>
+<a id="instagram-link" hidden>📷 Instagram</a>
+<a id="phone-link" hidden>📞 Позвонить</a>
+</nav>
 
-    <h2 class="section-title">📞 Контакты</h2>
-    <section class="card">
-      <p class="muted">
-        Контактные данные ресторана появятся здесь
-        после подключения кабинета владельца.
-      </p>
-    </section>
+<h2 class="section-title">📍 Адрес</h2>
+<section class="card">
+<p class="muted" id="address">Загружаем адрес...</p>
+</section>
 
-    <footer>
-      NFC Restaurant · Информация ресторана в одном месте
-    </footer>
-  </main>
+<p class="muted" id="status" role="status">Подключаемся к базе данных...</p>
+<footer>NFC Restaurant · Информация ресторана в одном месте</footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://pyeydqohexospkzzehtz.supabase.co";
+const SUPABASE_KEY = "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc";
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const slug = new URLSearchParams(location.search).get("slug") || "demo-restaurant";
+
+function showLink(id, url) {
+  const el = document.getElementById(id);
+  if (url) {
+    el.href = url;
+    el.target = "_blank";
+    el.rel = "noopener noreferrer";
+    el.hidden = false;
+  } else {
+    el.hidden = true;
+  }
+}
+
+async function loadRestaurant() {
+  const status = document.getElementById("status");
+
+  try {
+    const { data, error } = await db
+      .from("public_businesses")
+      .select("name,description,phone,address,instagram_url,whatsapp_url,menu_url,maps_url,wifi_ssid,wifi_password")
+      .eq("slug", slug)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!data) throw new Error("Ресторан не найден или не опубликован.");
+
+    document.getElementById("restaurant-name").textContent = data.name || "Ресторан";
+    document.title = data.name || "NFC Restaurant";
+    document.getElementById("description").textContent =
+      data.description || "Добро пожаловать! Рады видеть вас.";
+    document.getElementById("wifi-name").textContent =
+      data.wifi_ssid || "Wi-Fi пока не указан";
+    document.getElementById("wifi-password").textContent =
+      data.wifi_password ? "Пароль: " + data.wifi_password : "Пароль пока не добавлен";
+    document.getElementById("address").textContent =
+      data.address || "Адрес пока не указан";
+
+    showLink("menu-link", data.menu_url);
+    showLink("maps-link", data.maps_url);
+    showLink("whatsapp-link", data.whatsapp_url);
+    showLink("instagram-link", data.instagram_url);
+    showLink("phone-link", data.phone ? "tel:" + data.phone : null);
+
+    const copyButton = document.getElementById("copy-button");
+    if (data.wifi_password) {
+      copyButton.disabled = false;
+      copyButton.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(data.wifi_password);
+          copyButton.textContent = "Скопировано ✓";
+        } catch {
+          copyButton.textContent = "Не удалось скопировать";
+        }
+      };
+    }
+
+    status.textContent = "Информация ресторана загружена.";
+  } catch (error) {
+    console.error(error);
+    status.textContent = "Не удалось загрузить данные: " + error.message;
+  }
+}
+
+loadRestaurant();
+</script>
 </body>
 </html>
-
