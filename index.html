@@ -1,13 +1,141 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NFC Restaurant</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173b32">
+  <title>NFC Restaurant</title>
+  <style>
+    :root {
+      --green: #173b32;
+      --cream: #f5f1e8;
+      --ink: #202722;
+      --muted: #68736d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: Arial, sans-serif;
+    }
+    .wrap {
+      width: min(100% - 32px, 680px);
+      margin: auto;
+      padding: 28px 0 48px;
+    }
+    .hero {
+      background: var(--green);
+      color: white;
+      border-radius: 26px;
+      padding: 34px 26px;
+      text-align: center;
+    }
+    .mark { font-size: 38px; }
+    .eyebrow {
+      color: #d8c49f;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    h1 { font-size: clamp(30px, 8vw, 44px); }
+    .intro { color: #e2e9e4; line-height: 1.6; }
+    .section-title { font-size: 19px; margin: 28px 2px 12px; }
+    .card {
+      background: white;
+      border: 1px solid #e9e4d9;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 10px 0;
+    }
+    .wifi {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .muted { color: var(--muted); font-size: 14px; line-height: 1.5; }
+    button {
+      border: 0;
+      border-radius: 12px;
+      background: var(--green);
+      color: white;
+      padding: 12px 16px;
+      font-weight: bold;
+    }
+    button:disabled { opacity: .4; }
+    .links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .links a {
+      text-align: center;
+      padding: 15px 10px;
+      background: white;
+      border: 1px solid #e9e4d9;
+      border-radius: 14px;
+      color: var(--green);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .links a[aria-disabled="true"] {
+      opacity: .45;
+      pointer-events: none;
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 28px;
+    }
+    @media(max-width:420px) {
+      .wifi { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
 </head>
-<body style="font-family:Arial;text-align:center;padding:50px;background:#171717;color:white">
-<h1>🍽️ NFC Restaurant</h1>
-<h2>Наш сайт работает!</h2>
-<p>Добро пожаловать!</p>
-<h1 style="color:red">ПРОВЕРКА NFC САЙТА</h1></body>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <div class="mark">🍽️</div>
+      <p class="eyebrow">Добро пожаловать</p>
+      <h1>Demo Restaurant</h1>
+      <p class="intro">
+        Рады видеть вас! Здесь вы найдёте Wi-Fi,
+        меню и контакты ресторана.
+      </p>
+    </header>
+
+    <h2 class="section-title">📶 Wi-Fi для гостей</h2>
+    <section class="card wifi">
+      <div>
+        <strong>Название сети</strong>
+        <div class="muted">Пароль пока не добавлен</div>
+      </div>
+      <button type="button" disabled>Копировать</button>
+    </section>
+
+    <h2 class="section-title">🔗 Полезные ссылки</h2>
+    <nav class="links">
+      <a href="#" aria-disabled="true">📖 Меню</a>
+      <a href="#" aria-disabled="true">📍 Как добраться</a>
+      <a href="#" aria-disabled="true">💬 WhatsApp</a>
+      <a href="#" aria-disabled="true">📷 Instagram</a>
+    </nav>
+
+    <h2 class="section-title">📞 Контакты</h2>
+    <section class="card">
+      <p class="muted">
+        Контактные данные ресторана появятся здесь
+        после подключения кабинета владельца.
+      </p>
+    </section>
+
+    <footer>
+      NFC Restaurant · Информация ресторана в одном месте
+    </footer>
+  </main>
+</body>
 </html>
+
