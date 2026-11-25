@@ -12,23 +12,23 @@ input,textarea,button{width:100%;padding:13px;margin:7px 0;box-sizing:border-box
 textarea{min-height:75px}
 button{background:#111;color:white;border:0}
 #admin{display:none}
-#status{white-space:pre-wrap}
+#status{white-space:pre-wrap;overflow-wrap:anywhere}
 h3{margin-top:25px}
+.business{padding:12px 0;border-bottom:1px solid #ddd;overflow-wrap:anywhere}
+.business a{display:block;margin:7px 0}
+.copy{background:#2463eb}
 </style>
 </head>
 <body>
 <div class="box">
 <h2>Администратор</h2>
-
 <div id="login">
 <input id="email" placeholder="Email" type="email">
 <input id="password" placeholder="Пароль" type="password">
 <button onclick="login()">Войти</button>
 </div>
-
 <div id="admin">
 <h3>Добавить ресторан</h3>
-
 <input id="restaurant" placeholder="Название ресторана">
 <input id="slug" placeholder="Адрес ссылки (например coffee-bishkek)">
 <textarea id="description" placeholder="Описание ресторана"></textarea>
@@ -41,29 +41,32 @@ h3{margin-top:25px}
 <input id="whatsapp" placeholder="Ссылка на WhatsApp">
 <input id="maps_url" placeholder="Ссылка Google Maps">
 <input id="two_gis_url" placeholder="Ссылка 2GIS">
-
 <button onclick="createBusiness()">Создать ресторан</button>
-
-<h3>Рестораны</h3>
+<h3>Рестораны и NFC-ссылки</h3>
 <button onclick="loadBusinesses()">Обновить список</button>
 <div id="list"></div>
 <button onclick="logout()">Выйти</button>
 </div>
-
 <p id="status"></p>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const client=window.supabase.createClient(
 "https://pyeydqohexospkzzehtz.supabase.co",
 "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
 );
-
-function msg(t){
-document.getElementById("status").textContent=t;
+const SITE_URL="https://nfc-restaurant-two.vercel.app/";
+function msg(t){document.getElementById("status").textContent=t;}
+function publicLink(slug){return SITE_URL+"?slug="+encodeURIComponent(slug);}
+async function copyLink(slug){
+const url=publicLink(slug);
+try{
+await navigator.clipboard.writeText(url);
+msg("Ссылка скопирована:\n"+url);
+}catch(e){
+msg("Скопируй ссылку вручную:\n"+url);
 }
-
+}
 async function login(){
 msg("Вход...");
 try{
@@ -72,73 +75,58 @@ email:document.getElementById("email").value.trim(),
 password:document.getElementById("password").value
 });
 if(error)throw error;
-
-const {data:p,error:pe}=await client.from("profiles")
-.select("role").eq("id",data.user.id).single();
+const {data:p,error:pe}=await client.from("profiles").select("role").eq("id",data.user.id).single();
 if(pe)throw pe;
 if(p.role!=="admin")throw new Error("Нет прав администратора");
-
 document.getElementById("login").style.display="none";
 document.getElementById("admin").style.display="block";
 msg("Вход успешен");
 loadBusinesses();
 }catch(e){msg("Ошибка: "+e.message);}
 }
-
 async function createBusiness(){
 msg("Создание...");
 try{
 const name=document.getElementById("restaurant").value.trim();
-const slug=document.getElementById("slug").value.trim()
-.toLowerCase().replace(/[^a-z0-9-]/g,"-");
-
-if(!name||!slug)throw new Error("Заполни название и адрес ссылки");
-
-const fields=[
-"description","address","phone","wifi_name","wifi_password",
-"menu_url","instagram","whatsapp","maps_url","two_gis_url"
-];
+const slug=document.getElementById("slug").value.trim().toLowerCase().replace(/[^a-z0-9-]/g,"-").replace(/-+/g,"-").replace(/^-|-$/g,"");
+if(!name||!slug)throw new Error("Заполни название и адрес ссылки латинскими буквами");
+const fields=["description","address","phone","wifi_name","wifi_password","menu_url","instagram","whatsapp","maps_url","two_gis_url"];
 const business={name,slug};
-
-fields.forEach(id=>{
-business[id]=document.getElementById(id).value.trim()||null;
-});
-
-const {data,error}=await client.from("businesses")
-.insert(business).select("id,name,slug").single();
-
+fields.forEach(id=>{business[id]=document.getElementById(id).value.trim()||null;});
+const {data,error}=await client.from("businesses").insert(business).select("id,name,slug").single();
 if(error)throw error;
-
-msg("Ресторан создан: "+data.name+"\nСсылка: "+data.slug);
-document.querySelectorAll("#admin input,#admin textarea")
-.forEach(el=>el.value="");
-loadBusinesses();
-
+const url=publicLink(data.slug);
+msg("Ресторан создан: "+data.name+"\nГотовая NFC-ссылка:\n"+url);
+document.querySelectorAll("#admin input,#admin textarea").forEach(el=>el.value="");
+await loadBusinesses();
 }catch(e){msg("Ошибка: "+e.message);}
 }
-
 async function loadBusinesses(){
 try{
-const {data,error}=await client.from("businesses")
-.select("id,name,slug").order("created_at",{ascending:false});
+const {data,error}=await client.from("businesses").select("id,name,slug").order("created_at",{ascending:false});
 if(error)throw error;
-
 const list=document.getElementById("list");
 list.innerHTML="";
 data.forEach(b=>{
 const div=document.createElement("div");
-div.style.padding="12px";
-div.style.borderBottom="1px solid #ddd";
-div.textContent=b.name+" | "+(b.slug||"без ссылки");
+div.className="business";
+const title=document.createElement("strong");
+title.textContent=b.name;
+const link=document.createElement("a");
+link.href=publicLink(b.slug);
+link.target="_blank";
+link.rel="noopener";
+link.textContent=publicLink(b.slug);
+const copy=document.createElement("button");
+copy.className="copy";
+copy.textContent="Скопировать NFC-ссылку";
+copy.onclick=()=>copyLink(b.slug);
+div.append(title,link,copy);
 list.appendChild(div);
 });
 }catch(e){msg("Ошибка списка: "+e.message);}
 }
-
-async function logout(){
-await client.auth.signOut();
-location.reload();
-}
+async function logout(){await client.auth.signOut();location.reload();}
 </script>
 </body>
 </html>
