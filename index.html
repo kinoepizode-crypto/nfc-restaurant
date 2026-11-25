@@ -3,132 +3,386 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ресторан</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>NFC Smart — Информация о компании</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f5f1e8;color:#222;font-family:Arial,sans-serif;padding:20px}
-.container{max-width:700px;margin:auto}
-.hero{background:#173e35;color:white;padding:45px 25px;border-radius:28px;text-align:center;margin-bottom:25px}
-.hero h1{font-size:36px;margin:20px 0}
-.hero p{font-size:18px;color:#d6dfd8}
-.section{margin:25px 0}
-.section h2{font-size:22px}
-.card{background:white;padding:20px;border-radius:20px;margin:12px 0;word-break:break-word}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.link{display:block;text-decoration:none;color:#173e35;background:white;padding:17px;border-radius:16px;text-align:center;font-weight:bold}
-button{border:0;background:#173e35;color:white;padding:13px 18px;border-radius:12px;font-weight:bold}
-.muted{color:#777}
-footer{text-align:center;color:#888;padding:25px}
+:root{
+  --bg:#0b1220;
+  --panel:#151f30;
+  --panel2:#1c2a40;
+  --text:#f5f7fb;
+  --muted:#9eacc0;
+  --blue:#65aaff;
+  --border:rgba(255,255,255,.09);
+}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  min-height:100vh;
+}
+button,a{font:inherit}
+.container{width:min(100% - 32px,760px);margin:auto}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:23px 0;
+}
+.brand{font-size:19px;font-weight:850;letter-spacing:1.5px}
+.brand span{color:var(--blue)}
+.langs{display:flex;gap:5px;background:var(--panel);padding:5px;border-radius:13px}
+.langs button{
+  border:0;background:transparent;color:var(--muted);
+  padding:8px 11px;border-radius:9px;font-size:12px;font-weight:800;
+  cursor:pointer
+}
+.langs button.active{background:#2c4d75;color:white}
+.hero{
+  position:relative;overflow:hidden;
+  padding:38px 28px 32px;border-radius:27px;
+  background:linear-gradient(135deg,#1c3d65 0%,#142b49 48%,#18243a 100%);
+  border:1px solid rgba(130,184,255,.18);
+  box-shadow:0 20px 60px rgba(0,0,0,.22);
+}
+.hero:before{
+  content:"";position:absolute;width:260px;height:260px;
+  right:-90px;top:-110px;border-radius:50%;
+  background:radial-gradient(circle,rgba(91,169,255,.35),transparent 70%);
+}
+.hero:after{
+  content:"";position:absolute;width:180px;height:180px;
+  right:35px;bottom:-120px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 0 0 25px rgba(255,255,255,.025),0 0 0 50px rgba(255,255,255,.02);
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  color:#b9d9ff;font-size:11px;font-weight:800;
+  letter-spacing:2px;text-transform:uppercase;
+}
+.dot{width:7px;height:7px;background:#64d9a4;border-radius:50%}
+.hero h1{
+  position:relative;z-index:1;font-size:clamp(30px,7vw,48px);
+  line-height:1.08;letter-spacing:-1.5px;margin:22px 0 12px;
+  overflow-wrap:anywhere
+}
+.hero p{
+  position:relative;z-index:1;color:#c4d4e8;
+  font-size:15px;line-height:1.65;margin:0;max-width:520px;
+  white-space:pre-wrap
+}
+.hero-bottom{
+  position:relative;z-index:1;margin-top:28px;
+  display:flex;align-items:center;gap:10px;color:#d9eaff;font-size:12px
+}
+.nfc-icon{
+  width:38px;height:38px;border-radius:12px;
+  display:grid;place-items:center;background:rgba(255,255,255,.12);
+  font-size:21px
+}
+.section{margin-top:28px}
+.section-title{
+  font-size:17px;font-weight:800;margin:0 0 14px;
+  display:flex;align-items:center;gap:9px
+}
+.section-title span{font-size:19px}
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  padding:19px;border-radius:19px
+}
+.wifi-name{font-size:17px;font-weight:800;margin:0 0 7px}
+.wifi-password{color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+.copy{
+  margin-top:14px;border:0;border-radius:12px;
+  background:#294d77;color:white;padding:12px 16px;
+  font-weight:750;cursor:pointer
+}
+.links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.link{
+  min-height:83px;display:flex;align-items:center;gap:12px;
+  padding:15px;text-decoration:none;color:var(--text);
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:17px;transition:.18s
+}
+.link:active{transform:scale(.98)}
+.link-icon{
+  flex:0 0 42px;width:42px;height:42px;
+  display:grid;place-items:center;border-radius:13px;
+  background:var(--panel2);font-size:20px
+}
+.link-label{font-size:13px;font-weight:750;line-height:1.35;overflow-wrap:anywhere}
+.link-arrow{margin-left:auto;color:var(--muted);font-size:17px}
+.address-card{display:flex;gap:13px;align-items:flex-start}
+.address-icon{
+  width:42px;height:42px;flex:0 0 42px;border-radius:13px;
+  display:grid;place-items:center;background:var(--panel2);font-size:20px
+}
+.address-text{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.empty{color:var(--muted);font-size:14px}
+.footer{
+  text-align:center;padding:38px 0 28px;color:#728198;font-size:12px
+}
+.footer strong{color:#a9cfff;letter-spacing:1px}
+#status{color:var(--muted);font-size:13px;text-align:center;margin:12px 0}
+@media(max-width:390px){
+  .container{width:min(100% - 22px,760px)}
+  .hero{padding:30px 21px}
+  .links{gap:8px}
+  .link{padding:12px;gap:9px}
+  .link-icon{width:36px;height:36px;flex-basis:36px}
+  .langs button{padding:8px}
+}
 </style>
 </head>
 <body>
 <div class="container">
-<div class="hero">
-<div style="font-size:40px">🍽️</div>
-<p style="letter-spacing:4px">ДОБРО ПОЖАЛОВАТЬ</p>
-<h1 id="name">Загрузка...</h1>
-<p id="description"></p>
-</div>
 
-<div id="wifiSection" class="section" style="display:none">
-<h2>📶 Wi-Fi для гостей</h2>
-<div class="card">
-<strong id="wifiName"></strong>
-<p id="wifiPassword"></p>
-<button onclick="copyPassword()">Копировать пароль</button>
-</div>
-</div>
+<header class="topbar">
+  <div class="brand">NFC <span>SMART</span></div>
+  <div class="langs" aria-label="Выбор языка">
+    <button class="active" data-lang="ru">RU</button>
+    <button data-lang="ky">KG</button>
+    <button data-lang="en">EN</button>
+  </div>
+</header>
 
-<div id="linksSection" class="section" style="display:none">
-<h2>🔗 Полезные ссылки</h2>
-<div class="grid" id="links"></div>
-</div>
+<main>
+  <section class="hero">
+    <div class="eyebrow"><span class="dot"></span><span data-t="welcome">ВАША КОМПАНИЯ ОНЛАЙН</span></div>
+    <h1 id="name">Загрузка...</h1>
+    <p id="description"></p>
+    <div class="hero-bottom">
+      <div class="nfc-icon">⌁</div>
+      <span data-t="tap">Вся важная информация в одном месте</span>
+    </div>
+  </section>
 
-<div id="addressSection" class="section" style="display:none">
-<h2>📍 Адрес</h2>
-<div class="card" id="address"></div>
-</div>
+  <section id="wifiSection" class="section" style="display:none">
+    <h2 class="section-title"><span>📶</span><span data-t="wifi">Wi-Fi для гостей</span></h2>
+    <div class="card">
+      <p class="wifi-name" id="wifiName"></p>
+      <div class="wifi-password" id="wifiPassword"></div>
+      <button class="copy" id="copyButton" onclick="copyPassword()" data-t="copy">Скопировать пароль</button>
+    </div>
+  </section>
 
-<footer>NFC Restaurant · Информация ресторана в одном месте</footer>
-<p id="status" class="muted"></p>
+  <section id="linksSection" class="section" style="display:none">
+    <h2 class="section-title"><span>✦</span><span data-t="contacts">Связаться с нами</span></h2>
+    <div class="links" id="links"></div>
+  </section>
+
+  <section id="addressSection" class="section" style="display:none">
+    <h2 class="section-title"><span>📍</span><span data-t="address">Наш адрес</span></h2>
+    <div class="card address-card">
+      <div class="address-icon">📍</div>
+      <div class="address-text" id="address"></div>
+    </div>
+  </section>
+</main>
+
+<div id="status"></div>
+<footer class="footer">
+  <strong>NFC SMART</strong>
+  <div style="margin-top:8px" data-t="footer">Удобная информация о компании в одном касании</div>
+</footer>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const client=window.supabase.createClient(
-"https://pyeydqohexospkzzehtz.supabase.co",
-"sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
+  "https://pyeydqohexospkzzehtz.supabase.co",
+  "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
 );
 
 const demoBusinessId="d9be3b99-2ac3-42ef-8426-aa98c8de93d7";
 const requestedSlug=new URLSearchParams(location.search).get("slug");
 let wifiPass="";
+let currentLang="ru";
+let businessData=null;
+
+const translations={
+  ru:{
+    welcome:"ВАША КОМПАНИЯ ОНЛАЙН",
+    tap:"Вся важная информация в одном месте",
+    wifi:"Wi-Fi для гостей",
+    copy:"Скопировать пароль",
+    copied:"Пароль скопирован!",
+    contacts:"Связаться с нами",
+    address:"Наш адрес",
+    menu:"Меню и услуги",
+    phone:"Позвонить",
+    instagram:"Instagram",
+    whatsapp:"WhatsApp",
+    maps:"Google Maps",
+    gis:"2ГИС",
+    footer:"Удобная информация о компании в одном касании",
+    loading:"Загрузка...",
+    notFound:"Компания не найдена",
+    loadError:"Не удалось загрузить информацию. Проверьте ссылку.",
+    noPassword:"Пароль не указан"
+  },
+  ky:{
+    welcome:"СИЗДИН КОМПАНИЯҢЫЗ ОНЛАЙН",
+    tap:"Бардык маанилүү маалымат бир жерде",
+    wifi:"Коноктор үчүн Wi-Fi",
+    copy:"Сырсөздү көчүрүү",
+    copied:"Сырсөз көчүрүлдү!",
+    contacts:"Биз менен байланышуу",
+    address:"Биздин дарек",
+    menu:"Меню жана кызматтар",
+    phone:"Чалуу",
+    instagram:"Instagram",
+    whatsapp:"WhatsApp",
+    maps:"Google Maps",
+    gis:"2ГИС",
+    footer:"Компания тууралуу маалымат бир тийүүдө",
+    loading:"Жүктөлүүдө...",
+    notFound:"Компания табылган жок",
+    loadError:"Маалыматты жүктөө мүмкүн болгон жок. Шилтемени текшериңиз.",
+    noPassword:"Сырсөз көрсөтүлгөн эмес"
+  },
+  en:{
+    welcome:"YOUR BUSINESS ONLINE",
+    tap:"All important information in one place",
+    wifi:"Guest Wi-Fi",
+    copy:"Copy password",
+    copied:"Password copied!",
+    contacts:"Contact us",
+    address:"Our address",
+    menu:"Menu and services",
+    phone:"Call us",
+    instagram:"Instagram",
+    whatsapp:"WhatsApp",
+    maps:"Google Maps",
+    gis:"2GIS",
+    footer:"Your business information in one tap",
+    loading:"Loading...",
+    notFound:"Business not found",
+    loadError:"Could not load information. Please check the link.",
+    noPassword:"No password provided"
+  }
+};
+
+function t(key){return translations[currentLang][key]||translations.ru[key]||key;}
+
+function setLanguage(lang){
+  if(!translations[lang])return;
+  currentLang=lang;
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-t]").forEach(el=>{
+    el.textContent=t(el.dataset.t);
+  });
+  document.querySelectorAll(".langs button").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.lang===lang);
+  });
+  renderBusiness();
+  try{localStorage.setItem("nfc-language",lang)}catch(e){}
+}
+
+document.querySelectorAll(".langs button").forEach(btn=>{
+  btn.addEventListener("click",()=>setLanguage(btn.dataset.lang));
+});
+
+function addLink(container,label,url,icon){
+  if(!url)return;
+  const a=document.createElement("a");
+  a.className="link";
+  a.href=url;
+  a.target="_blank";
+  a.rel="noopener noreferrer";
+
+  const ico=document.createElement("span");
+  ico.className="link-icon";
+  ico.textContent=icon;
+
+  const text=document.createElement("span");
+  text.className="link-label";
+  text.textContent=label;
+
+  const arrow=document.createElement("span");
+  arrow.className="link-arrow";
+  arrow.textContent="↗";
+
+  a.append(ico,text,arrow);
+  container.appendChild(a);
+}
+
+function renderBusiness(){
+  if(!businessData)return;
+  const d=businessData;
+
+  document.getElementById("name").textContent=d.name||"";
+  document.getElementById("description").textContent=d.description||"";
+  document.title=(d.name||"Business")+" — NFC Smart";
+
+  const wifiSection=document.getElementById("wifiSection");
+  wifiSection.style.display=(d.wifi_name||d.wifi_password)?"block":"none";
+  document.getElementById("wifiName").textContent=d.wifi_name||"Wi-Fi";
+  document.getElementById("wifiPassword").textContent=
+    d.wifi_password ? "Password: "+d.wifi_password : t("noPassword");
+
+  const links=document.getElementById("links");
+  links.innerHTML="";
+  const items=[
+    [t("menu"),d.menu_url,"📋"],
+    [t("phone"),d.phone? "tel:"+d.phone:null,"📞"],
+    [t("instagram"),d.instagram?(d.instagram.startsWith("http")?d.instagram:"https://instagram.com/"+d.instagram.replace("@","")):null,"📸"],
+    [t("whatsapp"),d.whatsapp?(d.whatsapp.startsWith("http")?d.whatsapp:"https://wa.me/"+d.whatsapp.replace(/\D/g,"")):null,"💬"],
+    [t("maps"),d.maps_url,"🗺️"],
+    [t("gis"),d.two_gis_url,"📍"]
+  ];
+  items.forEach(item=>addLink(links,item[0],item[1],item[2]));
+
+  document.getElementById("linksSection").style.display=
+    links.children.length?"block":"none";
+
+  document.getElementById("addressSection").style.display=
+    d.address?"block":"none";
+  document.getElementById("address").textContent=d.address||"";
+}
 
 async function load(){
-const status=document.getElementById("status");
+  document.getElementById("name").textContent=t("loading");
+  try{
+    let request=client.from("businesses").select("*");
+    if(requestedSlug){
+      request=request.eq("slug",requestedSlug);
+    }else{
+      request=request.eq("id",demoBusinessId);
+    }
+    const {data,error}=await request.single();
+    if(error)throw error;
+    if(!data)throw new Error("Not found");
+
+    businessData=data;
+    renderBusiness();
+    document.getElementById("status").textContent="";
+  }catch(e){
+    document.getElementById("name").textContent=t("notFound");
+    document.getElementById("status").textContent=t("loadError");
+    console.error(e);
+  }
+}
+
+async function copyPassword(){
+  if(!wifiPass&&businessData)wifiPass=businessData.wifi_password||"";
+  if(!wifiPass){alert(t("noPassword"));return;}
+  try{
+    await navigator.clipboard.writeText(wifiPass);
+    alert(t("copied"));
+  }catch(e){
+    alert(wifiPass);
+  }
+}
+
 try{
-let request=client.from("businesses").select("*");
-if(requestedSlug){
-request=request.eq("slug",requestedSlug);
-}else{
-request=request.eq("id",demoBusinessId);
-}
-const {data,error}=await request.single();
-if(error)throw error;
-if(!data)throw new Error("Ресторан не найден");
+  const saved=localStorage.getItem("nfc-language");
+  if(saved&&translations[saved])setLanguage(saved);
+}catch(e){}
 
-document.title=(data.name||"Ресторан")+" — NFC Restaurant";
-document.getElementById("name").textContent=data.name||"Ресторан";
-document.getElementById("description").textContent=data.description||"";
-status.textContent="Информация ресторана загружена.";
-
-if(data.wifi_name||data.wifi_password){
-document.getElementById("wifiSection").style.display="block";
-document.getElementById("wifiName").textContent=data.wifi_name||"Wi-Fi";
-wifiPass=data.wifi_password||"";
-document.getElementById("wifiPassword").textContent="Пароль: "+(wifiPass||"не указан");
-}
-
-const links=[];
-if(data.menu_url)links.push(["📖 Меню",data.menu_url]);
-if(data.phone)links.push(["📞 Позвонить","tel:"+data.phone]);
-if(data.instagram)links.push(["📸 Instagram",data.instagram.startsWith("http")?data.instagram:"https://instagram.com/"+data.instagram.replace("@","")]);
-if(data.whatsapp)links.push(["💬 WhatsApp",data.whatsapp.startsWith("http")?data.whatsapp:"https://wa.me/"+data.whatsapp.replace(/\D/g,"")]);
-if(data.maps_url)links.push(["📍 Google Maps",data.maps_url]);
-if(data.two_gis_url)links.push(["🗺️ 2ГИС",data.two_gis_url]);
-
-if(links.length){
-document.getElementById("linksSection").style.display="block";
-const container=document.getElementById("links");
-links.forEach(([label,url])=>{
-const a=document.createElement("a");
-a.className="link";
-a.href=url;
-a.textContent=label;
-a.target="_blank";
-a.rel="noopener";
-container.appendChild(a);
-});
-}
-
-if(data.address){
-document.getElementById("addressSection").style.display="block";
-document.getElementById("address").textContent=data.address;
-}
-}catch(e){
-document.getElementById("name").textContent="Ресторан не найден";
-status.textContent="Не удалось загрузить ресторан. Проверьте ссылку.";
-console.error(e);
-}
-}
-
-function copyPassword(){
-if(!wifiPass){alert("Пароль не указан");return;}
-navigator.clipboard.writeText(wifiPass)
-.then(()=>alert("Пароль скопирован"))
-.catch(()=>alert("Не удалось скопировать"));
-}
 load();
 </script>
 </body>
