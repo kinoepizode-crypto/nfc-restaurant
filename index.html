@@ -61,22 +61,27 @@ const client=window.supabase.createClient(
 "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
 );
 
-const businessId="d9be3b99-2ac3-42ef-8426-aa98c8de93d7";
+const demoBusinessId="d9be3b99-2ac3-42ef-8426-aa98c8de93d7";
+const requestedSlug=new URLSearchParams(location.search).get("slug");
 let wifiPass="";
 
 async function load(){
+const status=document.getElementById("status");
 try{
-const {data,error}=await client
-.from("businesses")
-.select("*")
-.eq("id",businessId)
-.single();
-
+let request=client.from("businesses").select("*");
+if(requestedSlug){
+request=request.eq("slug",requestedSlug);
+}else{
+request=request.eq("id",demoBusinessId);
+}
+const {data,error}=await request.single();
 if(error)throw error;
+if(!data)throw new Error("Ресторан не найден");
 
+document.title=(data.name||"Ресторан")+" — NFC Restaurant";
 document.getElementById("name").textContent=data.name||"Ресторан";
 document.getElementById("description").textContent=data.description||"";
-document.getElementById("status").textContent="Информация ресторана загружена.";
+status.textContent="Информация ресторана загружена.";
 
 if(data.wifi_name||data.wifi_password){
 document.getElementById("wifiSection").style.display="block";
@@ -86,7 +91,6 @@ document.getElementById("wifiPassword").textContent="Пароль: "+(wifiPass||
 }
 
 const links=[];
-
 if(data.menu_url)links.push(["📖 Меню",data.menu_url]);
 if(data.phone)links.push(["📞 Позвонить","tel:"+data.phone]);
 if(data.instagram)links.push(["📸 Instagram",data.instagram.startsWith("http")?data.instagram:"https://instagram.com/"+data.instagram.replace("@","")]);
@@ -112,9 +116,10 @@ if(data.address){
 document.getElementById("addressSection").style.display="block";
 document.getElementById("address").textContent=data.address;
 }
-
 }catch(e){
-document.getElementById("status").textContent="Ошибка: "+e.message;
+document.getElementById("name").textContent="Ресторан не найден";
+status.textContent="Не удалось загрузить ресторан. Проверьте ссылку.";
+console.error(e);
 }
 }
 
@@ -124,7 +129,6 @@ navigator.clipboard.writeText(wifiPass)
 .then(()=>alert("Пароль скопирован"))
 .catch(()=>alert("Не удалось скопировать"));
 }
-
 load();
 </script>
 </body>
