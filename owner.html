@@ -7,15 +7,12 @@
 <title>Кабинет владельца</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f4f3ed;color:#203b30;font-family:Arial,sans-serif;padding:24px}
-main{max-width:520px;margin:40px auto;background:white;padding:25px;border-radius:20px;box-shadow:0 8px 30px #0001}
-h1{margin-top:0;color:#245c43}
-input,textarea{width:100%;padding:13px;margin:7px 0 15px;border:1px solid #ddd;border-radius:10px;font-size:16px}
-button{width:100%;padding:14px;background:#286447;color:white;border:0;border-radius:10px;font-size:16px;margin:8px 0;cursor:pointer}
+body{margin:0;background:#f4f3ed;color:#203b30;font-family:Arial;padding:24px}
+main{max-width:520px;margin:40px auto;background:white;padding:25px;border-radius:20px}
+input,textarea{width:100%;padding:13px;margin:7px 0 15px;border:1px solid #ddd;border-radius:10px;font-size:16px;box-sizing:border-box}
+button{width:100%;padding:14px;background:#286447;color:white;border:0;border-radius:10px;font-size:16px;margin:8px 0}
 #status{margin:12px 0;color:#9a5a24;white-space:pre-wrap}
 .hidden{display:none}
-label{font-weight:bold}
 </style>
 </head>
 <body>
@@ -23,13 +20,10 @@ label{font-weight:bold}
 <h1>Кабинет владельца</h1>
 <section id="login">
 <p>Войдите, чтобы управлять рестораном.</p>
-<label>Gmail</label>
-<input id="email" type="email" placeholder="Ваш Gmail">
-<label>Пароль</label>
-<input id="password" type="password" placeholder="Ваш пароль">
+<label>Gmail</label><input id="email" type="email">
+<label>Пароль</label><input id="password" type="password">
 <button onclick="login()">Войти</button>
 </section>
-
 <section id="panel" class="hidden">
 <h2 id="restaurantName">Мой ресторан</h2>
 <label>Название</label><input id="name">
@@ -43,78 +37,59 @@ label{font-weight:bold}
 <label>Название Wi-Fi</label><input id="wifi_ssid">
 <label>Пароль Wi-Fi</label><input id="wifi_password">
 <button onclick="save()">Сохранить изменения</button>
-<button onclick="logout()" style="background:#777">Выйти</button>
+<button onclick="logout()">Выйти</button>
 </section>
 <div id="status"></div>
 </main>
-
 <script>
-const URL = "https://pyeydqohexospkzzehtz.supabase.co";
-const KEY = "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc";
-const db = window.supabase.createClient(URL, KEY);
-let businessId = null;
-
+const URL="https://pyeydqohexospkzzehtz.supabase.co";
+const KEY="sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc";
+const db=window.supabase.createClient(URL,KEY);
+let businessId=null;
 function message(t){document.getElementById("status").textContent=t;}
-
+function timeout(p){return Promise.race([p,new Promise((_,r)=>setTimeout(()=>r(new Error("Время ожидания истекло. Проверь интернет.")),12000))]);}
 async function login(){
- message("Выполняется вход...");
- const {data,error}=await db.auth.signInWithPassword({
-  email:document.getElementById("email").value.trim(),
-  password:document.getElementById("password").value
- });
- if(error){message("Ошибка входа: "+error.message);return;}
- await loadBusiness(data.user);
+try{
+message("Выполняется вход...");
+const {data,error}=await timeout(db.auth.signInWithPassword({email:document.getElementById("email").value.trim(),password:document.getElementById("password").value}));
+if(error)throw error;
+await loadBusiness(data.user);
+}catch(e){message("Ошибка: "+e.message);}
 }
-
 async function loadBusiness(user){
- message("Загружаем ресторан...");
- const {data:member,error:mError}=await db
-  .from("business_members")
-  .select("business_id,role")
-  .eq("user_id",user.id)
-  .limit(1)
-  .maybeSingle();
-
- if(mError){message("Ошибка доступа к списку ресторанов: "+mError.message);return;}
- if(!member){message("К этому аккаунту не привязан ресторан.");return;}
- businessId=member.business_id;
-
- const {data:b,error}=await db
-  .from("businesses")
-  .select("id,name,description,phone,address,instagram_url,whatsapp_url,menu_url,maps_url,wifi_ssid,wifi_password")
-  .eq("id",businessId)
-  .single();
-
- if(error){message("Не удалось загрузить ресторан: "+error.message);return;}
-
- ["name","description","phone","address","instagram_url","whatsapp_url","menu_url","maps_url","wifi_ssid","wifi_password"].forEach(k=>{
-  document.getElementById(k).value=b[k]||"";
- });
- document.getElementById("restaurantName").textContent=b.name||"Мой ресторан";
- document.getElementById("login").classList.add("hidden");
- document.getElementById("panel").classList.remove("hidden");
- message("Вы вошли в кабинет!");
+try{
+message("Загружаем ресторан...");
+const {data:member,error}=await timeout(db.from("business_members").select("business_id,role").eq("user_id",user.id).limit(1).maybeSingle());
+if(error)throw error;
+if(!member)throw new Error("К аккаунту не привязан ресторан.");
+businessId=member.business_id;
+const {data:b,error:e}=await timeout(db.from("businesses").select("id,name,description,phone,address,instagram_url,whatsapp_url,menu_url,maps_url,wifi_ssid,wifi_password").eq("id",businessId).single());
+if(e)throw e;
+["name","description","phone","address","instagram_url","whatsapp_url","menu_url","maps_url","wifi_ssid","wifi_password"].forEach(k=>document.getElementById(k).value=b[k]||"");
+document.getElementById("restaurantName").textContent=b.name||"Мой ресторан";
+document.getElementById("login").classList.add("hidden");
+document.getElementById("panel").classList.remove("hidden");
+message("Вы вошли!");
+}catch(e){message("Ошибка загрузки: "+e.message);}
 }
-
 async function save(){
- if(!businessId)return;
- const fields=["name","description","phone","address","instagram_url","whatsapp_url","menu_url","maps_url","wifi_ssid","wifi_password"];
- const values={};
- fields.forEach(k=>values[k]=document.getElementById(k).value.trim());
-
- message("Сохраняем...");
- const {error}=await db.from("businesses").update(values).eq("id",businessId);
- if(error){message("Ошибка сохранения: "+error.message);return;}
- document.getElementById("restaurantName").textContent=values.name||"Мой ресторан";
- message("Изменения сохранены!");
+try{
+if(!businessId)return;
+const fields=["name","description","phone","address","instagram_url","whatsapp_url","menu_url","maps_url","wifi_ssid","wifi_password"],values={};
+fields.forEach(k=>values[k]=document.getElementById(k).value.trim());
+message("Сохраняем...");
+const {error}=await timeout(db.from("businesses").update(values).eq("id",businessId));
+if(error)throw error;
+document.getElementById("restaurantName").textContent=values.name||"Мой ресторан";
+message("Изменения сохранены!");
+}catch(e){message("Ошибка сохранения: "+e.message);}
 }
-
 async function logout(){
- await db.auth.signOut();
- businessId=null;
- document.getElementById("panel").classList.add("hidden");
- document.getElementById("login").classList.remove("hidden");
- message("Вы вышли из аккаунта.");
+await db.auth.signOut();
+businessId=null;
+document.getElementById("panel").classList.add("hidden");
+document.getElementById("login").classList.remove("hidden");
+message("Вы вышли.");
 }
 </script>
 </body>
