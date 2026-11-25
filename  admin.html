@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Админ-панель</title>
+<style>
+body{font-family:Arial;background:#f1f3f5;padding:20px;color:#111}
+.box{max-width:600px;margin:auto;background:white;padding:20px;border-radius:18px}
+input,button{width:100%;padding:14px;margin:8px 0;box-sizing:border-box;border-radius:10px;border:1px solid #ddd;font-size:16px}
+button{background:#111;color:white;border:0}
+#admin{display:none}
+#status{white-space:pre-wrap}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>Администратор</h2>
+<div id="login">
+<input id="email" placeholder="Email" type="email">
+<input id="password" placeholder="Пароль" type="password">
+<button onclick="login()">Войти</button>
+</div>
+<div id="admin">
+<h3>Добавить ресторан</h3>
+<input id="restaurant" placeholder="Название ресторана">
+<input id="slug" placeholder="Адрес (например coffee-bishkek)">
+<button onclick="createBusiness()">Создать ресторан</button>
+<h3>Рестораны</h3>
+<button onclick="loadBusinesses()">Обновить список</button>
+<div id="list"></div>
+<button onclick="logout()">Выйти</button>
+</div>
+<p id="status"></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const client=window.supabase.createClient(
+"https://pyeydqohexospkzzehtz.supabase.co",
+"sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
+);
+
+function msg(t){document.getElementById("status").textContent=t;}
+
+async function login(){
+msg("Вход...");
+try{
+const {data,error}=await client.auth.signInWithPassword({
+email:document.getElementById("email").value.trim(),
+password:document.getElementById("password").value
+});
+if(error)throw error;
+
+const {data:p,error:pe}=await client.from("profiles")
+.select("role").eq("id",data.user.id).single();
+if(pe)throw pe;
+if(p.role!=="admin")throw new Error("Нет прав администратора");
+
+document.getElementById("login").style.display="none";
+document.getElementById("admin").style.display="block";
+msg("Вход администратора успешен");
+loadBusinesses();
+}catch(e){msg("Ошибка: "+e.message);}
+}
+
+async function createBusiness(){
+msg("Создание...");
+try{
+const name=document.getElementById("restaurant").value.trim();
+const slug=document.getElementById("slug").value.trim()
+.toLowerCase().replace(/[^a-z0-9-]/g,"-");
+if(!name||!slug)throw new Error("Заполните оба поля");
+
+const {data,error}=await client.from("businesses")
+.insert({name:name,slug:slug})
+.select("id,name,slug").single();
+if(error)throw error;
+
+msg("Создано: "+data.name+"\nID: "+data.id+"\nSlug: "+data.slug);
+loadBusinesses();
+}catch(e){msg("Ошибка: "+e.message);}
+}
+
+async function loadBusinesses(){
+try{
+const {data,error}=await client.from("businesses")
+.select("id,name,slug").order("created_at",{ascending:false});
+if(error)throw error;
+document.getElementById("list").innerHTML="";
+data.forEach(b=>{
+const div=document.createElement("div");
+div.style.padding="12px";
+div.style.borderBottom="1px solid #ddd";
+div.textContent=b.name+" | "+(b.slug||"без ссылки");
+document.getElementById("list").appendChild(div);
+});
+}catch(e){msg("Ошибка списка: "+e.message);}
+}
+
+async function logout(){
+await client.auth.signOut();
+location.reload();
+}
+</script>
+</body>
+</html>
