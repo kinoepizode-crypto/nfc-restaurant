@@ -4,92 +4,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Кабинет владельца</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Панель владельца</title>
 <style>
-body{margin:0;background:#f4f3ed;color:#203b30;font-family:Arial;padding:24px}
-main{max-width:520px;margin:40px auto;background:white;padding:25px;border-radius:20px}
-input,textarea{width:100%;padding:13px;margin:7px 0 15px;border:1px solid #ddd;border-radius:10px;font-size:16px;box-sizing:border-box}
-button{width:100%;padding:14px;background:#286447;color:white;border:0;border-radius:10px;font-size:16px;margin:8px 0}
-#status{margin:12px 0;color:#9a5a24;white-space:pre-wrap}
-.hidden{display:none}
+body{font-family:Arial,sans-serif;background:#f3f4f6;margin:0;padding:20px;color:#111}
+.container{max-width:500px;margin:auto;background:white;padding:22px;border-radius:16px}
+h2{text-align:center}
+input,textarea,button{width:100%;box-sizing:border-box;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:16px}
+button{background:#111;color:white;border:0;font-weight:bold;cursor:pointer}
+#panel{display:none}
+#status{white-space:pre-wrap;color:#d00;margin-top:10px}
 </style>
 </head>
 <body>
-<main>
-<h1>Кабинет владельца</h1>
-<section id="login">
-<p>Войдите, чтобы управлять рестораном.</p>
-<label>Gmail</label><input id="email" type="email">
-<label>Пароль</label><input id="password" type="password">
+<div class="container">
+<h2>Панель ресторана</h2>
+
+<div id="login">
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Пароль">
 <button onclick="login()">Войти</button>
-</section>
-<section id="panel" class="hidden">
-<h2 id="restaurantName">Мой ресторан</h2>
-<label>Название</label><input id="name">
-<label>Описание</label><textarea id="description"></textarea>
-<label>Телефон</label><input id="phone">
-<label>Адрес</label><input id="address">
-<label>Instagram ссылка</label><input id="instagram_url">
-<label>WhatsApp ссылка</label><input id="whatsapp_url">
-<label>Ссылка на меню</label><input id="menu_url">
-<label>Ссылка на карту</label><input id="maps_url">
-<label>Название Wi-Fi</label><input id="wifi_ssid">
-<label>Пароль Wi-Fi</label><input id="wifi_password">
-<button onclick="save()">Сохранить изменения</button>
-<button onclick="logout()">Выйти</button>
-</section>
-<div id="status"></div>
-</main>
+</div>
+
+<div id="panel">
+<h3>Информация ресторана</h3>
+<input id="name" placeholder="Название ресторана">
+<textarea id="description" placeholder="Описание"></textarea>
+<input id="wifi_name" placeholder="Название Wi-Fi">
+<input id="wifi_password" placeholder="Пароль Wi-Fi">
+<textarea id="menu_url" placeholder="Ссылка на меню"></textarea>
+<input id="phone" placeholder="Телефон">
+<input id="address" placeholder="Адрес">
+<input id="instagram" placeholder="Instagram">
+<input id="whatsapp" placeholder="WhatsApp">
+<input id="maps_url" placeholder="Ссылка на Google Maps">
+<button onclick="save()">Сохранить</button>
+<button onclick="logout()" style="background:#555">Выйти</button>
+</div>
+
+<p id="status"></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const URL="https://pyeydqohexospkzzehtz.supabase.co";
-const KEY="sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc";
-const db=window.supabase.createClient(URL,KEY);
-let businessId=null;
-function message(t){document.getElementById("status").textContent=t;}
-function timeout(p){return Promise.race([p,new Promise((_,r)=>setTimeout(()=>r(new Error("Время ожидания истекло. Проверь интернет.")),12000))]);}
+const client = window.supabase.createClient(
+  "https://pyeydqohexospkzzehtz.supabase.co",
+  "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
+);
+
+let businessId = null;
+
+function message(text){
+  document.getElementById("status").textContent = text;
+}
+
 async function login(){
-try{
-message("Выполняется вход...");
-const {data,error}=await timeout(db.auth.signInWithPassword({email:document.getElementById("email").value.trim(),password:document.getElementById("password").value}));
-if(error)throw error;
-await loadBusiness(data.user);
-}catch(e){message("Ошибка: "+e.message);}
+  message("Выполняется вход...");
+  try{
+    const {data,error} = await client.auth.signInWithPassword({
+      email:document.getElementById("email").value.trim(),
+      password:document.getElementById("password").value
+    });
+    if(error) throw error;
+    await loadBusiness();
+  }catch(e){
+    message("Ошибка: "+e.message);
+  }
 }
-async function loadBusiness(user){
-try{
-message("Загружаем ресторан...");
-const {data:member,error}=await timeout(db.from("business_members").select("business_id,role").eq("user_id",user.id).limit(1).maybeSingle());
-if(error)throw error;
-if(!member)throw new Error("К аккаунту не привязан ресторан.");
-businessId=member.business_id;
-const {data:b,error:e}=await timeout(db.from("businesses").select("id,name,description,phone,address,instagram_url,whatsapp_url,menu_url,maps_url,wifi_ssid,wifi_password").eq("id",businessId).single());
-if(e)throw e;
-["name","description","phone","address","instagram_url","whatsapp_url","menu_url","maps_url","wifi_ssid","wifi_password"].forEach(k=>document.getElementById(k).value=b[k]||"");
-document.getElementById("restaurantName").textContent=b.name||"Мой ресторан";
-document.getElementById("login").classList.add("hidden");
-document.getElementById("panel").classList.remove("hidden");
-message("Вы вошли!");
-}catch(e){message("Ошибка загрузки: "+e.message);}
+
+async function loadBusiness(){
+  message("Загрузка ресторана...");
+  try{
+    const {data:userData,error:userError} = await client.auth.getUser();
+    if(userError) throw userError;
+    if(!userData.user) throw new Error("Пользователь не найден");
+
+    const {data:members,error:memberError} = await client
+      .from("business_members")
+      .select("business_id")
+      .eq("user_id",userData.user.id);
+
+    if(memberError) throw memberError;
+    if(!members || members.length===0)
+      throw new Error("Ресторан не привязан к аккаунту");
+
+    businessId=members[0].business_id;
+
+    const {data:business,error:businessError} = await client
+      .from("businesses")
+      .select("*")
+      .eq("id",businessId)
+      .single();
+
+    if(businessError) throw businessError;
+
+    const fields=[
+      "name","description","wifi_name","wifi_password",
+      "menu_url","phone","address","instagram","whatsapp","maps_url"
+    ];
+
+    fields.forEach(key=>{
+      const el=document.getElementById(key);
+      if(el) el.value=business[key] || "";
+    });
+
+    document.getElementById("login").style.display="none";
+    document.getElementById("panel").style.display="block";
+    message("Ресторан загружен!");
+  }catch(e){
+    message("Ошибка: "+e.message);
+  }
 }
+
 async function save(){
-try{
-if(!businessId)return;
-const fields=["name","description","phone","address","instagram_url","whatsapp_url","menu_url","maps_url","wifi_ssid","wifi_password"],values={};
-fields.forEach(k=>values[k]=document.getElementById(k).value.trim());
-message("Сохраняем...");
-const {error}=await timeout(db.from("businesses").update(values).eq("id",businessId));
-if(error)throw error;
-document.getElementById("restaurantName").textContent=values.name||"Мой ресторан";
-message("Изменения сохранены!");
-}catch(e){message("Ошибка сохранения: "+e.message);}
+  message("Сохранение...");
+  try{
+    const fields=[
+      "name","description","wifi_name","wifi_password",
+      "menu_url","phone","address","instagram","whatsapp","maps_url"
+    ];
+
+    const updates={};
+    fields.forEach(key=>{
+      updates[key]=document.getElementById(key).value;
+    });
+
+    const {error}=await client
+      .from("businesses")
+      .update(updates)
+      .eq("id",businessId);
+
+    if(error) throw error;
+    message("Сохранено успешно!");
+  }catch(e){
+    message("Ошибка сохранения: "+e.message);
+  }
 }
+
 async function logout(){
-await db.auth.signOut();
-businessId=null;
-document.getElementById("panel").classList.add("hidden");
-document.getElementById("login").classList.remove("hidden");
-message("Вы вышли.");
+  await client.auth.signOut();
+  businessId=null;
+  document.getElementById("panel").style.display="none";
+  document.getElementById("login").style.display="block";
+  message("Вы вышли");
 }
 </script>
 </body>
