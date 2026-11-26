@@ -3,153 +3,362 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Панель владельца</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f4f1e8">
+<title>NFC SMART — Панель владельца</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f3f4f6;margin:0;padding:20px;color:#111}
-.container{max-width:500px;margin:auto;background:white;padding:22px;border-radius:16px}
-h2{text-align:center}
-input,textarea,button{width:100%;box-sizing:border-box;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:16px}
-button{background:#111;color:white;border:0;font-weight:bold;cursor:pointer}
+*{box-sizing:border-box}
+body{margin:0;padding:18px;background:#f4f1e8;color:#26352a;font-family:Arial,sans-serif}
+.container{max-width:650px;margin:auto}
+.card{background:#fffdf8;border:1px solid #dfe5d7;border-radius:20px;padding:20px;margin-bottom:16px}
+h1{font-size:25px;color:#344b35}
+h2{font-size:18px;color:#344b35;margin-top:0}
+p{line-height:1.6;color:#788476}
+input,textarea,select,button{width:100%;padding:14px;margin:8px 0;border:1px solid #dfe5d7;border-radius:12px;font-size:15px}
+textarea{min-height:90px;resize:vertical}
+button{border:0;background:#647b4f;color:white;font-weight:bold;cursor:pointer}
+button.secondary{background:#344b35}
+button.gray{background:#788476}
+label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644f}
+.hours-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.file{background:#e8eee2}
 #panel{display:none}
-#status{white-space:pre-wrap;color:#d00;margin-top:10px}
+#status{white-space:pre-wrap;font-size:14px;color:#536b48;margin:12px 0}
+.small{font-size:12px}
+.preview{max-width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-top:8px}
 </style>
 </head>
 <body>
 <div class="container">
-<h2>Панель ресторана</h2>
+<div class="card">
+<h1>NFC SMART</h1>
+<p>Панель управления страницей вашего бизнеса</p>
+</div>
 
-<div id="login">
+<div class="card" id="login">
+<h2>Вход владельца</h2>
 <input id="email" type="email" placeholder="Email">
 <input id="password" type="password" placeholder="Пароль">
 <button onclick="login()">Войти</button>
 </div>
 
 <div id="panel">
-<h3>Информация ресторана</h3>
-<input id="name" placeholder="Название ресторана">
-<textarea id="description" placeholder="Описание"></textarea>
+
+<div class="card">
+<h2>🏢 Основная информация</h2>
+<input id="name" placeholder="Название компании">
+<select id="category">
+<option value="">Выберите категорию</option>
+<option>Ресторан</option>
+<option>Кафе</option>
+<option>Стоматология</option>
+<option>Салон красоты</option>
+<option>СТО</option>
+<option>Магазин</option>
+<option>Отель</option>
+<option>Фитнес</option>
+<option>Другое</option>
+</select>
+<textarea id="description" placeholder="Описание компании"></textarea>
+
+<label>Логотип</label>
+<input class="file" id="logoFile" type="file" accept="image/*">
+<img id="logoPreview" class="preview" style="display:none">
+
+<label>Обложка</label>
+<input class="file" id="coverFile" type="file" accept="image/*">
+<img id="coverPreview" class="preview" style="display:none">
+</div>
+
+<div class="card">
+<h2>📷 Галерея</h2>
+<p class="small">Выберите фотографии компании. Можно выбрать несколько.</p>
+<input class="file" id="galleryFiles" type="file" accept="image/*" multiple>
+<div id="galleryPreview"></div>
+<button class="gray" onclick="clearGallery()">Очистить выбранные фото</button>
+</div>
+
+<div class="card">
+<h2>🕒 Часы работы</h2>
+<div id="hoursInputs"></div>
+</div>
+
+<div class="card">
+<h2>📶 Wi-Fi</h2>
 <input id="wifi_name" placeholder="Название Wi-Fi">
 <input id="wifi_password" placeholder="Пароль Wi-Fi">
-<textarea id="menu_url" placeholder="Ссылка на меню"></textarea>
+</div>
+
+<div class="card">
+<h2>🔗 Контакты и ссылки</h2>
+<input id="menu_url" placeholder="Меню или сайт">
 <input id="phone" placeholder="Телефон">
 <input id="address" placeholder="Адрес">
 <input id="instagram" placeholder="Instagram">
 <input id="whatsapp" placeholder="WhatsApp">
-<input id="maps_url" placeholder="Ссылка на Google Maps">
-<input id="two_gis_url" placeholder="Ссылка на 2ГИС">
-<button onclick="save()">Сохранить</button>
-<button onclick="logout()" style="background:#555">Выйти</button>
+<input id="maps_url" placeholder="Google Maps">
+<input id="two_gis_url" placeholder="2ГИС">
+<input id="reviews_url" placeholder="Ссылка на отзывы">
 </div>
 
-<p id="status"></p>
+<div class="card">
+<button onclick="save()">💾 Сохранить всё</button>
+<button class="secondary" onclick="openPage()">🌐 Открыть мою страницу</button>
+<button class="gray" onclick="logout()">Выйти</button>
+</div>
+</div>
+
+<div id="status"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const client = window.supabase.createClient(
-  "https://pyeydqohexospkzzehtz.supabase.co",
-  "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
+const client=window.supabase.createClient(
+"https://pyeydqohexospkzzehtz.supabase.co",
+"sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
 );
 
-let businessId = null;
+let businessId=null;
+let currentBusiness=null;
+let galleryUrls=[];
+let selectedGallery=[];
+let logoUrl="";
+let coverUrl="";
 
-function message(text){
-  document.getElementById("status").textContent = text;
+const days=[
+"Понедельник","Вторник","Среда","Четверг",
+"Пятница","Суббота","Воскресенье"
+];
+
+function message(t){
+document.getElementById("status").textContent=t;
 }
 
+function makeHours(){
+const container=document.getElementById("hoursInputs");
+container.innerHTML="";
+days.forEach((day,i)=>{
+const row=document.createElement("div");
+row.innerHTML=`
+<label>${day}</label>
+<div class="hours-row">
+<input id="h${i}" placeholder="09:00–18:00">
+<input id="c${i}" placeholder="Например: выходной">
+</div>`;
+container.appendChild(row);
+});
+}
+
+makeHours();
+
 async function login(){
-  message("Выполняется вход...");
-  try{
-    const {data,error} = await client.auth.signInWithPassword({
-      email:document.getElementById("email").value.trim(),
-      password:document.getElementById("password").value
-    });
-    if(error) throw error;
-    await loadBusiness();
-  }catch(e){
-    message("Ошибка: "+e.message);
-  }
+message("Вход...");
+try{
+const {error}=await client.auth.signInWithPassword({
+email:document.getElementById("email").value.trim(),
+password:document.getElementById("password").value
+});
+if(error)throw error;
+await loadBusiness();
+}catch(e){message("Ошибка: "+e.message)}
 }
 
 async function loadBusiness(){
-  message("Загрузка ресторана...");
-  try{
-    const {data:userData,error:userError} = await client.auth.getUser();
-    if(userError) throw userError;
-    if(!userData.user) throw new Error("Пользователь не найден");
+message("Загрузка...");
+try{
+const {data:userData,error:userError}=await client.auth.getUser();
+if(userError)throw userError;
+if(!userData.user)throw new Error("Не удалось определить пользователя");
 
-    const {data:members,error:memberError} = await client
-      .from("business_members")
-      .select("business_id")
-      .eq("user_id",userData.user.id);
+const {data:members,error:memberError}=await client
+.from("business_members")
+.select("business_id")
+.eq("user_id",userData.user.id);
 
-    if(memberError) throw memberError;
-    if(!members || members.length===0)
-      throw new Error("Ресторан не привязан к аккаунту");
+if(memberError)throw memberError;
+if(!members||!members.length)throw new Error("Компания не привязана к аккаунту");
 
-    businessId=members[0].business_id;
+businessId=members[0].business_id;
 
-    const {data:business,error:businessError} = await client
-      .from("businesses")
-      .select("*")
-      .eq("id",businessId)
-      .single();
+const {data,error}=await client
+.from("businesses")
+.select("*")
+.eq("id",businessId)
+.single();
 
-    if(businessError) throw businessError;
+if(error)throw error;
+currentBusiness=data;
 
-    const fields=[
-      "name","description","wifi_name","wifi_password",
-      "menu_url","phone","address","instagram","whatsapp",
-      "maps_url","two_gis_url"
-    ];
+const fields=[
+"name","description","wifi_name","wifi_password",
+"menu_url","phone","address","instagram","whatsapp",
+"maps_url","two_gis_url","reviews_url"
+];
 
-    fields.forEach(key=>{
-      const el=document.getElementById(key);
-      if(el) el.value=business[key] || "";
-    });
+fields.forEach(k=>{
+const el=document.getElementById(k);
+if(el)el.value=data[k]||"";
+});
 
-    document.getElementById("login").style.display="none";
-    document.getElementById("panel").style.display="block";
-    message("Ресторан загружен!");
-  }catch(e){
-    message("Ошибка: "+e.message);
-  }
+document.getElementById("category").value=data.category||"";
+
+logoUrl=data.logo_url||"";
+coverUrl=data.cover_url||"";
+
+showPreview("logoPreview",logoUrl);
+showPreview("coverPreview",coverUrl);
+
+galleryUrls=Array.isArray(data.gallery)?data.gallery:[];
+showGallery();
+
+let hours=data.opening_hours||{};
+days.forEach((day,i)=>{
+const val=hours[day]||"";
+document.getElementById("h"+i).value=val;
+});
+
+document.getElementById("login").style.display="none";
+document.getElementById("panel").style.display="block";
+message("Данные загружены");
+}catch(e){message("Ошибка: "+e.message)}
+}
+
+function showPreview(id,url){
+const img=document.getElementById(id);
+if(url){img.src=url;img.style.display="block"}
+else{img.removeAttribute("src");img.style.display="none"}
+}
+
+async function uploadImage(file){
+if(!file)return null;
+if(file.size>8*1024*1024)throw new Error("Фото больше 8 МБ. Выберите фото меньше.");
+const ext=(file.name.split(".").pop()||"jpg").replace(/[^a-zA-Z0-9]/g,"");
+const path=businessId+"/"+Date.now()+"-"+Math.random().toString(36).slice(2)+"."+ext;
+const {error}=await client.storage.from("business-images").upload(path,file,{upsert:false});
+if(error)throw error;
+const {data}=client.storage.from("business-images").getPublicUrl(path);
+return data.publicUrl;
+}
+
+document.getElementById("logoFile").addEventListener("change",function(){
+if(this.files[0])showPreview("logoPreview",URL.createObjectURL(this.files[0]));
+});
+
+document.getElementById("coverFile").addEventListener("change",function(){
+if(this.files[0])showPreview("coverPreview",URL.createObjectURL(this.files[0]));
+});
+
+document.getElementById("galleryFiles").addEventListener("change",function(){
+selectedGallery=Array.from(this.files||[]);
+showGallery();
+});
+
+function showGallery(){
+const div=document.getElementById("galleryPreview");
+div.innerHTML="";
+galleryUrls.forEach(url=>{
+const img=document.createElement("img");
+img.src=url;img.className="preview";
+div.appendChild(img);
+});
+selectedGallery.forEach(file=>{
+const img=document.createElement("img");
+img.src=URL.createObjectURL(file);
+img.className="preview";
+div.appendChild(img);
+});
+}
+
+function clearGallery(){
+galleryUrls=[];
+selectedGallery=[];
+document.getElementById("galleryFiles").value="";
+showGallery();
 }
 
 async function save(){
-  message("Сохранение...");
-  try{
-    const fields=[
-      "name","description","wifi_name","wifi_password",
-      "menu_url","phone","address","instagram","whatsapp",
-      "maps_url","two_gis_url"
-    ];
+message("Сохранение...");
+try{
+const updates={};
 
-    const updates={};
-    fields.forEach(key=>{
-      updates[key]=document.getElementById(key).value;
-    });
+const fields=[
+"name","description","wifi_name","wifi_password",
+"menu_url","phone","address","instagram","whatsapp",
+"maps_url","two_gis_url","reviews_url"
+];
 
-    const {error}=await client
-      .from("businesses")
-      .update(updates)
-      .eq("id",businessId);
+fields.forEach(k=>updates[k]=document.getElementById(k).value.trim());
 
-    if(error) throw error;
-    message("Сохранено успешно!");
-  }catch(e){
-    message("Ошибка сохранения: "+e.message);
-  }
+updates.category=document.getElementById("category").value;
+updates.logo_url=logoUrl;
+updates.cover_url=coverUrl;
+
+const logoFile=document.getElementById("logoFile").files[0];
+const coverFile=document.getElementById("coverFile").files[0];
+
+if(logoFile)updates.logo_url=await uploadImage(logoFile);
+if(coverFile)updates.cover_url=await uploadImage(coverFile);
+
+updates.gallery=[...galleryUrls];
+for(const file of selectedGallery){
+const url=await uploadImage(file);
+updates.gallery.push(url);
+}
+
+const hours={};
+days.forEach((day,i)=>{
+const val=document.getElementById("h"+i).value.trim();
+if(val)hours[day]=val;
+});
+updates.opening_hours=hours;
+
+const {error}=await client
+.from("businesses")
+.update(updates)
+.eq("id",businessId);
+
+if(error)throw error;
+
+currentBusiness={...currentBusiness,...updates};
+logoUrl=updates.logo_url;
+coverUrl=updates.cover_url;
+galleryUrls=updates.gallery;
+selectedGallery=[];
+
+document.getElementById("galleryFiles").value="";
+document.getElementById("logoFile").value="";
+document.getElementById("coverFile").value="";
+
+showPreview("logoPreview",logoUrl);
+showPreview("coverPreview",coverUrl);
+showGallery();
+
+message("Успешно сохранено!");
+}catch(e){message("Ошибка сохранения: "+e.message)}
+}
+
+function openPage(){
+if(!currentBusiness)return;
+const slug=currentBusiness.slug;
+if(slug){
+window.open("https://nfc-restaurant-two.vercel.app/?slug="+encodeURIComponent(slug),"_blank");
+}else{
+window.open("https://nfc-restaurant-two.vercel.app/","_blank");
+}
 }
 
 async function logout(){
-  await client.auth.signOut();
-  businessId=null;
-  document.getElementById("panel").style.display="none";
-  document.getElementById("login").style.display="block";
-  message("Вы вышли");
+await client.auth.signOut();
+businessId=null;
+currentBusiness=null;
+document.getElementById("panel").style.display="none";
+document.getElementById("login").style.display="block";
+message("Вы вышли");
 }
+
+client.auth.getSession().then(({data})=>{
+if(data.session)loadBusiness();
+});
 </script>
 </body>
 </html>
