@@ -29,6 +29,10 @@ label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644
 .feedback-item{padding:15px;margin-top:12px;border:1px solid #dfe5d7;border-radius:15px;background:#f8f7f1}
 .feedback-date{font-size:12px;color:#788476}
 .feedback-message{white-space:pre-wrap;color:#26352a;overflow-wrap:anywhere}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat-box{background:#f1f5ec;border-radius:16px;padding:18px;text-align:center}
+.stat-number{font-size:30px;font-weight:bold;color:#344b35}
+.stat-label{font-size:13px;color:#788476;margin-top:6px}
 </style>
 </head>
 <body>
@@ -100,6 +104,22 @@ label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644
 <input id="reviews_url" placeholder="Ссылка на отзывы">
 </div>
 
+<div class="card">
+<h2>📊 Статистика посещений</h2>
+<div class="stats-grid">
+<div class="stat-box">
+<div class="stat-number" id="totalVisits">—</div>
+<div class="stat-label">Всего посещений</div>
+</div>
+<div class="stat-box">
+<div class="stat-number" id="todayVisits">—</div>
+<div class="stat-label">Сегодня</div>
+</div>
+</div>
+<p class="small">Считаются открытия страницы, а не уникальные посетители.</p>
+<button class="gray" onclick="loadStats()">🔄 Обновить статистику</button>
+</div>
+
 <div class="card" id="feedbackCard">
 <h2>📩 Жалобы клиентов</h2>
 <p class="small">Отзывы клиентов с оценкой 1–3 звезды.</p>
@@ -124,11 +144,11 @@ const client=window.supabase.createClient(
 "https://pyeydqohexospkzzehtz.supabase.co",
 "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc",
 {
-  auth:{
-    persistSession:false,
-    autoRefreshToken:false,
-    detectSessionInUrl:false
-  }
+auth:{
+persistSession:false,
+autoRefreshToken:false,
+detectSessionInUrl:false
+}
 }
 );
 
@@ -209,6 +229,7 @@ document.getElementById("panel").style.display="block";
 message("Данные загружены");
 
 await loadFeedback();
+await loadStats();
 
 }catch(e){message("Ошибка: "+e.message)}
 }
@@ -318,6 +339,43 @@ showGallery();
 
 message("Успешно сохранено!");
 }catch(e){message("Ошибка сохранения: "+e.message)}
+}
+
+async function loadStats(){
+if(!businessId)return;
+const totalEl=document.getElementById("totalVisits");
+const todayEl=document.getElementById("todayVisits");
+totalEl.textContent="…";
+todayEl.textContent="…";
+
+try{
+const {count:total,error:totalError}=await client
+.from("visits").select("*",{count:"exact",head:true})
+.eq("business_id",businessId);
+
+if(totalError)throw totalError;
+
+const start=new Date();
+start.setHours(0,0,0,0);
+const end=new Date(start);
+end.setDate(end.getDate()+1);
+
+const {count:today,error:todayError}=await client
+.from("visits").select("*",{count:"exact",head:true})
+.eq("business_id",businessId)
+.gte("created_at",start.toISOString())
+.lt("created_at",end.toISOString());
+
+if(todayError)throw todayError;
+
+totalEl.textContent=total??0;
+todayEl.textContent=today??0;
+
+}catch(e){
+totalEl.textContent="—";
+todayEl.textContent="—";
+message("Ошибка статистики: "+e.message);
+}
 }
 
 async function loadFeedback(){
