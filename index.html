@@ -15,7 +15,7 @@
 }
 body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
 .container{width:min(100% - 32px,760px);margin:auto}
-.topbar{padding:23px 0}
+.topbar{padding:23px 0;display:flex;justify-content:space-between;align-items:center}
 .brand{font-size:20px;font-weight:900;letter-spacing:1.5px;color:var(--dark)}
 .brand span{color:#82956a}
 .hero{position:relative;overflow:hidden;padding:38px 28px 32px;border-radius:27px;background:linear-gradient(135deg,#e4eadb,#d4dfca 55%,#c5d3b9);border:1px solid rgba(83,108,70,.16);box-shadow:0 16px 42px rgba(66,79,54,.10)}
@@ -33,13 +33,15 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 .wifi-password{color:var(--muted);font-size:14px;overflow-wrap:anywhere}
 .copy{margin-top:14px;border:0;border-radius:12px;background:var(--green);color:white;padding:12px 16px;font-weight:750;cursor:pointer}
 .links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.link{min-height:83px;display:flex;align-items:center;gap:12px;padding:15px;text-decoration:none;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:17px;box-shadow:0 6px 18px rgba(66,79,54,.035)}
+.link{min-height:83px;display:flex;align-items:center;gap:12px;padding:15px;text-decoration:none;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:17px;box-shadow:0 6px 18px rgba(66,79,54,.035);transition:.15s}
+.link:active{transform:scale(.98)}
 .link-icon{flex:0 0 42px;width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--soft);font-size:20px}
 .link-label{font-size:13px;font-weight:750;line-height:1.35;overflow-wrap:anywhere}
 .link-arrow{margin-left:auto;color:var(--muted)}
 .address-card{display:flex;gap:13px;align-items:flex-start}
 .address-icon{width:42px;height:42px;flex:0 0 42px;border-radius:13px;display:grid;place-items:center;background:var(--soft);font-size:20px}
 .address-text{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.share-button{width:100%;padding:15px;border:0;border-radius:16px;background:var(--dark);color:white;font-size:15px;font-weight:800;cursor:pointer}
 .footer{text-align:center;padding:38px 0 28px;color:#899184;font-size:12px}
 .footer strong{color:var(--green);letter-spacing:1px}
 #status{color:#9b573d;font-size:13px;text-align:center;margin:12px 0;overflow-wrap:anywhere}
@@ -54,7 +56,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 
 <main>
 <section class="hero">
-<div class="eyebrow"><span class="dot"></span> ВАША КОМПАНИЯ ОНЛАЙН</div>
+<div class="eyebrow"><span class="dot"></span> ИНФОРМАЦИЯ О КОМПАНИИ</div>
 <h1 id="name">Загрузка...</h1>
 <p id="description"></p>
 <div class="hero-bottom">
@@ -64,7 +66,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 </section>
 
 <section id="wifiSection" class="section" style="display:none">
-<h2 class="section-title">📶 Wi-Fi для гостей</h2>
+<h2 class="section-title">📶 Wi-Fi</h2>
 <div class="card">
 <p class="wifi-name" id="wifiName"></p>
 <div class="wifi-password" id="wifiPassword"></div>
@@ -73,16 +75,20 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 </section>
 
 <section id="linksSection" class="section" style="display:none">
-<h2 class="section-title">✦ Связаться с нами</h2>
+<h2 class="section-title">✦ Полезные ссылки</h2>
 <div class="links" id="links"></div>
 </section>
 
 <section id="addressSection" class="section" style="display:none">
-<h2 class="section-title">📍 Наш адрес</h2>
+<h2 class="section-title">📍 Адрес</h2>
 <div class="card address-card">
 <div class="address-icon">📍</div>
 <div class="address-text" id="address"></div>
 </div>
+</section>
+
+<section class="section">
+<button class="share-button" onclick="sharePage()">↗ Поделиться страницей</button>
 </section>
 </main>
 
@@ -111,15 +117,19 @@ a.className="link";
 a.href=url;
 a.target="_blank";
 a.rel="noopener noreferrer";
+
 const ico=document.createElement("span");
 ico.className="link-icon";
 ico.textContent=icon;
+
 const text=document.createElement("span");
 text.className="link-label";
 text.textContent=label;
+
 const arrow=document.createElement("span");
 arrow.className="link-arrow";
 arrow.textContent="↗";
+
 a.append(ico,text,arrow);
 container.appendChild(a);
 }
@@ -131,8 +141,10 @@ document.title=(d.name||"Компания")+" — NFC SMART";
 
 document.getElementById("wifiSection").style.display=
 (d.wifi_name||d.wifi_password)?"block":"none";
+
 document.getElementById("wifiName").textContent=d.wifi_name||"Wi-Fi";
 wifiPass=d.wifi_password||"";
+
 document.getElementById("wifiPassword").textContent=
 wifiPass?"Пароль: "+wifiPass:"Пароль не указан";
 
@@ -147,25 +159,32 @@ const items=[
 ["Google Maps",d.maps_url,"🗺️"],
 ["2ГИС",d.two_gis_url,"📍"]
 ];
+
 items.forEach(item=>addLink(links,item[0],item[1],item[2]));
+
 document.getElementById("linksSection").style.display=
 links.children.length?"block":"none";
+
 document.getElementById("addressSection").style.display=
 d.address?"block":"none";
+
 document.getElementById("address").textContent=d.address||"";
 }
 
 async function load(){
 try{
 let request=client.from("businesses").select("*");
+
 if(requestedSlug){
 request=request.eq("slug",requestedSlug);
 }else{
 request=request.eq("id",demoBusinessId);
 }
+
 const {data,error}=await request.maybeSingle();
 if(error)throw error;
-if(!data)throw new Error("Компания не найдена в базе данных");
+if(!data)throw new Error("Компания не найдена");
+
 renderBusiness(data);
 document.getElementById("status").textContent="";
 }catch(e){
@@ -182,6 +201,32 @@ await navigator.clipboard.writeText(wifiPass);
 alert("Пароль скопирован!");
 }catch(e){alert(wifiPass);}
 }
+
+async function sharePage(){
+const shareData={
+title:document.getElementById("name").textContent,
+text:"Информация о компании",
+url:location.href
+};
+try{
+if(navigator.share){
+await navigator.share(shareData);
+}else{
+await navigator.clipboard.writeText(location.href);
+alert("Ссылка скопирована!");
+}
+}catch(e){
+if(e.name!=="AbortError"){
+try{
+await navigator.clipboard.writeText(location.href);
+alert("Ссылка скопирована!");
+}catch(err){
+prompt("Скопируйте ссылку:",location.href);
+}
+}
+}
+}
+
 load();
 </script>
 </body>
