@@ -128,7 +128,14 @@ label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644
 <script>
 const client=window.supabase.createClient(
 "https://pyeydqohexospkzzehtz.supabase.co",
-"sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
+"sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc",
+{
+  auth:{
+    persistSession:false,
+    autoRefreshToken:false,
+    detectSessionInUrl:false
+  }
+}
 );
 
 let businessId=null;
@@ -446,14 +453,16 @@ async function logout(){
 await client.auth.signOut();
 businessId=null;
 currentBusiness=null;
+galleryUrls=[];
+selectedGallery=[];
+logoUrl="";
+coverUrl="";
 document.getElementById("panel").style.display="none";
 document.getElementById("login").style.display="block";
+document.getElementById("email").value="";
+document.getElementById("password").value="";
 message("Вы вышли");
 }
-
-client.auth.getSession().then(({data})=>{
-if(data.session)loadBusiness();
-});
 </script>
 </body>
 </html>
