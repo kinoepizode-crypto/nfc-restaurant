@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Админ-панель</title>
+<title>Администратор NFC SMART</title>
 <style>
 body{font-family:Arial;background:#f1f3f5;padding:15px;color:#111}
 .box{max-width:600px;margin:auto;background:white;padding:20px;border-radius:18px}
@@ -17,11 +17,12 @@ h3{margin-top:25px}
 .business{padding:12px 0;border-bottom:1px solid #ddd;overflow-wrap:anywhere}
 .business a{display:block;margin:7px 0}
 .copy{background:#2463eb}
+.delete{background:#dc2626}
 </style>
 </head>
 <body>
 <div class="box">
-<h2>Администратор</h2>
+<h2>Администратор NFC SMART</h2>
 
 <div id="login">
 <input id="email" placeholder="Email администратора" type="email">
@@ -217,11 +218,42 @@ copy.className="copy";
 copy.textContent="Скопировать NFC-ссылку";
 copy.onclick=()=>copyLink(b.slug);
 
-div.append(title,link,copy);
+const del=document.createElement("button");
+del.className="delete";
+del.textContent="Удалить ресторан";
+del.onclick=()=>deleteBusiness(b.id,b.name);
+
+div.append(title,link,copy,del);
 list.appendChild(div);
 });
 }catch(e){
 msg("Ошибка списка: "+e.message);
+}
+}
+
+async function deleteBusiness(id,name){
+const confirmed=confirm(
+"Удалить ресторан «"+name+"»?\n\n"+
+"Это действие может удалить связанные данные и не может быть отменено."
+);
+
+if(!confirmed)return;
+
+msg("Удаление ресторана...");
+
+try{
+const {error}=await client
+.from("businesses")
+.delete()
+.eq("id",id);
+
+if(error)throw error;
+
+msg("Ресторан удалён: "+name);
+await loadBusinesses();
+
+}catch(e){
+msg("Ошибка удаления: "+e.message);
 }
 }
 
