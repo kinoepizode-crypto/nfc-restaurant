@@ -4,55 +4,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#234b32">
+<meta name="theme-color" content="#080909">
 <title>NFC SMART</title>
 <style>
 *{box-sizing:border-box}
-:root{--green:#315b3b;--dark:#1d3c29;--text:#26392b;--muted:#718071;--panel:rgba(250,250,241,.96);--shadow:0 12px 30px #16351f26}
-body{margin:0;background:linear-gradient(#0c261733,#0c261f66),url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=85") center/cover fixed;font-family:Arial,sans-serif;color:var(--text)}
+:root{--bg:#080909;--panel:#141616;--text:#f5f6f5;--muted:#a0a6a1;--line:#292e2b;--shadow:0 12px 32px #0008}
+body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}
 .container{width:min(100% - 30px,680px);margin:auto}
-.brand{font-size:19px;font-weight:900;letter-spacing:2px;color:white;padding:24px 2px 20px;text-shadow:0 2px 10px #173522}
-.brand span{color:#c5e2a9}
+.brand{font-size:19px;font-weight:900;letter-spacing:2px;color:#fff;padding:24px 2px 20px}
+.brand span{color:#aeb8b0}
 .lang-switch{display:flex;gap:8px;margin-bottom:17px}
-.lang-switch button{border:1px solid #ffffff80;background:#ffffff30;color:white;padding:10px 16px;border-radius:30px;font-weight:bold}
-.lang-switch button.active{background:#244b32}
-.hero{padding:25px 22px 27px;border-radius:26px;background:linear-gradient(145deg,#f7f8ebf7,#e0edd6f2);box-shadow:var(--shadow)}
-.eyebrow{font-size:10px;font-weight:850;letter-spacing:1.8px;color:#64805a}
-h1{font-size:clamp(29px,7vw,42px);line-height:1.12;margin:14px 0 10px;color:#294b32;overflow-wrap:anywhere}
-.description{font-size:14px;line-height:1.8;color:#5c705c;white-space:pre-wrap}
-.category{display:inline-block;margin-top:10px;background:#dcebd2;padding:9px 14px;border-radius:30px;font-size:11px;color:#426344;font-weight:800}
+.lang-switch button{border:1px solid var(--line);background:#151817;color:#c6cbc7;padding:10px 16px;border-radius:30px;font-weight:bold}
+.lang-switch button.active{background:#fff;color:#111;border-color:#fff}
+.hero{padding:25px 22px 27px;border-radius:22px;background:linear-gradient(145deg,#1b1e1d,#111313);border:1px solid var(--line);box-shadow:var(--shadow)}
+.eyebrow{font-size:10px;font-weight:850;letter-spacing:1.8px;color:#aeb6b0}
+h1{font-size:clamp(29px,7vw,42px);line-height:1.12;margin:14px 0 10px;color:#fff;overflow-wrap:anywhere}
+.description{font-size:14px;line-height:1.8;color:#c0c6c1;white-space:pre-wrap}
+.category{display:inline-block;margin-top:10px;background:#292e2b;padding:9px 14px;border-radius:30px;font-size:11px;color:#e2e6e3;font-weight:800}
 .section{margin-top:25px}
-.section-title{font-size:16px;font-weight:850;margin:0 0 13px;color:white;text-shadow:0 2px 8px #0009}
-.card{background:var(--panel);padding:20px;border-radius:22px;box-shadow:var(--shadow)}
-.wifi-name{font-size:16px;font-weight:850;color:#294b32}
+.section-title{font-size:15px;font-weight:850;margin:0 0 13px;color:#f5f6f5;letter-spacing:.2px}
+.card{background:var(--panel);padding:20px;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+.wifi-name{font-size:16px;font-weight:850;color:#fff}
 .muted{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
 button{cursor:pointer;font-family:inherit}
-.copy,.qr-download{margin-top:15px;border:0;border-radius:14px;background:linear-gradient(135deg,#3c7047,#1d422b);color:white;padding:13px 18px;font-weight:800}
+.copy{margin-top:15px;border:1px solid #fff;border-radius:13px;background:#fff;color:#111;padding:13px 18px;font-weight:800}
 .links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.link{min-height:76px;display:flex;align-items:center;gap:11px;padding:13px;text-decoration:none;color:var(--text);background:var(--panel);border-radius:19px;box-shadow:var(--shadow)}
-.link-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:14px;background:#e5eedf}
+.link{min-height:76px;display:flex;align-items:center;gap:11px;padding:13px;text-decoration:none;color:#fff;background:var(--panel);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow);transition:background .2s}
+.link:active{background:#242927}
+.link-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:13px;background:#272c29}
 .link-icon svg{width:28px;height:28px}
 .link-label{font-size:12px;font-weight:800;overflow-wrap:anywhere}
-.link-arrow{margin-left:auto;color:#80917c}
-.logo{display:block;max-width:100px;max-height:100px;object-fit:cover;border-radius:20px;margin-bottom:19px}
-.cover{width:100%;max-height:270px;object-fit:cover;border-radius:18px;margin-bottom:18px}
+.link-arrow{margin-left:auto;color:#929b94}
+.logo{display:block;max-width:100px;max-height:100px;object-fit:cover;border-radius:18px;margin-bottom:19px}
+.cover{width:100%;max-height:270px;object-fit:cover;border-radius:15px;margin-bottom:18px}
 .address-card{display:flex;gap:13px;align-items:center}
 .address-icon{font-size:25px}
-.address-text{font-size:14px;line-height:1.7}
+.address-text{font-size:14px;line-height:1.7;color:#e1e5e2}
 .gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.gallery img{width:100%;height:180px;object-fit:cover;border-radius:18px}
-.review{display:block;text-decoration:none;background:#e5efdc;padding:16px;border-radius:15px;color:#315b38;font-weight:850}
-.qr-card{text-align:center}
-#qrcode{display:flex;justify-content:center;margin:20px auto}
-#qrcode img,#qrcode canvas{border-radius:10px}
-.qr-note{font-size:12px;line-height:1.7;color:var(--muted)}
-.share-button{width:100%;padding:16px;border:0;border-radius:16px;background:linear-gradient(135deg,#3c7047,#1d422b);color:white;font-size:14px;font-weight:850}
-.footer{text-align:center;padding:36px 0 27px;color:#f0f2e8;font-size:11px;text-shadow:0 2px 7px #173522}
-.footer strong{color:#c5e2a9;letter-spacing:1.5px}
-#status{color:#ffe2c9;text-align:center;font-size:13px;margin:15px;overflow-wrap:anywhere}
+.gallery img{width:100%;height:180px;object-fit:cover;border-radius:15px;border:1px solid var(--line)}
+.review{display:block;text-decoration:none;background:#202522;border:1px solid #343b36;padding:16px;border-radius:14px;color:#fff;font-weight:850}
+.share-button{width:100%;padding:16px;border:1px solid #fff;border-radius:14px;background:#fff;color:#111;font-size:14px;font-weight:850}
+.footer{text-align:center;padding:36px 0 27px;color:#7f8982;font-size:11px}
+.footer strong{color:#d9dfda;letter-spacing:1.5px}
+#status{color:#ffb8a8;text-align:center;font-size:13px;margin:15px;overflow-wrap:anywhere}
 #stars span{cursor:pointer;font-size:36px}
-#feedbackMessage{width:100%;min-height:110px;padding:14px;border-radius:12px;border:1px solid #e4dfd2;font:inherit;background:#fbfaf6}
-@media(max-width:390px){.container{width:calc(100% - 24px)}.links{gap:8px}.link{padding:10px;gap:8px}.link-icon{width:36px;height:36px;flex-basis:36px}.gallery img{height:145px}}
+#feedbackMessage{width:100%;min-height:110px;padding:14px;border-radius:12px;border:1px solid var(--line);font:inherit;background:#0d1010;color:#fff}
+#feedbackMessage::placeholder{color:#7d8780}
+@media(max-width:390px){
+.container{width:calc(100% - 24px)}
+.links{gap:8px}
+.link{padding:10px;gap:8px}
+.link-icon{width:36px;height:36px;flex-basis:36px}
+.gallery img{height:145px}
+}
 </style>
 </head>
 <body>
@@ -93,7 +97,7 @@ button{cursor:pointer;font-family:inherit}
 <section id="ratingSection" class="section">
 <h2 class="section-title" id="ratingTitle">⭐ Оцените наше заведение</h2>
 <div class="card">
-<p id="ratingHint" style="text-align:center;color:#77796e">Нам важно ваше мнение</p>
+<p id="ratingHint" style="text-align:center;color:#a0a6a1">Нам важно ваше мнение</p>
 <div id="stars" style="display:flex;gap:10px;justify-content:center;margin:20px 0">
 <span onclick="chooseRating(1)">☆</span>
 <span onclick="chooseRating(2)">☆</span>
@@ -128,49 +132,115 @@ button{cursor:pointer;font-family:inherit}
 </section>
 
 <section class="section">
-<h2 class="section-title" id="qrTitle">📱 QR-код</h2>
-<div class="card qr-card">
-<div id="qrcode"></div>
-<p class="qr-note" id="qrNote">Отсканируйте код камерой телефона, чтобы открыть страницу.</p>
-<button class="qr-download" onclick="downloadQR()" id="qrDownload">Скачать QR-код</button>
-</div>
-</section>
-
-<section class="section">
 <button class="share-button" onclick="sharePage()" id="shareButton">↗ Поделиться страницей</button>
 </section>
 </main>
+
 <div id="status"></div>
-<footer class="footer"><strong>NFC SMART</strong><div style="margin-top:8px" id="footerText">Удобная информация о компании в одном касании</div></footer>
+<footer class="footer">
+<strong>NFC SMART</strong>
+<div style="margin-top:8px" id="footerText">Удобная информация о компании в одном касании</div>
+</footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 const client=window.supabase.createClient(
 "https://pyeydqohexospkzzehtz.supabase.co",
 "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
 );
+
 const demoBusinessId="797bc6ec-0df3-4198-bb06-90c1456efc69";
 const requestedSlug=new URLSearchParams(location.search).get("slug");
 let wifiPass="",activeLang="ru",loadedBusiness=null,selectedRating=0;
 
 const T={
-ru:{top:"ИНФОРМАЦИЯ О КОМПАНИИ",wifi:"📶 Wi-Fi",copy:"Скопировать пароль",links:"✦ Контакты и ссылки",address:"📍 Адрес",gallery:"📷 Галерея",reviews:"⭐ Отзывы",review:"Посмотреть отзывы ↗",qr:"📱 QR-код",note:"Отсканируйте код камерой телефона, чтобы открыть страницу.",download:"Скачать QR-код",share:"↗ Поделиться страницей",footer:"Удобная информация о компании в одном касании",pass:"Пароль:",nopass:"Пароль не указан",copied:"Пароль скопирован!",labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps"],error:"Не удалось загрузить компанию"},
-kg:{top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",wifi:"📶 Wi-Fi",copy:"Сырсөздү көчүрүү",links:"✦ Байланыш жана шилтемелер",address:"📍 Дарек",gallery:"📷 Сүрөттөр",reviews:"⭐ Пикирлер",review:"Пикирлерди көрүү ↗",qr:"📱 QR-код",note:"Баракты ачуу үчүн кодду телефон камерасы менен сканерлеңиз.",download:"QR-кодду жүктөө",share:"↗ Баракты бөлүшүү",footer:"Компания тууралуу маалымат бир тийүүдө",pass:"Сырсөз:",nopass:"Сырсөз көрсөтүлгөн эмес",copied:"Сырсөз көчүрүлдү!",labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps"],error:"Компанияны жүктөө мүмкүн болгон жок"},
-en:{top:"BUSINESS INFORMATION",wifi:"📶 Wi-Fi",copy:"Copy password",links:"✦ Contacts & links",address:"📍 Address",gallery:"📷 Gallery",reviews:"⭐ Reviews",review:"View reviews ↗",qr:"📱 QR code",note:"Scan the code with your phone camera to open this page.",download:"Download QR code",share:"↗ Share page",footer:"Business information in one tap",pass:"Password:",nopass:"Password not provided",copied:"Password copied!",labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps"],error:"Could not load business"}
+ru:{
+top:"ИНФОРМАЦИЯ О КОМПАНИИ",
+wifi:"📶 Wi-Fi",
+copy:"Скопировать пароль",
+links:"✦ Контакты и ссылки",
+address:"📍 Адрес",
+gallery:"📷 Галерея",
+reviews:"⭐ Отзывы",
+review:"Посмотреть отзывы ↗",
+share:"↗ Поделиться страницей",
+footer:"Удобная информация о компании в одном касании",
+pass:"Пароль:",
+nopass:"Пароль не указан",
+copied:"Пароль скопирован!",
+labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps"],
+error:"Не удалось загрузить компанию"
+},
+kg:{
+top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",
+wifi:"📶 Wi-Fi",
+copy:"Сырсөздү көчүрүү",
+links:"✦ Байланыш жана шилтемелер",
+address:"📍 Дарек",
+gallery:"📷 Сүрөттөр",
+reviews:"⭐ Пикирлер",
+review:"Пикирлерди көрүү ↗",
+share:"↗ Баракты бөлүшүү",
+footer:"Компания тууралуу маалымат бир тийүүдө",
+pass:"Сырсөз:",
+nopass:"Сырсөз көрсөтүлгөн эмес",
+copied:"Сырсөз көчүрүлдү!",
+labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps"],
+error:"Компанияны жүктөө мүмкүн болгон жок"
+},
+en:{
+top:"BUSINESS INFORMATION",
+wifi:"📶 Wi-Fi",
+copy:"Copy password",
+links:"✦ Contacts & links",
+address:"📍 Address",
+gallery:"📷 Gallery",
+reviews:"⭐ Reviews",
+review:"View reviews ↗",
+share:"↗ Share page",
+footer:"Business information in one tap",
+pass:"Password:",
+nopass:"Password not provided",
+copied:"Password copied!",
+labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps"],
+error:"Could not load business"
+}
 };
 
 const ICONS={
-instagram:`<svg viewBox="0 0 48 48" aria-label="Instagram"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#ffb600"/><stop offset=".5" stop-color="#ff3040"/><stop offset="1" stop-color="#a02be8"/></linearGradient></defs><rect x="4" y="4" width="40" height="40" rx="12" fill="url(#ig)"/><rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="white" stroke-width="3"/><circle cx="24" cy="24" r="6" fill="none" stroke="white" stroke-width="3"/><circle cx="32" cy="16" r="2" fill="white"/></svg>`,
-whatsapp:`<svg viewBox="0 0 48 48" aria-label="WhatsApp"><circle cx="24" cy="22" r="19" fill="#25D366"/><path d="M13 39l3-8A18 18 0 1 1 22 40l-9-1z" fill="#25D366"/><path d="M17 13c-2 0-4 3-4 6 0 7 9 16 17 16 3 0 6-2 6-4l-1-2-5-2-2 2c-1 1-2 1-3 0-3-1-6-4-7-7l2-2-2-5z" fill="white"/></svg>`,
-googlemaps:`<svg viewBox="0 0 48 48" aria-label="Google Maps"><path d="M24 3C15 3 8 10 8 19c0 11 16 26 16 26s16-15 16-26C40 10 33 3 24 3z" fill="#34A853"/><path d="M24 3C15 3 8 10 8 19c0 4 2 9 5 13l11-13z" fill="#4285F4"/><path d="M24 3c9 0 16 7 16 16 0 5-2 9-5 13L24 19z" fill="#EA4335"/><path d="M13 32l11-13 11 13C30 40 24 45 24 45s-6-5-11-13z" fill="#FBBC04"/><circle cx="24" cy="19" r="7" fill="white"/><circle cx="24" cy="19" r="4" fill="#4285F4"/></svg>`
+instagram:`<svg viewBox="0 0 48 48" aria-label="Instagram">
+<defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0">
+<stop stop-color="#ffb600"/><stop offset=".5" stop-color="#ff3040"/><stop offset="1" stop-color="#a02be8"/>
+</linearGradient></defs>
+<rect x="4" y="4" width="40" height="40" rx="12" fill="url(#ig)"/>
+<rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="white" stroke-width="3"/>
+<circle cx="24" cy="24" r="6" fill="none" stroke="white" stroke-width="3"/>
+<circle cx="32" cy="16" r="2" fill="white"/>
+</svg>`,
+whatsapp:`<svg viewBox="0 0 48 48" aria-label="WhatsApp">
+<circle cx="24" cy="22" r="19" fill="#25D366"/>
+<path d="M13 39l3-8A18 18 0 1 1 22 40l-9-1z" fill="#25D366"/>
+<path d="M17 13c-2 0-4 3-4 6 0 7 9 16 17 16 3 0 6-2 6-4l-1-2-5-2-2 2c-1 1-2 1-3 0-3-1-6-4-7-7l2-2-2-5z" fill="white"/>
+</svg>`,
+googlemaps:`<svg viewBox="0 0 48 48" aria-label="Google Maps">
+<path d="M24 3C15 3 8 10 8 19c0 11 16 26 16 26s16-15 16-26C40 10 33 3 24 3z" fill="#34A853"/>
+<path d="M24 3C15 3 8 10 8 19c0 4 2 9 5 13l11-13z" fill="#4285F4"/>
+<path d="M24 3c9 0 16 7 16 16 0 5-2 9-5 13L24 19z" fill="#EA4335"/>
+<path d="M13 32l11-13 11 13C30 40 24 45 24 45s-6-5-11-13z" fill="#FBBC04"/>
+<circle cx="24" cy="19" r="7" fill="white"/>
+<circle cx="24" cy="19" r="4" fill="#4285F4"/>
+</svg>`
 };
 
 function setLang(lang){
 activeLang=lang;
 document.documentElement.lang=lang;
-["ru","kg","en"].forEach(x=>document.getElementById("btn"+x).classList.toggle("active",x===lang));
+
+["ru","kg","en"].forEach(x=>{
+document.getElementById("btn"+x).classList.toggle("active",x===lang);
+});
+
 const t=T[lang];
 document.getElementById("eyebrow").textContent=t.top;
 document.getElementById("wifiTitle").textContent=t.wifi;
@@ -180,69 +250,110 @@ document.getElementById("addressTitle").textContent=t.address;
 document.getElementById("galleryTitle").textContent=t.gallery;
 document.getElementById("reviewsTitle").textContent=t.reviews;
 document.getElementById("reviews").textContent=t.review;
-document.getElementById("qrTitle").textContent=t.qr;
-document.getElementById("qrNote").textContent=t.note;
-document.getElementById("qrDownload").textContent=t.download;
 document.getElementById("shareButton").textContent=t.share;
 document.getElementById("footerText").textContent=t.footer;
+
 if(loadedBusiness)renderBusiness(loadedBusiness);
 }
 
 function addLink(container,label,url,icon){
 if(!url)return;
+
 const a=document.createElement("a");
-a.className="link";a.href=url;a.target="_blank";a.rel="noopener noreferrer";
-const ico=document.createElement("span");ico.className="link-icon";
+a.className="link";
+a.href=url;
+a.target="_blank";
+a.rel="noopener noreferrer";
+
+const ico=document.createElement("span");
+ico.className="link-icon";
 ico.innerHTML=ICONS[icon]||icon;
-const name=document.createElement("span");name.className="link-label";name.textContent=label;
-const arrow=document.createElement("span");arrow.className="link-arrow";arrow.textContent="↗";
-a.append(ico,name,arrow);container.appendChild(a);
+
+const name=document.createElement("span");
+name.className="link-label";
+name.textContent=label;
+
+const arrow=document.createElement("span");
+arrow.className="link-arrow";
+arrow.textContent="↗";
+
+a.append(ico,name,arrow);
+container.appendChild(a);
 }
 
 function renderGallery(data){
 const section=document.getElementById("gallerySection");
 const container=document.getElementById("gallery");
 container.innerHTML="";
+
 let photos=data;
-if(typeof photos==="string"){try{photos=JSON.parse(photos)}catch(e){photos=[]}}
-if(!Array.isArray(photos)||!photos.length){section.style.display="none";return}
+if(typeof photos==="string"){
+try{photos=JSON.parse(photos)}catch(e){photos=[]}
+}
+
+if(!Array.isArray(photos)||!photos.length){
+section.style.display="none";
+return;
+}
+
 photos.forEach(item=>{
 const url=typeof item==="string"?item:item?.url;
 if(!url)return;
+
 const img=document.createElement("img");
-img.src=url;img.alt="Фото компании";img.loading="lazy";
+img.src=url;
+img.alt="Фото компании";
+img.loading="lazy";
 container.appendChild(img);
 });
+
 section.style.display=container.children.length?"block":"none";
 }
 
 function renderBusiness(d){
 loadedBusiness=d;
+
 document.getElementById("name").textContent=d.name||"";
 document.getElementById("description").textContent=d.description||"";
 document.title=(d.name||"Компания")+" — NFC SMART";
 
 const logo=document.getElementById("logo");
 logo.style.display="none";
-if(d.logo_url){logo.src=d.logo_url;logo.style.display="block"}
+if(d.logo_url){
+logo.src=d.logo_url;
+logo.style.display="block";
+}
 
 const cover=document.getElementById("cover");
 cover.style.display="none";
-if(d.cover_url){cover.src=d.cover_url;cover.style.display="block"}
+if(d.cover_url){
+cover.src=d.cover_url;
+cover.style.display="block";
+}
 
 const category=document.getElementById("category");
 category.style.display="none";
-if(d.category){category.textContent=d.category;category.style.display="inline-block"}
+if(d.category){
+category.textContent=d.category;
+category.style.display="inline-block";
+}
 
 document.getElementById("wifiSection").style.display=(d.wifi_name||d.wifi_password)?"block":"none";
 document.getElementById("wifiName").textContent=d.wifi_name||"Wi-Fi";
+
 wifiPass=d.wifi_password||"";
-document.getElementById("wifiPassword").textContent=wifiPass?T[activeLang].pass+" "+wifiPass:T[activeLang].nopass;
+document.getElementById("wifiPassword").textContent=
+wifiPass?T[activeLang].pass+" "+wifiPass:T[activeLang].nopass;
 
 const links=document.getElementById("links");
 links.innerHTML="";
-const instagram=d.instagram?(d.instagram.startsWith("http")?d.instagram:"https://instagram.com/"+d.instagram.replace("@","")):null;
-const whatsapp=d.whatsapp?(d.whatsapp.startsWith("http")?d.whatsapp:"https://wa.me/"+d.whatsapp.replace(/\D/g,"")):null;
+
+const instagram=d.instagram?
+(d.instagram.startsWith("http")?d.instagram:"https://instagram.com/"+d.instagram.replace("@","")):null;
+
+const whatsapp=d.whatsapp?
+(d.whatsapp.startsWith("http")?d.whatsapp:"https://wa.me/"+d.whatsapp.replace(/\D/g,"")):null;
+
 const items=[
 [T[activeLang].labels[0],d.menu_url,"📋"],
 [T[activeLang].labels[1],d.phone?"tel:"+d.phone:null,"📞"],
@@ -250,36 +361,40 @@ const items=[
 [T[activeLang].labels[3],whatsapp,"whatsapp"],
 [T[activeLang].labels[4],d.maps_url,"googlemaps"]
 ];
+
 items.forEach(x=>addLink(links,x[0],x[1],x[2]));
-document.getElementById("linksSection").style.display=links.children.length?"block":"none";
+
+document.getElementById("linksSection").style.display=
+links.children.length?"block":"none";
 
 document.getElementById("addressSection").style.display=d.address?"block":"none";
 document.getElementById("address").textContent=d.address||"";
+
 renderGallery(d.gallery);
 
 if(d.reviews_url){
 const r=document.getElementById("reviews");
 r.href=d.reviews_url;
 document.getElementById("reviewsSection").style.display="block";
-}else document.getElementById("reviewsSection").style.display="none";
-
-const qr=document.getElementById("qrcode");
-qr.innerHTML="";
-if(window.QRCode){
-new QRCode(qr,{text:location.href,width:190,height:190,correctLevel:QRCode.CorrectLevel.H});
+}else{
+document.getElementById("reviewsSection").style.display="none";
 }
 }
 
 async function load(){
 const name=document.getElementById("name");
 const status=document.getElementById("status");
+
 try{
 if(!window.supabase)throw new Error("Не загрузилась библиотека Supabase. Обновите страницу.");
+
 let q=client.from("businesses").select("*");
 q=requestedSlug?q.eq("slug",requestedSlug):q.eq("id",demoBusinessId);
+
 const {data,error}=await q.maybeSingle();
 if(error)throw error;
 if(!data)throw new Error("Ресторан не найден в базе данных.");
+
 renderBusiness(data);
 status.textContent="";
 }catch(e){
@@ -290,45 +405,66 @@ console.error("NFC SMART:",e);
 }
 
 async function copyPassword(){
-if(!wifiPass){alert(T[activeLang].nopass);return}
-try{await navigator.clipboard.writeText(wifiPass);alert(T[activeLang].copied)}
-catch(e){prompt(T[activeLang].pass,wifiPass)}
+if(!wifiPass){
+alert(T[activeLang].nopass);
+return;
 }
 
-function downloadQR(){
-const canvas=document.querySelector("#qrcode canvas");
-const img=document.querySelector("#qrcode img");
-const url=canvas?canvas.toDataURL("image/png"):img?img.src:null;
-if(!url){alert("QR-код ещё загружается");return}
-const a=document.createElement("a");
-a.href=url;a.download="NFC-SMART-QR.png";a.click();
+try{
+await navigator.clipboard.writeText(wifiPass);
+alert(T[activeLang].copied);
+}catch(e){
+prompt(T[activeLang].pass,wifiPass);
+}
 }
 
 async function sharePage(){
-const data={title:document.getElementById("name").textContent,text:T[activeLang].top,url:location.href};
+const data={
+title:document.getElementById("name").textContent,
+text:T[activeLang].top,
+url:location.href
+};
+
 try{
-if(navigator.share){await navigator.share(data)}
-else{await navigator.clipboard.writeText(location.href);alert("Ссылка скопирована!")}
+if(navigator.share){
+await navigator.share(data);
+}else{
+await navigator.clipboard.writeText(location.href);
+alert("Ссылка скопирована!");
+}
 }catch(e){
 if(e.name!=="AbortError"){
-try{await navigator.clipboard.writeText(location.href);alert("Ссылка скопирована!")}
-catch(err){prompt("Скопируйте ссылку:",location.href)}
+try{
+await navigator.clipboard.writeText(location.href);
+alert("Ссылка скопирована!");
+}catch(err){
+prompt("Скопируйте ссылку:",location.href);
+}
 }
 }
 }
 
 function chooseRating(r){
 selectedRating=r;
+
 document.querySelectorAll("#stars span").forEach((s,i)=>{
 s.textContent=i<r?"★":"☆";
 s.style.color=i<r?"#c49a40":"#777";
 });
+
 const form=document.getElementById("ratingForm");
 const msg=document.getElementById("ratingMessage");
 msg.textContent="";
-if(r<=3){form.style.display="block";return}
+
+if(r<=3){
+form.style.display="block";
+return;
+}
+
 form.style.display="none";
+
 const url=loadedBusiness?.two_gis_url||loadedBusiness?.reviews_url;
+
 if(url){
 msg.textContent="Спасибо за оценку! Открываем страницу отзывов...";
 setTimeout(()=>window.location.href=url,700);
@@ -340,21 +476,37 @@ msg.textContent="Спасибо за оценку! Ссылка на отзыв�
 async function sendFeedback(){
 const message=document.getElementById("feedbackMessage").value.trim();
 const msg=document.getElementById("ratingMessage");
-if(selectedRating<1||selectedRating>3){msg.textContent="Выберите оценку от 1 до 3 звёзд.";return}
-if(message.length<2){msg.textContent="Пожалуйста, напишите ваше замечание.";return}
-if(!loadedBusiness?.id){msg.textContent="Не удалось определить заведение.";return}
+
+if(selectedRating<1||selectedRating>3){
+msg.textContent="Выберите оценку от 1 до 3 звёзд.";
+return;
+}
+
+if(message.length<2){
+msg.textContent="Пожалуйста, напишите ваше замечание.";
+return;
+}
+
+if(!loadedBusiness?.id){
+msg.textContent="Не удалось определить заведение.";
+return;
+}
+
 msg.textContent="Отправка...";
+
 const {error}=await client.from("feedback").insert({
 business_id:loadedBusiness.id,
 rating:selectedRating,
 message:message,
 status:"new"
 });
+
 if(error){
 msg.textContent="Ошибка отправки. Попробуйте ещё раз.";
 console.error(error);
 return;
 }
+
 msg.textContent="Спасибо! Ваше сообщение отправлено владельцу.";
 document.getElementById("feedbackMessage").value="";
 document.getElementById("ratingForm").style.display="none";
