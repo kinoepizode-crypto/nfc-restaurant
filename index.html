@@ -54,6 +54,7 @@ button{cursor:pointer}
 .footer{text-align:center;padding:34px 0 26px;color:#969588;font-size:11px}
 .footer strong{color:#647653;letter-spacing:1px}
 #status{text-align:center;color:#9b573d;font-size:13px;margin:15px;overflow-wrap:anywhere}
+#stars span{cursor:pointer}
 @media(max-width:390px){.links{gap:8px}.link{padding:10px;gap:8px}.link-icon{width:35px;height:35px;flex-basis:35px}.gallery img{height:140px}}
 </style>
 </head>
@@ -76,6 +77,7 @@ button{cursor:pointer}
 <p class="description" id="description"></p>
 <div id="category" class="category" style="display:none"></div>
 </section>
+
 <section id="wifiSection" class="section" style="display:none">
 <h2 class="section-title">📶 Wi-Fi</h2>
 <div class="card">
@@ -84,10 +86,12 @@ button{cursor:pointer}
 <button class="copy" onclick="copyPassword()">Скопировать пароль</button>
 </div>
 </section>
+
 <section id="linksSection" class="section" style="display:none">
 <h2 class="section-title">✦ Контакты и ссылки</h2>
 <div class="links" id="links"></div>
 </section>
+
 <section id="addressSection" class="section" style="display:none">
 <h2 class="section-title">📍 Адрес</h2>
 <div class="card address-card">
@@ -95,18 +99,41 @@ button{cursor:pointer}
 <div class="address-text" id="address"></div>
 </div>
 </section>
+
 <section id="hoursSection" class="section" style="display:none">
 <h2 class="section-title">🕒 Часы работы</h2>
 <div class="card"><div class="hours" id="hours"></div></div>
 </section>
+
 <section id="gallerySection" class="section" style="display:none">
 <h2 class="section-title">📷 Галерея</h2>
 <div class="gallery" id="gallery"></div>
 </section>
+
 <section id="reviewsSection" class="section" style="display:none">
 <h2 class="section-title">⭐ Отзывы</h2>
 <a class="review" id="reviews" target="_blank" rel="noopener noreferrer">Посмотреть отзывы ↗</a>
 </section>
+
+<section class="section" id="ratingSection">
+<h2 class="section-title" id="ratingTitle">⭐ Оцените наше заведение</h2>
+<div class="card">
+<p id="ratingHint" style="font-size:14px;color:#77796e">Нам важно ваше мнение</p>
+<div id="stars" style="display:flex;gap:10px;font-size:36px;justify-content:center;margin:20px 0">
+<span onclick="chooseRating(1)">☆</span>
+<span onclick="chooseRating(2)">☆</span>
+<span onclick="chooseRating(3)">☆</span>
+<span onclick="chooseRating(4)">☆</span>
+<span onclick="chooseRating(5)">☆</span>
+</div>
+<div id="ratingForm" style="display:none">
+<textarea id="feedbackMessage" placeholder="Расскажите, что можно улучшить..." style="width:100%;min-height:110px;padding:14px;border-radius:12px;border:1px solid #e4dfd2;font:inherit;resize:vertical"></textarea>
+<button class="share-button" style="margin-top:12px" onclick="sendFeedback()">Отправить отзыв</button>
+</div>
+<div id="ratingMessage" style="font-size:14px;line-height:1.6;margin-top:12px"></div>
+</div>
+</section>
+
 <section class="section">
 <h2 class="section-title" id="qrTitle">📱 QR-код</h2>
 <div class="card qr-card">
@@ -115,27 +142,36 @@ button{cursor:pointer}
 <button class="qr-download" onclick="downloadQR()">Скачать QR-код</button>
 </div>
 </section>
+
 <section class="section">
 <button class="share-button" onclick="sharePage()">↗ Поделиться страницей</button>
 </section>
 </main>
+
 <div id="status"></div>
 <footer class="footer">
 <strong>NFC SMART</strong>
 <div style="margin-top:8px">Удобная информация о компании в одном касании</div>
 </footer>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 const client=window.supabase.createClient("https://pyeydqohexospkzzehtz.supabase.co","sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc");
-const demoBusinessId="797bc6ec-0df3-4198-bb06-90c1456efc69",requestedSlug=new URLSearchParams(location.search).get("slug");
-let wifiPass="",qrInstance=null,activeLang="ru",loadedBusiness=null;
+const demoBusinessId="797bc6ec-0df3-4198-bb06-90c1456efc69";
+const requestedSlug=new URLSearchParams(location.search).get("slug");
+let wifiPass="",qrInstance=null,activeLang="ru",loadedBusiness=null,selectedRating=0;
+
 const T={
-ru:{top:"ИНФОРМАЦИЯ О КОМПАНИИ",wifi:"📶 Wi-Fi",copy:"Скопировать пароль",links:"✦ Контакты и ссылки",address:"📍 Адрес",hours:"🕒 Часы работы",gallery:"📷 Галерея",reviews:"⭐ Отзывы",review:"Посмотреть отзывы ↗",qr:"📱 QR-код",note:"Отсканируйте код камерой телефона, чтобы открыть страницу.",download:"Скачать QR-код",share:"↗ Поделиться страницей",footer:"Удобная информация о компании в одном касании",pass:"Пароль:",nopass:"Пароль не указан",copied:"Пароль скопирован!",nopassalert:"Пароль не указан",days:["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps","2ГИС"],error:"Не удалось загрузить компанию"},
-kg:{top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",wifi:"📶 Wi-Fi",copy:"Сырсөздү көчүрүү",links:"✦ Байланыш жана шилтемелер",address:"📍 Дарек",hours:"🕒 Иштөө убактысы",gallery:"📷 Сүрөттөр",reviews:"⭐ Пикирлер",review:"Пикирлерди көрүү ↗",qr:"📱 QR-код",note:"Баракты ачуу үчүн кодду телефон камерасы менен сканерлеңиз.",download:"QR-кодду жүктөө",share:"↗ Баракты бөлүшүү",footer:"Компания тууралуу маалымат бир тийүүдө",pass:"Сырсөз:",nopass:"Сырсөз көрсөтүлгөн эмес",copied:"Сырсөз көчүрүлдү!",nopassalert:"Сырсөз көрсөтүлгөн эмес",days:["Дүйшөмбү","Шейшемби","Шаршемби","Бейшемби","Жума","Ишемби","Жекшемби"],labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps","2ГИС"],error:"Компанияны жүктөө мүмкүн болгон жок"},
-en:{top:"BUSINESS INFORMATION",wifi:"📶 Wi-Fi",copy:"Copy password",links:"✦ Contacts & links",address:"📍 Address",hours:"🕒 Opening hours",gallery:"📷 Gallery",reviews:"⭐ Reviews",review:"View reviews ↗",qr:"📱 QR code",note:"Scan the code with your phone camera to open this page.",download:"Download QR code",share:"↗ Share page",footer:"Business information in one tap",pass:"Password:",nopass:"Password not provided",copied:"Password copied!",nopassalert:"Password not provided",days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps","2GIS"],error:"Could not load business"}
+ru:{
+top:"ИНФОРМАЦИЯ О КОМПАНИИ",wifi:"📶 Wi-Fi",copy:"Скопировать пароль",links:"✦ Контакты и ссылки",address:"📍 Адрес",hours:"🕒 Часы работы",gallery:"📷 Галерея",reviews:"⭐ Отзывы",review:"Посмотреть отзывы ↗",qr:"📱 QR-код",note:"Отсканируйте код камерой телефона, чтобы открыть страницу.",download:"Скачать QR-код",share:"↗ Поделиться страницей",footer:"Удобная информация о компании в одном касании",pass:"Пароль:",nopass:"Пароль не указан",copied:"Пароль скопирован!",nopassalert:"Пароль не указан",days:["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps","2ГИС"],error:"Не удалось загрузить компанию"},
+kg:{
+top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",wifi:"📶 Wi-Fi",copy:"Сырсөздү көчүрүү",links:"✦ Байланыш жана шилтемелер",address:"📍 Дарек",hours:"🕒 Иштөө убактысы",gallery:"📷 Сүрөттөр",reviews:"⭐ Пикирлер",review:"Пикирлерди көрүү ↗",qr:"📱 QR-код",note:"Баракты ачуу үчүн кодду телефон камерасы менен сканерлеңиз.",download:"QR-кодду жүктөө",share:"↗ Баракты бөлүшүү",footer:"Компания тууралуу маалымат бир тийүүдө",pass:"Сырсөз:",nopass:"Сырсөз көрсөтүлгөн эмес",copied:"Сырсөз көчүрүлдү!",nopassalert:"Сырсөз көрсөтүлгөн эмес",days:["Дүйшөмбү","Шейшемби","Шаршемби","Бейшемби","Жума","Ишемби","Жекшемби"],labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps","2ГИС"],error:"Компанияны жүктөө мүмкүн болгон жок"},
+en:{
+top:"BUSINESS INFORMATION",wifi:"📶 Wi-Fi",copy:"Copy password",links:"✦ Contacts & links",address:"📍 Address",hours:"🕒 Opening hours",gallery:"📷 Gallery",reviews:"⭐ Reviews",review:"View reviews ↗",qr:"📱 QR code",note:"Scan the code with your phone camera to open this page.",download:"Download QR code",share:"↗ Share page",footer:"Business information in one tap",pass:"Password:",nopass:"Password not provided",copied:"Password copied!",nopassalert:"Password not provided",days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps","2GIS"],error:"Could not load business"}
 };
+
 function setLang(lang){
 activeLang=lang;document.documentElement.lang=lang;
 ["ru","kg","en"].forEach(x=>document.getElementById("btn"+x).classList.toggle("active",x===lang));
@@ -156,34 +192,43 @@ document.querySelector(".share-button").textContent=t.share;
 document.querySelector(".footer div").textContent=t.footer;
 if(loadedBusiness)renderBusiness(loadedBusiness)
 }
+
 function addLink(container,label,url,icon){
 if(!url)return;
-const a=document.createElement("a");a.className="link";a.href=url;a.target="_blank";a.rel="noopener noreferrer";
+const a=document.createElement("a");
+a.className="link";a.href=url;a.target="_blank";a.rel="noopener noreferrer";
 const ico=document.createElement("span");ico.className="link-icon";ico.textContent=icon;
 const text=document.createElement("span");text.className="link-label";text.textContent=label;
 const arrow=document.createElement("span");arrow.className="link-arrow";arrow.textContent="↗";
 a.append(ico,text,arrow);container.appendChild(a)
 }
+
 function renderHours(data){
-const section=document.getElementById("hoursSection"),container=document.getElementById("hours");container.innerHTML="";
+const section=document.getElementById("hoursSection"),container=document.getElementById("hours");
+container.innerHTML="";
 if(typeof data==="string"){try{data=JSON.parse(data)}catch(e){data={}}}
 if(!data||typeof data!=="object"||!Object.keys(data).length){section.style.display="none";return}
 const sourceDays=["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],translatedDays=T[activeLang].days;
-sourceDays.forEach((day,i)=>{if(!(day in data))return;
+sourceDays.forEach((day,i)=>{
+if(!(day in data))return;
 const row=document.createElement("div");row.className="hours-row";
 const a=document.createElement("span");a.textContent=translatedDays[i];
 const b=document.createElement("strong");b.textContent=data[day];
 row.append(a,b);container.append(row)});
 section.style.display=container.children.length?"block":"none"
 }
+
 function renderGallery(data){
-const section=document.getElementById("gallerySection"),container=document.getElementById("gallery");container.innerHTML="";
+const section=document.getElementById("gallerySection"),container=document.getElementById("gallery");
+container.innerHTML="";
 let photos=data;if(typeof photos==="string"){try{photos=JSON.parse(photos)}catch(e){photos=[]}}
 if(!Array.isArray(photos)||!photos.length){section.style.display="none";return}
-photos.forEach(item=>{const url=typeof item==="string"?item:item?.url;if(!url)return;
+photos.forEach(item=>{
+const url=typeof item==="string"?item:item?.url;if(!url)return;
 const img=document.createElement("img");img.src=url;img.alt="Фото компании";img.loading="lazy";container.appendChild(img)});
 section.style.display=container.children.length?"block":"none"
 }
+
 function renderBusiness(d){
 loadedBusiness=d;
 document.getElementById("name").textContent=d.name||"";
@@ -199,25 +244,31 @@ document.getElementById("wifiSection").style.display=(d.wifi_name||d.wifi_passwo
 document.getElementById("wifiName").textContent=d.wifi_name||"Wi-Fi";
 wifiPass=d.wifi_password||"";
 document.getElementById("wifiPassword").textContent=wifiPass?T[activeLang].pass+" "+wifiPass:T[activeLang].nopass;
+
 const links=document.getElementById("links");links.innerHTML="";
 const items=[
 [T[activeLang].labels[0],d.menu_url,"📋"],
 [T[activeLang].labels[1],d.phone?"tel:"+d.phone:null,"📞"],
 [T[activeLang].labels[2],d.instagram?(d.instagram.startsWith("http")?d.instagram:"https://instagram.com/"+d.instagram.replace("@","")):null,"📸"],
 [T[activeLang].labels[3],d.whatsapp?(d.whatsapp.startsWith("http")?d.whatsapp:"https://wa.me/"+d.whatsapp.replace(/\D/g,"")):null,"💬"],
-[T[activeLang].labels[4],d.maps_url,"🗺️"],
-[T[activeLang].labels[5],d.two_gis_url,"📍"]
+[T[activeLang].labels[4],d.maps_url,"🗺️"]
 ];
-items.forEach(x=>addLink(links,x[0],x[1],x[2]));
+items.filter(x=>x&&x[1]).forEach(x=>addLink(links,x[0],x[1],x[2]));
 document.getElementById("linksSection").style.display=links.children.length?"block":"none";
+
 document.getElementById("addressSection").style.display=d.address?"block":"none";
 document.getElementById("address").textContent=d.address||"";
 renderHours(d.opening_hours);renderGallery(d.gallery);
-if(d.reviews_url){const r=document.getElementById("reviews");r.href=d.reviews_url;document.getElementById("reviewsSection").style.display="block"}
-else document.getElementById("reviewsSection").style.display="none";
+
+if(d.reviews_url){
+const r=document.getElementById("reviews");r.href=d.reviews_url;
+document.getElementById("reviewsSection").style.display="block"
+}else document.getElementById("reviewsSection").style.display="none";
+
 const qr=document.getElementById("qrcode");qr.innerHTML="";
 qrInstance=new QRCode(qr,{text:location.href,width:190,height:190,correctLevel:QRCode.CorrectLevel.H})
 }
+
 async function load(){
 try{
 let q=client.from("businesses").select("*");
@@ -225,23 +276,66 @@ q=requestedSlug?q.eq("slug",requestedSlug):q.eq("id",demoBusinessId);
 const {data,error}=await q.maybeSingle();
 if(error)throw error;if(!data)throw new Error("Компания не найдена");
 renderBusiness(data);document.getElementById("status").textContent=""
-}catch(e){document.getElementById("name").textContent=T[activeLang].error;document.getElementById("status").textContent=e.message;console.error(e)}
+}catch(e){
+document.getElementById("name").textContent=T[activeLang].error;
+document.getElementById("status").textContent=e.message;console.error(e)}
 }
+
 async function copyPassword(){
 if(!wifiPass){alert(T[activeLang].nopassalert);return}
-try{await navigator.clipboard.writeText(wifiPass);alert(T[activeLang].copied)}catch(e){alert(wifiPass)}
+try{await navigator.clipboard.writeText(wifiPass);alert(T[activeLang].copied)}
+catch(e){alert(wifiPass)}
 }
+
 function downloadQR(){
 const canvas=document.querySelector("#qrcode canvas"),img=document.querySelector("#qrcode img");
 let url=canvas?canvas.toDataURL("image/png"):img?img.src:null;
 if(!url){alert("QR-код ещё загружается");return}
 const a=document.createElement("a");a.href=url;a.download="NFC-SMART-QR.png";a.click()
 }
+
 async function sharePage(){
 const s={title:document.getElementById("name").textContent,text:T[activeLang].top,url:location.href};
-try{if(navigator.share)await navigator.share(s);else{await navigator.clipboard.writeText(location.href);alert("Ссылка скопирована!")}}
-catch(e){if(e.name!=="AbortError"){try{await navigator.clipboard.writeText(location.href);alert("Ссылка скопирована!")}catch(err){prompt("Скопируйте ссылку:",location.href)}}}
+try{
+if(navigator.share)await navigator.share(s);
+else{await navigator.clipboard.writeText(location.href);alert("Ссылка скопирована!")}
+}catch(e){
+if(e.name!=="AbortError"){
+try{await navigator.clipboard.writeText(location.href);alert("Ссылка скопирована!")}
+catch(err){prompt("Скопируйте ссылку:",location.href)}
+}}
 }
+
+function chooseRating(r){
+selectedRating=r;
+document.querySelectorAll("#stars span").forEach((s,i)=>{
+s.textContent=i<r?"★":"☆";s.style.color=i<r?"#c49a40":"#777"});
+const form=document.getElementById("ratingForm"),msg=document.getElementById("ratingMessage");
+msg.textContent="";
+if(r<=3){form.style.display="block";return}
+form.style.display="none";
+const url=loadedBusiness?.two_gis_url||loadedBusiness?.reviews_url;
+if(url){
+msg.textContent="Спасибо за оценку! Вы можете оставить отзыв.";
+setTimeout(()=>window.location.href=url,700);
+}else msg.textContent="Спасибо за оценку! Ссылка на 2ГИС не настроена."
+}
+
+async function sendFeedback(){
+const message=document.getElementById("feedbackMessage").value.trim(),msg=document.getElementById("ratingMessage");
+if(selectedRating<1||selectedRating>3){msg.textContent="Выберите оценку от 1 до 3 звёзд.";return}
+if(message.length<2){msg.textContent="Пожалуйста, напишите ваше замечание.";return}
+if(!loadedBusiness?.id){msg.textContent="Не удалось определить заведение.";return}
+msg.textContent="Отправка...";
+const {error}=await client.from("feedback").insert({
+business_id:loadedBusiness.id,rating:selectedRating,message,status:"new"
+});
+if(error){msg.textContent="Ошибка отправки. Попробуйте ещё раз.";console.error(error);return}
+msg.textContent="Спасибо! Ваше сообщение отправлено владельцу.";
+document.getElementById("feedbackMessage").value="";
+document.getElementById("ratingForm").style.display="none"
+}
+
 setLang("ru");load();
 </script>
 </body>
