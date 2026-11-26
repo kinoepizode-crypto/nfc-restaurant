@@ -4,159 +4,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f5f2e9">
+<meta name="theme-color" content="#234b32">
 <title>NFC SMART</title>
 <style>
 *{box-sizing:border-box}
-:root{
---bg:#f5f3ec;
---panel:#fffefa;
---soft:#edf0e7;
---green:#687b55;
---dark:#354431;
---text:#252d24;
---muted:#85877d;
---border:#e9e6dc;
---shadow:0 10px 30px rgba(44,54,39,.055)
-}
+:root{--panel:rgba(250,250,241,.95);--green:#315b3b;--dark:#1d3c29;--text:#26392b;--muted:#718071;--shadow:0 12px 30px rgba(22,53,31,.15)}
 body{
 margin:0;
-background:var(--bg);
+background:linear-gradient(180deg,rgba(12,38,23,.25),rgba(12,38,23,.62)),
+url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=85") center/cover fixed;
 color:var(--text);
 font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 -webkit-font-smoothing:antialiased
 }
 .container{width:min(100% - 30px,680px);margin:auto}
-.brand{
-font-size:17px;font-weight:850;letter-spacing:2px;
-color:var(--dark);padding:24px 2px 20px
-}
-.brand span{color:var(--green)}
+.brand{font-size:19px;font-weight:900;letter-spacing:2px;color:white;padding:24px 2px 20px;text-shadow:0 2px 10px #173522}
+.brand span{color:#c5e2a9}
 .lang-switch{display:flex;gap:8px;margin-bottom:17px}
-.lang-switch button{
-border:1px solid var(--border);background:var(--panel);
-color:var(--muted);padding:9px 16px;border-radius:30px;
-font-size:11px;font-weight:800;letter-spacing:.5px;
-transition:.2s
-}
-.lang-switch button.active{
-background:var(--dark);border-color:var(--dark);color:white
-}
-.hero{
-padding:25px 22px 27px;border-radius:25px;
-background:linear-gradient(145deg,#e9ecdf,#f0eee4);
-border:1px solid #e2e5d9;
-box-shadow:var(--shadow)
-}
-.eyebrow{
-font-size:10px;font-weight:800;letter-spacing:1.8px;
-color:#7b896c;text-transform:uppercase
-}
-h1{
-font-size:clamp(29px,7vw,42px);line-height:1.12;
-letter-spacing:-1.3px;margin:14px 0 10px;
-color:#303d2d;overflow-wrap:anywhere;font-weight:800
-}
-.description{
-font-size:14px;line-height:1.8;color:#697064;
-white-space:pre-wrap;margin-bottom:0
-}
-.category{
-display:inline-block;margin-top:16px;background:#dce4d3;
-padding:9px 14px;border-radius:30px;font-size:11px;
-color:#506344;font-weight:750;letter-spacing:.2px
-}
-.section{margin-top:27px}
-.section-title{
-font-size:16px;font-weight:800;margin:0 0 13px;
-color:var(--dark);letter-spacing:-.3px
-}
-.card{
-background:var(--panel);border:1px solid var(--border);
-padding:20px;border-radius:21px;box-shadow:var(--shadow)
-}
-.wifi-name{font-size:16px;font-weight:800;margin:0 0 9px}
+.lang-switch button{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.2);color:white;padding:10px 16px;border-radius:30px;font-size:11px;font-weight:800;backdrop-filter:blur(10px)}
+.lang-switch button.active{background:#244b32;border-color:#c5e2a9;color:white}
+.hero{padding:25px 22px 27px;border-radius:26px;background:linear-gradient(145deg,rgba(247,248,235,.97),rgba(224,237,214,.94));border:1px solid rgba(255,255,255,.8);box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+.eyebrow{font-size:10px;font-weight:850;letter-spacing:1.8px;color:#64805a;text-transform:uppercase}
+h1{font-size:clamp(29px,7vw,42px);line-height:1.12;letter-spacing:-1.3px;margin:14px 0 10px;color:#294b32;overflow-wrap:anywhere;font-weight:850}
+.description{font-size:14px;line-height:1.8;color:#5c705c;white-space:pre-wrap;margin-bottom:0}
+.category{display:inline-block;margin-top:16px;background:#dcebd2;padding:9px 14px;border-radius:30px;font-size:11px;color:#426344;font-weight:800}
+.section{margin-top:25px}
+.section-title{font-size:16px;font-weight:850;margin:0 0 13px;color:white;letter-spacing:-.2px;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.card{background:var(--panel);border:1px solid rgba(255,255,255,.8);padding:20px;border-radius:22px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+.wifi-name{font-size:16px;font-weight:850;margin:0 0 9px;color:#294b32}
 .muted{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
 button{cursor:pointer;font-family:inherit;transition:transform .15s,opacity .15s}
 button:active{transform:scale(.98);opacity:.88}
-.copy,.qr-download{
-margin-top:15px;border:0;border-radius:13px;
-background:var(--dark);color:white;padding:13px 18px;
-font-weight:750;font-size:13px
-}
+.copy,.qr-download{margin-top:15px;border:0;border-radius:14px;background:linear-gradient(135deg,#3c7047,#1d422b);color:white;padding:13px 18px;font-weight:800;font-size:13px;box-shadow:0 5px 14px rgba(26,62,39,.2)}
 .links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.link{
-min-height:76px;display:flex;align-items:center;gap:11px;
-padding:13px;text-decoration:none;color:var(--text);
-background:var(--panel);border:1px solid var(--border);
-border-radius:18px;box-shadow:0 5px 18px rgba(44,54,39,.035);
-transition:.2s
-}
-.link:active{background:var(--soft);transform:scale(.98)}
-.link-icon{
-width:40px;height:40px;flex:0 0 40px;
-display:grid;place-items:center;border-radius:14px;
-background:#edf0e7;color:#536848;font-size:18px
-}
-.link-label{font-size:12px;font-weight:750;overflow-wrap:anywhere}
-.link-arrow{margin-left:auto;color:#a0a394;font-size:14px}
+.link{min-height:76px;display:flex;align-items:center;gap:11px;padding:13px;text-decoration:none;color:var(--text);background:var(--panel);border:1px solid rgba(255,255,255,.8);border-radius:19px;box-shadow:var(--shadow);backdrop-filter:blur(12px);transition:.2s}
+.link:active{background:#e0ead9;transform:scale(.98)}
+.link-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:14px;background:#e5eedf;color:#315b3b;font-size:20px}
+.link-label{font-size:12px;font-weight:800;overflow-wrap:anywhere}
+.link-arrow{margin-left:auto;color:#80917c;font-size:14px}
 .address-card{display:flex;gap:13px;align-items:flex-start}
-.address-icon{
-width:42px;height:42px;flex:0 0 42px;
-border-radius:14px;display:grid;place-items:center;
-background:#edf0e7
-}
-.address-text{font-size:14px;line-height:1.7;color:#51594d}
-.logo{
-display:block;max-width:100px;max-height:100px;
-object-fit:cover;border-radius:20px;margin-bottom:19px
-}
-.cover{
-display:block;width:100%;max-height:270px;
-object-fit:cover;border-radius:18px;margin-bottom:20px
-}
+.address-icon{width:42px;height:42px;flex:0 0 42px;border-radius:14px;display:grid;place-items:center;background:#e5eedf}
+.address-text{font-size:14px;line-height:1.7;color:#405b43}
+.logo{display:block;max-width:100px;max-height:100px;object-fit:cover;border-radius:20px;margin-bottom:19px}
+.cover{display:block;width:100%;max-height:270px;object-fit:cover;border-radius:18px;margin-bottom:20px}
 .gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.gallery img{
-width:100%;height:190px;object-fit:cover;border-radius:17px;
-box-shadow:0 5px 18px rgba(44,54,39,.06)
-}
-.review{
-display:block;text-decoration:none;background:#e9eee3;
-padding:16px;border-radius:15px;color:#4c6242;
-font-weight:800;font-size:13px;border:1px solid #dfe7d7
-}
+.gallery img{width:100%;height:190px;object-fit:cover;border-radius:18px;box-shadow:var(--shadow);border:2px solid rgba(255,255,255,.7)}
+.review{display:block;text-decoration:none;background:#e5efdc;padding:16px;border-radius:15px;color:#315b38;font-weight:850;font-size:13px;border:1px solid #cbdcc2}
 .qr-card{text-align:center}
 #qrcode{display:flex;justify-content:center;margin:20px auto}
 #qrcode img,#qrcode canvas{border-radius:10px}
 .qr-note{font-size:12px;line-height:1.7;color:var(--muted)}
-.share-button{
-width:100%;padding:16px;border:0;border-radius:15px;
-background:var(--dark);color:white;font-size:14px;
-font-weight:800;letter-spacing:.2px;
-box-shadow:0 7px 18px rgba(53,68,49,.13)
-}
-.footer{
-text-align:center;padding:36px 0 27px;
-color:#a0a092;font-size:11px;line-height:1.6
-}
-.footer strong{color:var(--green);letter-spacing:1.5px}
-#status{
-text-align:center;color:#9b573d;font-size:13px;
-margin:15px;overflow-wrap:anywhere
-}
-#stars span{
-cursor:pointer;transition:transform .15s;
-display:inline-block
-}
+.share-button{width:100%;padding:16px;border:0;border-radius:16px;background:linear-gradient(135deg,#3c7047,#1d422b);color:white;font-size:14px;font-weight:850;box-shadow:0 7px 18px rgba(20,50,29,.25)}
+.footer{text-align:center;padding:36px 0 27px;color:#f0f2e8;font-size:11px;line-height:1.6;text-shadow:0 2px 7px #173522}
+.footer strong{color:#c5e2a9;letter-spacing:1.5px}
+#status{text-align:center;color:#ffe2c9;font-size:13px;margin:15px;overflow-wrap:anywhere}
+#stars span{cursor:pointer;transition:transform .15s;display:inline-block}
 #stars span:active{transform:scale(1.2)}
 #ratingSection .card{padding:21px 18px}
 #ratingHint{text-align:center;line-height:1.6}
 #stars{padding:5px 0}
-#feedbackMessage{
-background:#fbfaf6;color:var(--text);
-font-family:inherit;font-size:14px;line-height:1.6;
-outline:none
-}
+#feedbackMessage{background:#fbfaf6;color:var(--text);font-family:inherit;font-size:14px;line-height:1.6;outline:none}
 #feedbackMessage:focus{border-color:var(--green)!important}
 #ratingMessage{text-align:center}
 @media(max-width:390px){
@@ -253,7 +160,6 @@ outline:none
 <button class="share-button" onclick="sharePage()">↗ Поделиться страницей</button>
 </section>
 </main>
-
 <div id="status"></div>
 <footer class="footer">
 <strong>NFC SMART</strong>
@@ -270,12 +176,9 @@ const requestedSlug=new URLSearchParams(location.search).get("slug");
 let wifiPass="",qrInstance=null,activeLang="ru",loadedBusiness=null,selectedRating=0;
 
 const T={
-ru:{
-top:"ИНФОРМАЦИЯ О КОМПАНИИ",wifi:"📶 Wi-Fi",copy:"Скопировать пароль",links:"✦ Контакты и ссылки",address:"📍 Адрес",gallery:"📷 Галерея",reviews:"⭐ Отзывы",review:"Посмотреть отзывы ↗",qr:"📱 QR-код",note:"Отсканируйте код камерой телефона, чтобы открыть страницу.",download:"Скачать QR-код",share:"↗ Поделиться страницей",footer:"Удобная информация о компании в одном касании",pass:"Пароль:",nopass:"Пароль не указан",copied:"Пароль скопирован!",nopassalert:"Пароль не указан",days:["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps","2ГИС"],error:"Не удалось загрузить компанию"},
-kg:{
-top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",wifi:"📶 Wi-Fi",copy:"Сырсөздү көчүрүү",links:"✦ Байланыш жана шилтемелер",address:"📍 Дарек",gallery:"📷 Сүрөттөр",reviews:"⭐ Пикирлер",review:"Пикирлерди көрүү ↗",qr:"📱 QR-код",note:"Баракты ачуу үчүн кодду телефон камерасы менен сканерлеңиз.",download:"QR-кодду жүктөө",share:"↗ Баракты бөлүшүү",footer:"Компания тууралуу маалымат бир тийүүдө",pass:"Сырсөз:",nopass:"Сырсөз көрсөтүлгөн эмес",copied:"Сырсөз көчүрүлдү!",nopassalert:"Сырсөз көрсөтүлгөн эмес",days:["Дүйшөмбү","Шейшемби","Шаршемби","Бейшемби","Жума","Ишемби","Жекшемби"],labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps","2ГИС"],error:"Компанияны жүктөө мүмкүн болгон жок"},
-en:{
-top:"BUSINESS INFORMATION",wifi:"📶 Wi-Fi",copy:"Copy password",links:"✦ Contacts & links",address:"📍 Address",gallery:"📷 Gallery",reviews:"⭐ Reviews",review:"View reviews ↗",qr:"📱 QR code",note:"Scan the code with your phone camera to open this page.",download:"Download QR code",share:"↗ Share page",footer:"Business information in one tap",pass:"Password:",nopass:"Password not provided",copied:"Password copied!",nopassalert:"Password not provided",days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps","2GIS"],error:"Could not load business"}
+ru:{top:"ИНФОРМАЦИЯ О КОМПАНИИ",wifi:"📶 Wi-Fi",copy:"Скопировать пароль",links:"✦ Контакты и ссылки",address:"📍 Адрес",gallery:"📷 Галерея",reviews:"⭐ Отзывы",review:"Посмотреть отзывы ↗",qr:"📱 QR-код",note:"Отсканируйте код камерой телефона, чтобы открыть страницу.",download:"Скачать QR-код",share:"↗ Поделиться страницей",footer:"Удобная информация о компании в одном касании",pass:"Пароль:",nopass:"Пароль не указан",copied:"Пароль скопирован!",nopassalert:"Пароль не указан",days:["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps"],error:"Не удалось загрузить компанию"},
+kg:{top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",wifi:"📶 Wi-Fi",copy:"Сырсөздү көчүрүү",links:"✦ Байланыш жана шилтемелер",address:"📍 Дарек",gallery:"📷 Сүрөттөр",reviews:"⭐ Пикирлер",review:"Пикирлерди көрүү ↗",qr:"📱 QR-код",note:"Баракты ачуу үчүн кодду телефон камерасы менен сканерлеңиз.",download:"QR-кодду жүктөө",share:"↗ Баракты бөлүшүү",footer:"Компания тууралуу маалымат бир тийүүдө",pass:"Сырсөз:",nopass:"Сырсөз көрсөтүлгөн эмес",copied:"Сырсөз көчүрүлдү!",nopassalert:"Сырсөз көрсөтүлгөн эмес",days:["Дүйшөмбү","Шейшемби","Шаршемби","Бейшемби","Жума","Ишемби","Жекшемби"],labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps"],error:"Компанияны жүктөө мүмкүн болгон жок"},
+en:{top:"BUSINESS INFORMATION",wifi:"📶 Wi-Fi",copy:"Copy password",links:"✦ Contacts & links",address:"📍 Address",gallery:"📷 Gallery",reviews:"⭐ Reviews",review:"View reviews ↗",qr:"📱 QR code",note:"Scan the code with your phone camera to open this page.",download:"Download QR code",share:"↗ Share page",footer:"Business information in one tap",pass:"Password:",nopass:"Password not provided",copied:"Password copied!",nopassalert:"Password not provided",days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps"],error:"Could not load business"}
 };
 
 function setLang(lang){
