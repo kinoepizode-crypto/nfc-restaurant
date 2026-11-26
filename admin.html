@@ -17,7 +17,8 @@ h3{margin-top:25px}
 .business{padding:12px 0;border-bottom:1px solid #ddd;overflow-wrap:anywhere}
 .business a{display:block;margin:7px 0}
 .copy{background:#2463eb}
-.delete{background:#dc2626}
+.hide{background:#dc2626}
+.restore{background:#15803d}
 </style>
 </head>
 <body>
@@ -51,8 +52,9 @@ h3{margin-top:25px}
 
 <button onclick="createBusiness()">Создать ресторан и аккаунт владельца</button>
 
-<h3>Рестораны и NFC-ссылки</h3>
+<h3>Рестораны</h3>
 <button onclick="loadBusinesses()">Обновить список</button>
+<button onclick="toggleHidden()">Показать скрытые рестораны</button>
 <div id="list"></div>
 <button onclick="logout()">Выйти</button>
 </div>
@@ -68,6 +70,7 @@ const client=window.supabase.createClient(
 );
 
 const SITE_URL="https://nfc-restaurant-two.vercel.app/";
+let showHidden=false;
 
 function msg(t){
 document.getElementById("status").textContent=t;
@@ -75,6 +78,18 @@ document.getElementById("status").textContent=t;
 
 function publicLink(slug){
 return SITE_URL+"?slug="+encodeURIComponent(slug);
+}
+
+function getHidden(){
+try{
+return JSON.parse(localStorage.getItem("nfc_hidden_businesses")||"[]");
+}catch(e){
+return [];
+}
+}
+
+function saveHidden(ids){
+localStorage.setItem("nfc_hidden_businesses",JSON.stringify(ids));
 }
 
 async function copyLink(slug){
@@ -200,7 +215,18 @@ if(error)throw error;
 const list=document.getElementById("list");
 list.innerHTML="";
 
-data.forEach(b=>{
+const hidden=getHidden();
+
+const filtered=data.filter(b=>
+showHidden?hidden.includes(b.id):!hidden.includes(b.id)
+);
+
+if(filtered.length===0){
+list.textContent=showHidden?"Скрытых ресторанов нет":"Ресторанов нет";
+return;
+}
+
+filtered.forEach(b=>{
 const div=document.createElement("div");
 div.className="business";
 
@@ -218,43 +244,41 @@ copy.className="copy";
 copy.textContent="Скопировать NFC-ссылку";
 copy.onclick=()=>copyLink(b.slug);
 
-const del=document.createElement("button");
-del.className="delete";
-del.textContent="Удалить ресторан";
-del.onclick=()=>deleteBusiness(b.id,b.name);
+const action=document.createElement("button");
 
-div.append(title,link,copy,del);
+if(showHidden){
+action.className="restore";
+action.textContent="Вернуть в админку";
+action.onclick=()=>{
+saveHidden(getHidden().filter(id=>id!==b.id));
+msg("Ресторан возвращён в список");
+loadBusinesses();
+};
+}else{
+action.className="hide";
+action.textContent="Убрать из моей админки";
+action.onclick=()=>{
+if(!confirm("Убрать ресторан из твоего списка? Сайт владельца останется работать."))return;
+saveHidden([...getHidden(),b.id]);
+msg("Ресторан скрыт. Сайт владельца не удалён.");
+loadBusinesses();
+};
+}
+
+div.append(title,link,copy,action);
 list.appendChild(div);
 });
+
 }catch(e){
 msg("Ошибка списка: "+e.message);
 }
 }
 
-async function deleteBusiness(id,name){
-const confirmed=confirm(
-"Удалить ресторан «"+name+"»?\n\n"+
-"Это действие может удалить связанные данные и не может быть отменено."
-);
-
-if(!confirmed)return;
-
-msg("Удаление ресторана...");
-
-try{
-const {error}=await client
-.from("businesses")
-.delete()
-.eq("id",id);
-
-if(error)throw error;
-
-msg("Ресторан удалён: "+name);
-await loadBusinesses();
-
-}catch(e){
-msg("Ошибка удаления: "+e.message);
-}
+function toggleHidden(){
+showHidden=!showHidden;
+document.querySelector("#admin button:nth-of-type(2)").textContent=
+showHidden?"Вернуться к ресторанам":"Показать скрытые рестораны";
+loadBusinesses();
 }
 
 async function logout(){
