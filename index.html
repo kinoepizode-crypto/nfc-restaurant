@@ -42,6 +42,10 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 .address-icon{width:42px;height:42px;flex:0 0 42px;border-radius:13px;display:grid;place-items:center;background:var(--soft);font-size:20px}
 .address-text{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
 .share-button{width:100%;padding:15px;border:0;border-radius:16px;background:var(--dark);color:white;font-size:15px;font-weight:800;cursor:pointer}
+.qr-card{text-align:center}
+#qrcode{display:flex;justify-content:center;margin:15px auto}
+#qrcode img,#qrcode canvas{border-radius:8px}
+.qr-note{color:var(--muted);font-size:13px;line-height:1.5}
 .footer{text-align:center;padding:38px 0 28px;color:#899184;font-size:12px}
 .footer strong{color:var(--green);letter-spacing:1px}
 #status{color:#9b573d;font-size:13px;text-align:center;margin:12px 0;overflow-wrap:anywhere}
@@ -88,6 +92,14 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 </section>
 
 <section class="section">
+<h2 class="section-title">📱 QR-код компании</h2>
+<div class="card qr-card">
+<div id="qrcode"></div>
+<p class="qr-note">Наведите камеру телефона на QR-код, чтобы открыть страницу компании.</p>
+</div>
+</section>
+
+<section class="section">
 <button class="share-button" onclick="sharePage()">↗ Поделиться страницей</button>
 </section>
 </main>
@@ -100,6 +112,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 const client=window.supabase.createClient(
 "https://pyeydqohexospkzzehtz.supabase.co",
@@ -169,6 +182,15 @@ document.getElementById("addressSection").style.display=
 d.address?"block":"none";
 
 document.getElementById("address").textContent=d.address||"";
+
+const qr=document.getElementById("qrcode");
+qr.innerHTML="";
+new QRCode(qr,{
+text:location.href,
+width:190,
+height:190,
+correctLevel:QRCode.CorrectLevel.H
+});
 }
 
 async function load(){
