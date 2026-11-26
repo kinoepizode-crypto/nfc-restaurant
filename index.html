@@ -4,512 +4,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f4f1e8">
+<meta name="theme-color" content="#f5f5ef">
 <title>NFC SMART</title>
 <style>
 *{box-sizing:border-box}
-:root{--bg:#f4f1e8;--panel:#fffdf8;--soft:#e8eee2;--green:#647b4f;--dark:#344b35;--text:#26352a;--muted:#788476;--border:rgba(67,86,58,.13)}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-.container{width:min(100% - 28px,760px);margin:auto}
-.brand{font-size:20px;font-weight:900;letter-spacing:1.5px;color:var(--dark);padding:23px 0}
-.brand span{color:#82956a}
-.lang-switch{display:flex;gap:7px;margin-bottom:15px}
-.lang-switch button{border:1px solid var(--border);background:var(--panel);color:var(--dark);padding:9px 14px;border-radius:10px;font-weight:bold}
-.lang-switch button.active{background:var(--dark);color:white}
-.hero{overflow:hidden;padding:30px 25px;border-radius:26px;background:linear-gradient(135deg,#e4eadb,#d4dfca 55%,#c5d3b9);border:1px solid rgba(83,108,70,.16)}
-.logo{width:90px;height:90px;border-radius:22px;object-fit:cover;background:#fff;margin-bottom:16px}
-.cover{width:100%;max-height:300px;object-fit:cover;border-radius:20px;margin-bottom:18px}
-.eyebrow{font-size:11px;font-weight:800;letter-spacing:2px;color:#536b48}
-h1{font-size:clamp(30px,7vw,48px);line-height:1.08;letter-spacing:-1.5px;margin:17px 0 10px;color:#263b2b;overflow-wrap:anywhere}
-.description{font-size:15px;line-height:1.7;color:#53644f;white-space:pre-wrap}
-.category{display:inline-block;margin-top:13px;background:#ffffff80;padding:9px 14px;border-radius:30px;font-size:13px;color:#43583d;font-weight:bold}
-.section{margin-top:26px}
-.section-title{font-size:17px;font-weight:800;margin:0 0 13px;color:var(--dark)}
-.card{background:var(--panel);border:1px solid var(--border);padding:19px;border-radius:19px;box-shadow:0 8px 24px rgba(66,79,54,.045)}
-.wifi-name{font-size:17px;font-weight:800;margin:0 0 7px}
-.muted{color:var(--muted);font-size:14px;overflow-wrap:anywhere}
-button{cursor:pointer}
-.copy{margin-top:14px;border:0;border-radius:12px;background:var(--green);color:white;padding:12px 16px;font-weight:750}
+:root{--bg:#f5f5ef;--panel:#fff;--soft:#edf1e8;--green:#55734d;--dark:#263b2d;--text:#26332b;--muted:#758078;--border:#e4e8df}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+.container{width:min(100% - 28px,720px);margin:auto}
+.brand{font-size:19px;font-weight:900;letter-spacing:1.4px;color:var(--dark);padding:24px 0}.brand span{color:#78916b}
+.lang-switch{display:flex;gap:8px;margin-bottom:16px}.lang-switch button{border:1px solid var(--border);background:white;color:var(--dark);padding:10px 15px;border-radius:12px;font-weight:700}.lang-switch button.active{background:var(--dark);color:white}
+.hero{padding:30px 25px;border-radius:26px;background:linear-gradient(145deg,#e8eee2,#dbe5d3);border:1px solid #d5dfce}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:1.8px;color:#58704e}
+h1{font-size:clamp(30px,7vw,45px);line-height:1.1;letter-spacing:-1.2px;margin:15px 0 10px;color:#263b2d;overflow-wrap:anywhere}
+.description{font-size:15px;line-height:1.7;color:#53644f;white-space:pre-wrap;margin-bottom:0}
+.category{display:inline-block;margin-top:15px;background:#ffffffa8;padding:9px 14px;border-radius:30px;font-size:13px;color:#43583d;font-weight:bold}
+.section{margin-top:25px}.section-title{font-size:17px;font-weight:800;margin:0 0 13px;color:var(--dark)}
+.card{background:var(--panel);border:1px solid var(--border);padding:19px;border-radius:20px;box-shadow:0 7px 22px rgba(40,60,40,.04)}
+.wifi-name{font-size:17px;font-weight:800;margin:0 0 8px}.muted{color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+button{cursor:pointer}.copy,.qr-download{margin-top:14px;border:0;border-radius:13px;background:var(--green);color:white;padding:13px 16px;font-weight:750}
 .links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.link{min-height:78px;display:flex;align-items:center;gap:11px;padding:14px;text-decoration:none;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:17px}
-.link-icon{width:40px;height:40px;flex:0 0 40px;display:grid;place-items:center;border-radius:13px;background:var(--soft);font-size:20px}
-.link-label{font-size:13px;font-weight:750;overflow-wrap:anywhere}
-.link-arrow{margin-left:auto;color:var(--muted)}
-.address-card{display:flex;gap:12px;align-items:flex-start}
-.address-icon{width:40px;height:40px;flex:0 0 40px;border-radius:13px;display:grid;place-items:center;background:var(--soft)}
-.address-text{font-size:14px;line-height:1.6}
-.hours{display:grid;gap:10px}
-.hours-row{display:flex;justify-content:space-between;gap:12px;font-size:14px;border-bottom:1px solid var(--border);padding-bottom:10px}
-.hours-row:last-child{border:0;padding-bottom:0}
-.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.gallery img{width:100%;height:190px;object-fit:cover;border-radius:15px}
+.link{min-height:75px;display:flex;align-items:center;gap:11px;padding:13px;text-decoration:none;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:17px;transition:transform .15s,box-shadow .15s}
+.link:active{transform:scale(.98)}.link-icon{width:40px;height:40px;flex:0 0 40px;display:grid;place-items:center;border-radius:13px;background:var(--soft);font-size:20px}
+.link-label{font-size:13px;font-weight:750;overflow-wrap:anywhere}.link-arrow{margin-left:auto;color:var(--muted)}
+.address-card{display:flex;gap:12px;align-items:flex-start}.address-icon{width:40px;height:40px;flex:0 0 40px;border-radius:13px;display:grid;place-items:center;background:var(--soft)}.address-text{font-size:14px;line-height:1.6}
+.hours{display:grid;gap:10px}.hours-row{display:flex;justify-content:space-between;gap:12px;font-size:14px;border-bottom:1px solid var(--border);padding-bottom:10px}.hours-row:last-child{border:0;padding-bottom:0}
 .review{display:block;text-decoration:none;background:var(--soft);padding:15px;border-radius:14px;color:var(--dark);font-weight:bold}
-.qr-card{text-align:center}
-#qrcode{display:flex;justify-content:center;margin:18px auto}
-#qrcode img,#qrcode canvas{border-radius:8px}
-.qr-note{font-size:13px;line-height:1.6;color:var(--muted)}
-.qr-download{border:0;border-radius:12px;background:var(--green);color:white;padding:12px 16px;font-weight:bold}
-.share-button{width:100%;padding:15px;border:0;border-radius:16px;background:var(--dark);color:white;font-size:15px;font-weight:800}
-.footer{text-align:center;padding:38px 0 28px;color:#899184;font-size:12px}
-.footer strong{color:var(--green);letter-spacing:1px}
+.qr-card{text-align:center}#qrcode{display:flex;justify-content:center;margin:18px auto}#qrcode img,#qrcode canvas{border-radius:8px}.qr-note{font-size:13px;line-height:1.6;color:var(--muted)}
+.share-button{width:100%;padding:16px;border:0;border-radius:16px;background:var(--dark);color:white;font-size:15px;font-weight:800}
+.footer{text-align:center;padding:38px 0 28px;color:#899184;font-size:12px}.footer strong{color:var(--green);letter-spacing:1px}
 #status{text-align:center;color:#9b573d;font-size:13px;margin:15px;overflow-wrap:anywhere}
-@media(max-width:390px){.gallery img{height:145px}.links{gap:8px}.link{padding:11px;gap:9px}.link-icon{width:36px;height:36px;flex-basis:36px}}
+#logo,#cover,#gallerySection{display:none!important}
+@media(max-width:390px){.links{gap:8px}.link{padding:11px;gap:9px}.link-icon{width:36px;height:36px;flex-basis:36px}}
 </style>
 </head>
 <body>
 <div class="container">
-<header>
-<div class="brand">NFC <span>SMART</span></div>
-<div class="lang-switch">
-<button id="btnru" onclick="setLang('ru')">RU</button>
-<button id="btnkg" onclick="setLang('kg')">KG</button>
-<button id="btnen" onclick="setLang('en')">EN</button>
-</div>
-</header>
-
+<header><div class="brand">NFC <span>SMART</span></div>
+<div class="lang-switch"><button id="btnru" onclick="setLang('ru')">RU</button><button id="btnkg" onclick="setLang('kg')">KG</button><button id="btnen" onclick="setLang('en')">EN</button></div></header>
 <main>
-<section class="hero">
-<img id="logo" class="logo" style="display:none">
-<img id="cover" class="cover" style="display:none">
-<div class="eyebrow">ИНФОРМАЦИЯ О КОМПАНИИ</div>
-<h1 id="name">Загрузка...</h1>
-<p class="description" id="description"></p>
-<div id="category" class="category" style="display:none"></div>
-</section>
-
-<section id="wifiSection" class="section" style="display:none">
-<h2 class="section-title">📶 Wi-Fi</h2>
-<div class="card">
-<p class="wifi-name" id="wifiName"></p>
-<div class="muted" id="wifiPassword"></div>
-<button class="copy" onclick="copyPassword()">Скопировать пароль</button>
+<section class="hero"><img id="logo" class="logo" style="display:none"><img id="cover" class="cover" style="display:none"><div class="eyebrow">ИНФОРМАЦИЯ О КОМПАНИИ</div><h1 id="name">Загрузка...</h1><p class="description" id="description"></p><div id="category" class="category" style="display:none"></div></section>
+<section id="wifiSection" class="section" style="display:none"><h2 class="section-title">📶 Wi-Fi</h2><div class="card"><p class="wifi-name" id="wifiName"></p><div class="muted" id="wifiPassword"></div><button class="copy" onclick="copyPassword()">Скопировать пароль</button></div></section>
+<section id="linksSection" class="section" style="display:none"><h2 class="section-title">✦ Контакты и ссылки</h2><div class="links" id="links"></div></section>
+<section id="addressSection" class="section" style="display:none"><h2 class="section-title">📍 Адрес</h2><div class="card address-card"><div class="address-icon">📍</div><div class="address-text" id="address"></div></div></section>
+<section id="hoursSection" class="section" style="display:none"><h2 class="section-title">🕒 Часы работы</h2><div class="card"><div class="hours" id="hours"></div></div></section>
+<section id="gallerySection" class="section" style="display:none"><h2 class="section-title">📷 Галерея</h2><div class="gallery" id="gallery"></div></section>
+<section id="reviewsSection" class="section" style="display:none"><h2 class="section-title">⭐ Отзывы</h2><a class="review" id="reviews" target="_blank" rel="noopener noreferrer">Посмотреть отзывы ↗</a></section>
+<section class="section"><h2 class="section-title" id="qrTitle">📱 QR-код</h2><div class="card qr-card"><div id="qrcode"></div><p class="qr-note">Отсканируйте код камерой телефона, чтобы открыть страницу.</p><button class="qr-download" onclick="downloadQR()">Скачать QR-код</button></div></section>
+<section class="section"><button class="share-button" onclick="sharePage()">↗ Поделиться страницей</button></section>
+</main><div id="status"></div><footer class="footer"><strong>NFC SMART</strong><div style="margin-top:8px">Удобная информация о компании в одном касании</div></footer>
 </div>
-</section>
-
-<section id="linksSection" class="section" style="display:none">
-<h2 class="section-title">✦ Контакты и ссылки</h2>
-<div class="links" id="links"></div>
-</section>
-
-<section id="addressSection" class="section" style="display:none">
-<h2 class="section-title">📍 Адрес</h2>
-<div class="card address-card">
-<div class="address-icon">📍</div>
-<div class="address-text" id="address"></div>
-</div>
-</section>
-
-<section id="hoursSection" class="section" style="display:none">
-<h2 class="section-title">🕒 Часы работы</h2>
-<div class="card"><div class="hours" id="hours"></div></div>
-</section>
-
-<section id="gallerySection" class="section" style="display:none">
-<h2 class="section-title">📷 Галерея</h2>
-<div class="gallery" id="gallery"></div>
-</section>
-
-<section id="reviewsSection" class="section" style="display:none">
-<h2 class="section-title">⭐ Отзывы</h2>
-<a class="review" id="reviews" target="_blank" rel="noopener noreferrer">Посмотреть отзывы ↗</a>
-</section>
-
-<section class="section">
-<h2 class="section-title" id="qrTitle">📱 QR-код</h2>
-<div class="card qr-card">
-<div id="qrcode"></div>
-<p class="qr-note">Отсканируйте код камерой телефона, чтобы открыть страницу.</p>
-<button class="qr-download" onclick="downloadQR()">Скачать QR-код</button>
-</div>
-</section>
-
-<section class="section">
-<button class="share-button" onclick="sharePage()">↗ Поделиться страницей</button>
-</section>
-</main>
-
-<div id="status"></div>
-<footer class="footer">
-<strong>NFC SMART</strong>
-<div style="margin-top:8px">Удобная информация о компании в одном касании</div>
-</footer>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-const client=window.supabase.createClient(
-"https://pyeydqohexospkzzehtz.supabase.co",
-"sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc"
-);
-
-const demoBusinessId="797bc6ec-0df3-4198-bb06-90c1456efc69";
-const requestedSlug=new URLSearchParams(location.search).get("slug");
-
-let wifiPass="";
-let qrInstance=null;
-let activeLang="ru";
-let loadedBusiness=null;
-
+const client=window.supabase.createClient("https://pyeydqohexospkzzehtz.supabase.co","sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc");
+const demoBusinessId="797bc6ec-0df3-4198-bb06-90c1456efc69",requestedSlug=new URLSearchParams(location.search).get("slug");
+let wifiPass="",qrInstance=null,activeLang="ru",loadedBusiness=null;
 const T={
-ru:{
-top:"ИНФОРМАЦИЯ О КОМПАНИИ",
-wifi:"📶 Wi-Fi",
-copy:"Скопировать пароль",
-links:"✦ Контакты и ссылки",
-address:"📍 Адрес",
-hours:"🕒 Часы работы",
-gallery:"📷 Галерея",
-reviews:"⭐ Отзывы",
-review:"Посмотреть отзывы ↗",
-qr:"📱 QR-код",
-note:"Отсканируйте код камерой телефона, чтобы открыть страницу.",
-download:"Скачать QR-код",
-share:"↗ Поделиться страницей",
-footer:"Удобная информация о компании в одном касании",
-pass:"Пароль:",
-nopass:"Пароль не указан",
-copied:"Пароль скопирован!",
-nopassalert:"Пароль не указан",
-days:["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],
-labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps","2ГИС"],
-error:"Не удалось загрузить компанию"
-},
-
-kg:{
-top:"КОМПАНИЯ ЖӨНҮНДӨ МААЛЫМАТ",
-wifi:"📶 Wi-Fi",
-copy:"Сырсөздү көчүрүү",
-links:"✦ Байланыш жана шилтемелер",
-address:"📍 Дарек",
-hours:"🕒 Иштөө убактысы",
-gallery:"📷 Сүрөттөр",
-reviews:"⭐ Пикирлер",
-review:"Пикирлерди көрүү ↗",
-qr:"📱 QR-код",
-note:"Баракты ачуу үчүн кодду телефон камерасы менен сканерлеңиз.",
-download:"QR-кодду жүктөө",
-share:"↗ Баракты бөлүшүү",
-footer:"Компания тууралуу маалымат бир тийүүдө",
-pass:"Сырсөз:",
-nopass:"Сырсөз көрсөтүлгөн эмес",
-copied:"Сырсөз көчүрүлдү!",
-nopassalert:"Сырсөз көрсөтүлгөн эмес",
-days:["Дүйшөмбү","Шейшемби","Шаршемби","Бейшемби","Жума","Ишемби","Жекшемби"],
-labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps","2ГИС"],
-error:"Компанияны жүктөө мүмкүн болгон жок"
-},
-
-en:{
-top:"BUSINESS INFORMATION",
-wifi:"📶 Wi-Fi",
-copy:"Copy password",
-links:"✦ Contacts & links",
-address:"📍 Address",
-hours:"🕒 Opening hours",
-gallery:"📷 Gallery",
-reviews:"⭐ Reviews",
-review:"View reviews ↗",
-qr:"📱 QR code",
-note:"Scan the code with your phone camera to open this page.",
-download:"Download QR code",
-share:"↗ Share page",
-footer:"Business information in one tap",
-pass:"Password:",
-nopass:"Password not provided",
-copied:"Password copied!",
-nopassalert:"Password not provided",
-days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps","2GIS"],
-error:"Could not load business"
-}
+ru:{top:"ИНФОРМАЦИЯ О КОМПАНИИ",wifi:"📶 Wi-Fi",copy:"Скопировать пароль",links:"✦ Контакты и ссылки",address:"📍 Адрес",hours:"🕒 Часы работы",gallery:"📷 Галерея",reviews:"⭐ Отзывы",review:"Посмотреть отзывы ↗",qr:"📱 QR-код",note:"Отсканируйте код камерой телефона, чтобы открыть страницу.",download:"Скачать QR-код",share:"↗ Поделиться страницей",footer:"Удобная информация о компании в одном касании",pass:"Пароль:",nopass:"Пароль не указан",copied:"Пароль скопирован!",nopassalert:"Пароль не указан",days:["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps","2ГИС"],error:"Не удалось загрузить компанию"},
+kg:{top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",wifi:"📶 Wi-Fi",copy:"Сырсөздү көчүрүү",links:"✦ Байланыш жана шилтемелер",address:"📍 Дарек",hours:"🕒 Иштөө убактысы",gallery:"📷 Сүрөттөр",reviews:"⭐ Пикирлер",review:"Пикирлерди көрүү ↗",qr:"📱 QR-код",note:"Баракты ачуу үчүн кодду телефон камерасы менен сканерлеңиз.",download:"QR-кодду жүктөө",share:"↗ Баракты бөлүшүү",footer:"Компания тууралуу маалымат бир тийүүдө",pass:"Сырсөз:",nopass:"Сырсөз көрсөтүлгөн эмес",copied:"Сырсөз көчүрүлдү!",nopassalert:"Сырсөз көрсөтүлгөн эмес",days:["Дүйшөмбү","Шейшемби","Шаршемби","Бейшемби","Жума","Ишемби","Жекшемби"],labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps","2ГИС"],error:"Компанияны жүктөө мүмкүн болгон жок"},
+en:{top:"BUSINESS INFORMATION",wifi:"📶 Wi-Fi",copy:"Copy password",links:"✦ Contacts & links",address:"📍 Address",hours:"🕒 Opening hours",gallery:"📷 Gallery",reviews:"⭐ Reviews",review:"View reviews ↗",qr:"📱 QR code",note:"Scan the code with your phone camera to open this page.",download:"Download QR code",share:"↗ Share page",footer:"Business information in one tap",pass:"Password:",nopass:"Password not provided",copied:"Password copied!",nopassalert:"Password not provided",days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps","2GIS"],error:"Could not load business"}
 };
-
-function setLang(lang){
-activeLang=lang;
-document.documentElement.lang=lang;
-
-["ru","kg","en"].forEach(x=>{
-document.getElementById("btn"+x).classList.toggle("active",x===lang);
-});
-
-const t=T[lang];
-
-document.querySelector(".eyebrow").textContent=t.top;
-document.querySelector("#wifiSection .section-title").textContent=t.wifi;
-document.querySelector(".copy").textContent=t.copy;
-document.querySelector("#linksSection .section-title").textContent=t.links;
-document.querySelector("#addressSection .section-title").textContent=t.address;
-document.querySelector("#hoursSection .section-title").textContent=t.hours;
-document.querySelector("#gallerySection .section-title").textContent=t.gallery;
-document.querySelector("#reviewsSection .section-title").textContent=t.reviews;
-document.getElementById("reviews").textContent=t.review;
-document.getElementById("qrTitle").textContent=t.qr;
-document.querySelector(".qr-note").textContent=t.note;
-document.querySelector(".qr-download").textContent=t.download;
-document.querySelector(".share-button").textContent=t.share;
-document.querySelector(".footer div").textContent=t.footer;
-
-if(loadedBusiness)renderBusiness(loadedBusiness);
-}
-
-function addLink(container,label,url,icon){
-if(!url)return;
-
-const a=document.createElement("a");
-a.className="link";
-a.href=url;
-a.target="_blank";
-a.rel="noopener noreferrer";
-
-const ico=document.createElement("span");
-ico.className="link-icon";
-ico.textContent=icon;
-
-const text=document.createElement("span");
-text.className="link-label";
-text.textContent=label;
-
-const arrow=document.createElement("span");
-arrow.className="link-arrow";
-arrow.textContent="↗";
-
-a.append(ico,text,arrow);
-container.appendChild(a);
-}
-
-function renderHours(data){
-const section=document.getElementById("hoursSection");
-const container=document.getElementById("hours");
-container.innerHTML="";
-
-if(!data||typeof data!=="object"||!Object.keys(data).length){
-section.style.display="none";
-return;
-}
-
-const sourceDays=[
-"Понедельник","Вторник","Среда",
-"Четверг","Пятница","Суббота","Воскресенье"
-];
-
-const translatedDays=T[activeLang].days;
-
-sourceDays.forEach((day,i)=>{
-if(!(day in data))return;
-
-const row=document.createElement("div");
-row.className="hours-row";
-
-const a=document.createElement("span");
-a.textContent=translatedDays[i];
-
-const b=document.createElement("strong");
-b.textContent=data[day];
-
-row.append(a,b);
-container.append(row);
-});
-
-section.style.display=container.children.length?"block":"none";
-}
-
-function renderGallery(data){
-const section=document.getElementById("gallerySection");
-const container=document.getElementById("gallery");
-container.innerHTML="";
-
-let photos=data;
-
-if(typeof photos==="string"){
-try{photos=JSON.parse(photos)}
-catch(e){photos=[]}
-}
-
-if(!Array.isArray(photos)||!photos.length){
-section.style.display="none";
-return;
-}
-
-photos.forEach(url=>{
-if(typeof url!=="string"||!url.trim())return;
-
-const img=document.createElement("img");
-img.src=url;
-img.alt="Фото компании";
-img.loading="lazy";
-
-container.appendChild(img);
-});
-
-section.style.display=container.children.length?"block":"none";
-}
-
-function renderBusiness(d){
-loadedBusiness=d;
-
-document.getElementById("name").textContent=d.name||"";
-document.getElementById("description").textContent=d.description||"";
-document.title=(d.name||"Компания")+" — NFC SMART";
-
-const logo=document.getElementById("logo");
-logo.style.display="none";
-
-if(d.logo_url){
-logo.src=d.logo_url;
-logo.style.display="block";
-}
-
-const cover=document.getElementById("cover");
-cover.style.display="none";
-
-if(d.cover_url){
-cover.src=d.cover_url;
-cover.style.display="block";
-}
-
-const category=document.getElementById("category");
-category.style.display="none";
-
-if(d.category){
-category.textContent=d.category;
-category.style.display="inline-block";
-}
-
-document.getElementById("wifiSection").style.display=
-(d.wifi_name||d.wifi_password)?"block":"none";
-
-document.getElementById("wifiName").textContent=d.wifi_name||"Wi-Fi";
-
-wifiPass=d.wifi_password||"";
-
-document.getElementById("wifiPassword").textContent=
-wifiPass?T[activeLang].pass+" "+wifiPass:T[activeLang].nopass;
-
-const links=document.getElementById("links");
-links.innerHTML="";
-
-const items=[
-[T[activeLang].labels[0],d.menu_url,"📋"],
-[T[activeLang].labels[1],d.phone?"tel:"+d.phone:null,"📞"],
-[T[activeLang].labels[2],d.instagram?(d.instagram.startsWith("http")?d.instagram:"https://instagram.com/"+d.instagram.replace("@","")):null,"📸"],
-[T[activeLang].labels[3],d.whatsapp?(d.whatsapp.startsWith("http")?d.whatsapp:"https://wa.me/"+d.whatsapp.replace(/\D/g,"")):null,"💬"],
-[T[activeLang].labels[4],d.maps_url,"🗺️"],
-[T[activeLang].labels[5],d.two_gis_url,"📍"]
-];
-
-items.forEach(x=>addLink(links,x[0],x[1],x[2]));
-
-document.getElementById("linksSection").style.display=
-links.children.length?"block":"none";
-
-document.getElementById("addressSection").style.display=
-d.address?"block":"none";
-
-document.getElementById("address").textContent=d.address||"";
-
-renderHours(d.opening_hours);
-renderGallery(d.gallery);
-
-if(d.reviews_url){
-const r=document.getElementById("reviews");
-r.href=d.reviews_url;
-document.getElementById("reviewsSection").style.display="block";
-}else{
-document.getElementById("reviewsSection").style.display="none";
-}
-
-const qr=document.getElementById("qrcode");
-qr.innerHTML="";
-
-qrInstance=new QRCode(qr,{
-text:location.href,
-width:190,
-height:190,
-correctLevel:QRCode.CorrectLevel.H
-});
-}
-
-async function load(){
-try{
-let q=client.from("businesses").select("*");
-q=requestedSlug?q.eq("slug",requestedSlug):q.eq("id",demoBusinessId);
-
-const {data,error}=await q.maybeSingle();
-
-if(error)throw error;
-if(!data)throw new Error("Компания не найдена");
-
-renderBusiness(data);
-document.getElementById("status").textContent="";
-
-}catch(e){
-document.getElementById("name").textContent=T[activeLang].error;
-document.getElementById("status").textContent=e.message;
-console.error(e);
-}
-}
-
-async function copyPassword(){
-if(!wifiPass){
-alert(T[activeLang].nopassalert);
-return;
-}
-
-try{
-await navigator.clipboard.writeText(wifiPass);
-alert(T[activeLang].copied);
-}catch(e){
-alert(wifiPass);
-}
-}
-
-function downloadQR(){
-const canvas=document.querySelector("#qrcode canvas");
-const img=document.querySelector("#qrcode img");
-
-let url=canvas?canvas.toDataURL("image/png"):img?img.src:null;
-
-if(!url){
-alert("QR-код ещё загружается");
-return;
-}
-
-const a=document.createElement("a");
-a.href=url;
-a.download="NFC-SMART-QR.png";
-a.click();
-}
-
-async function sharePage(){
-const s={
-title:document.getElementById("name").textContent,
-text:T[activeLang].top,
-url:location.href
-};
-
-try{
-if(navigator.share){
-await navigator.share(s);
-}else{
-await navigator.clipboard.writeText(location.href);
-alert("Ссылка скопирована!");
-}
-}catch(e){
-if(e.name!=="AbortError"){
-try{
-await navigator.clipboard.writeText(location.href);
-alert("Ссылка скопирована!");
-}catch(err){
-prompt("Скопируйте ссылку:",location.href);
-}
-}
-}
-}
-
-setLang("ru");
-load();
+function setLang(lang){activeLang=lang;document.documentElement.lang=lang;["ru","kg","en"].forEach(x=>document.getElementById("btn"+x).classList.toggle("active",x===lang));const t=T[lang];document.querySelector(".eyebrow").textContent=t.top;document.querySelector("#wifiSection .section-title").textContent=t.wifi;document.querySelector(".copy").textContent=t.copy;document.querySelector("#linksSection .section-title").textContent=t.links;document.querySelector("#addressSection .section-title").textContent=t.address;document.querySelector("#hoursSection .section-title").textContent=t.hours;document.querySelector("#gallerySection .section-title").textContent=t.gallery;document.querySelector("#reviewsSection .section-title").textContent=t.reviews;document.getElementById("reviews").textContent=t.review;document.getElementById("qrTitle").textContent=t.qr;document.querySelector(".qr-note").textContent=t.note;document.querySelector(".qr-download").textContent=t.download;document.querySelector(".share-button").textContent=t.share;document.querySelector(".footer div").textContent=t.footer;if(loadedBusiness)renderBusiness(loadedBusiness)}
+function addLink(container,label,url,icon){if(!url)return;const a=document.createElement("a");a.className="link";a.href=url;a.target="_blank";a.rel="noopener noreferrer";const ico=document.createElement("span");ico.className="link-icon";ico.textContent=icon;const text=document.createElement("span");text.className="link-label";text.textContent=label;const arrow=document.createElement("span");arrow.className="link-arrow";arrow.textContent="↗";a.append(ico,text,arrow);container.appendChild(a)}
+function renderHours(data){const section=document.getElementById("hoursSection"),container=document.getElementById("hours");container.innerHTML="";if(!data||typeof data!=="object"||!Object.keys(data).length){section.style.display="none";return}const sourceDays=["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],translatedDays=T[activeLang].days;sourceDays.forEach((day,i)=>{if(!(day in data))return;const row=document.createElement("div");row.className="hours-row";const a=document.createElement("span");a.textContent=translatedDays[i];const b=document.createElement("strong");b.textContent=data[day];row.append(a,b);container.append(row)});section.style.display=container.children.length?"block":"none"}
+function renderGallery(data){const section=document.getElementById("gallerySection"),container=document.getElementById("gallery");container.innerHTML="";let photos=data;if(typeof photos==="string"){try{photos=JSON.parse(photos)}catch(e){photos=[]}}if(!Array.isArray(photos)||!photos.length){section.style.display="none";return}photos.forEach(url=>{if(typeof url!=="string"||!url.trim())return;const img=document.createElement("img");img.src=url;img.alt="Фото компании";img.loading="lazy";container.appendChild(img)});section.style.display=container.children.length?"block":"none"}
+function renderBusiness(d){loadedBusiness=d;document.getElementById("name").textContent=d.name||"";document.getElementById("description").textContent=d.description||"";document.title=(d.name||"Компания")+" — NFC SMART";const logo=document.getElementById("logo");logo.style.display="none";if(d.logo_url){logo.src=d.logo_url;logo.style.display="block"}const cover=document.getElementById("cover");cover.style.display="none";if(d.cover_url){cover.src=d.cover_url;cover.style.display="block"}const category=document.getElementById("category");category.style.display="none";if(d.category){category.textContent=d.category;category.style.display="inline-block"}document.getElementById("wifiSection").style.display=(d.wifi_name||d.wifi_password)?"block":"none";document.getElementById("wifiName").textContent=d.wifi_name||"Wi-Fi";wifiPass=d.wifi_password||"";document.getElementById("wifiPassword").textContent=wifiPass?T[activeLang].pass+" "+wifiPass:T[activeLang].nopass;const links=document.getElementById("links");links.innerHTML="";const items=[[T[activeLang].labels[0],d.menu_url,"📋"],[T[activeLang].labels[1],d.phone?"tel:"+d.phone:null,"📞"],[T[activeLang].labels[2],d.instagram?(d.instagram.startsWith("http")?d.instagram:"https://instagram.com/"+d.instagram.replace("@","")):null,"📸"],[T[activeLang].labels[3],d.whatsapp?(d.whatsapp.startsWith("http")?d.whatsapp:"https://wa.me/"+d.whatsapp.replace(/\D/g,"")):null,"💬"],[T[activeLang].labels[4],d.maps_url,"🗺️"],[T[activeLang].labels[5],d.two_gis_url,"📍"]];items.forEach(x=>addLink(links,x[0],x[1],x[2]));document.getElementById("linksSection").style.display=links.children.length?"block":"none";document.getElementById("addressSection").style.display=d.address?"block":"none";document.getElementById("address").textContent=d.address||"";renderHours(d.opening_hours);renderGallery(d.gallery);if(d.reviews_url){const r=document.getElementById("reviews");r.href=d.reviews_url;document.getElementById("reviewsSection").style.display="block"}else document.getElementById("reviewsSection").style.display="none";const qr=document.getElementById("qrcode");qr.innerHTML="";qrInstance=new QRCode(qr,{text:location.href,width:190,height:190,correctLevel:QRCode.CorrectLevel.H})}
+async function load(){try{let q=client.from("businesses").select("*");q=requestedSlug?q.eq("slug",requestedSlug):q.eq("id",demoBusinessId);const {data,error}=await q.maybeSingle();if(error)throw error;if(!data)throw new Error("Компания не найдена");renderBusiness(data);document.getElementById("status").textContent=""}catch(e){document.getElementById("name").textContent=T[activeLang].error;document.getElementById("status").textContent=e.message;console.error(e)}}
+async function copyPassword(){if(!wifiPass){alert(T[activeLang].nopassalert);return}try{await navigator.clipboard.writeText(wifiPass);alert(T[activeLang].copied)}catch(e){alert(wifiPass)}}
+function downloadQR(){const canvas=document.querySelector("#qrcode canvas"),img=document.querySelector("#qrcode img");let url=canvas?canvas.toDataURL("image/png"):img?img.src:null;if(!url){alert("QR-код ещё загружается");return}const a=document.createElement("a");a.href=url;a.download="NFC-SMART-QR.png";a.click()}
+async function sharePage(){const s={title:document.getElementById("name").textContent,text:T[activeLang].top,url:location.href};try{if(navigator.share)await navigator.share(s);else{await navigator.clipboard.writeText(location.href);alert("Ссылка скопирована!")}}catch(e){if(e.name!=="AbortError"){try{await navigator.clipboard.writeText(location.href);alert("Ссылка скопирована!")}catch(err){prompt("Скопируйте ссылку:",location.href)}}}}
+setLang("ru");load();
 </script>
 </body>
 </html>
