@@ -19,6 +19,7 @@ textarea{min-height:90px;resize:vertical}
 button{border:0;background:#647b4f;color:white;font-weight:bold;cursor:pointer}
 button.secondary{background:#344b35}
 button.gray{background:#788476}
+button.done{background:#526b46}
 label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644f}
 .hours-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .file{background:#e8eee2}
@@ -26,10 +27,14 @@ label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644
 #status{white-space:pre-wrap;font-size:14px;color:#536b48;margin:12px 0}
 .small{font-size:12px}
 .preview{max-width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-top:8px}
+.feedback-item{padding:15px;margin-top:12px;border:1px solid #dfe5d7;border-radius:15px;background:#f8f7f1}
+.feedback-date{font-size:12px;color:#788476}
+.feedback-message{white-space:pre-wrap;color:#26352a;overflow-wrap:anywhere}
 </style>
 </head>
 <body>
 <div class="container">
+
 <div class="card">
 <h1>NFC SMART</h1>
 <p>Панель управления страницей вашего бизнеса</p>
@@ -101,11 +106,19 @@ label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644
 <input id="reviews_url" placeholder="Ссылка на отзывы">
 </div>
 
+<div class="card" id="feedbackCard">
+<h2>📩 Жалобы клиентов</h2>
+<p class="small">Отзывы клиентов с оценкой 1–3 звезды.</p>
+<button class="gray" onclick="loadFeedback()">🔄 Обновить жалобы</button>
+<div id="feedbackList">Жалобы загружаются...</div>
+</div>
+
 <div class="card">
 <button onclick="save()">💾 Сохранить всё</button>
 <button class="secondary" onclick="openPage()">🌐 Открыть мою страницу</button>
 <button class="gray" onclick="logout()">Выйти</button>
 </div>
+
 </div>
 
 <div id="status"></div>
@@ -219,7 +232,11 @@ document.getElementById("h"+i).value=val;
 
 document.getElementById("login").style.display="none";
 document.getElementById("panel").style.display="block";
+
 message("Данные загружены");
+
+await loadFeedback();
+
 }catch(e){message("Ошибка: "+e.message)}
 }
 
@@ -335,6 +352,84 @@ showGallery();
 
 message("Успешно сохранено!");
 }catch(e){message("Ошибка сохранения: "+e.message)}
+}
+
+async function loadFeedback(){
+const box=document.getElementById("feedbackList");
+
+if(!businessId){
+box.textContent="Компания не определена";
+return;
+}
+
+box.textContent="Загрузка жалоб...";
+
+const {data,error}=await client
+.from("feedback")
+.select("*")
+.eq("business_id",businessId)
+.order("created_at",{ascending:false});
+
+if(error){
+box.textContent="Ошибка загрузки: "+error.message;
+return;
+}
+
+if(!data||!data.length){
+box.textContent="Жалоб пока нет.";
+return;
+}
+
+box.innerHTML="";
+
+data.forEach(item=>{
+const card=document.createElement("div");
+card.className="feedback-item";
+
+const stars=document.createElement("div");
+stars.textContent="⭐".repeat(item.rating);
+
+const messageText=document.createElement("p");
+messageText.className="feedback-message";
+messageText.textContent=item.message;
+
+const date=document.createElement("div");
+date.className="feedback-date";
+date.textContent=new Date(item.created_at).toLocaleString("ru-RU");
+
+const status=document.createElement("p");
+status.textContent=item.status==="processed"?"✅ Обработано":"🆕 Новая жалоба";
+
+card.append(stars,messageText,date,status);
+
+if(item.status!=="processed"){
+const button=document.createElement("button");
+button.className="done";
+button.textContent="✅ Обработано";
+button.onclick=()=>markProcessed(item.id);
+card.appendChild(button);
+}
+
+box.appendChild(card);
+});
+}
+
+async function markProcessed(id){
+message("Обновление статуса...");
+
+const {error}=await client
+.from("feedback")
+.update({status:"processed"})
+.eq("id",id)
+.eq("business_id",businessId);
+
+if(error){
+message("Ошибка: "+error.message);
+return;
+}
+
+message("Жалоба отмечена как обработанная");
+await loadFeedback();
 }
 
 function openPage(){
