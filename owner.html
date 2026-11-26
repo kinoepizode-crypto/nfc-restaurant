@@ -21,7 +21,6 @@ button.secondary{background:#344b35}
 button.gray{background:#788476}
 button.done{background:#526b46}
 label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644f}
-.hours-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .file{background:#e8eee2}
 #panel{display:none}
 #status{white-space:pre-wrap;font-size:14px;color:#536b48;margin:12px 0}
@@ -84,11 +83,6 @@ label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644
 </div>
 
 <div class="card">
-<h2>🕒 Часы работы</h2>
-<div id="hoursInputs"></div>
-</div>
-
-<div class="card">
 <h2>📶 Wi-Fi</h2>
 <input id="wifi_name" placeholder="Название Wi-Fi">
 <input id="wifi_password" placeholder="Пароль Wi-Fi">
@@ -145,31 +139,9 @@ let selectedGallery=[];
 let logoUrl="";
 let coverUrl="";
 
-const days=[
-"Понедельник","Вторник","Среда","Четверг",
-"Пятница","Суббота","Воскресенье"
-];
-
 function message(t){
 document.getElementById("status").textContent=t;
 }
-
-function makeHours(){
-const container=document.getElementById("hoursInputs");
-container.innerHTML="";
-days.forEach((day,i)=>{
-const row=document.createElement("div");
-row.innerHTML=`
-<label>${day}</label>
-<div class="hours-row">
-<input id="h${i}" placeholder="09:00–18:00">
-<input id="c${i}" placeholder="Например: выходной">
-</div>`;
-container.appendChild(row);
-});
-}
-
-makeHours();
 
 async function login(){
 message("Вход...");
@@ -230,12 +202,6 @@ showPreview("coverPreview",coverUrl);
 
 galleryUrls=Array.isArray(data.gallery)?data.gallery:[];
 showGallery();
-
-let hours=data.opening_hours||{};
-days.forEach((day,i)=>{
-const val=hours[day]||"";
-document.getElementById("h"+i).value=val;
-});
 
 document.getElementById("login").style.display="none";
 document.getElementById("panel").style.display="block";
@@ -328,13 +294,6 @@ for(const file of selectedGallery){
 const url=await uploadImage(file);
 updates.gallery.push(url);
 }
-
-const hours={};
-days.forEach((day,i)=>{
-const val=document.getElementById("h"+i).value.trim();
-if(val)hours[day]=val;
-});
-updates.opening_hours=hours;
 
 const {error}=await client
 .from("businesses")
