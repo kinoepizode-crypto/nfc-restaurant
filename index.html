@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -40,8 +41,6 @@ button{cursor:pointer;font-family:inherit}
 .address-card{display:flex;gap:13px;align-items:center}
 .address-icon{font-size:25px}
 .address-text{font-size:14px;line-height:1.7;color:#e1e5e2}
-.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.gallery img{width:100%;height:180px;object-fit:cover;border-radius:15px;border:1px solid var(--line)}
 .review{display:block;text-decoration:none;background:#202522;border:1px solid #343b36;padding:16px;border-radius:14px;color:#fff;font-weight:850}
 .share-button{width:100%;padding:16px;border:1px solid #fff;border-radius:14px;background:#fff;color:#111;font-size:14px;font-weight:850}
 .footer{text-align:center;padding:36px 0 27px;color:#7f8982;font-size:11px}
@@ -55,7 +54,6 @@ button{cursor:pointer;font-family:inherit}
 .links{gap:8px}
 .link{padding:10px;gap:8px}
 .link-icon{width:36px;height:36px;flex-basis:36px}
-.gallery img{height:145px}
 }
 </style>
 </head>
@@ -121,11 +119,6 @@ button{cursor:pointer;font-family:inherit}
 </div>
 </section>
 
-<section id="gallerySection" class="section" style="display:none">
-<h2 class="section-title" id="galleryTitle">📷 Галерея</h2>
-<div class="gallery" id="gallery"></div>
-</section>
-
 <section id="reviewsSection" class="section" style="display:none">
 <h2 class="section-title" id="reviewsTitle">⭐ Отзывы</h2>
 <a class="review" id="reviews" target="_blank" rel="noopener noreferrer">Посмотреть отзывы ↗</a>
@@ -155,9 +148,9 @@ const requestedSlug=new URLSearchParams(location.search).get("slug");
 let wifiPass="",activeLang="ru",loadedBusiness=null,selectedRating=0;
 
 const T={
-ru:{top:"ИНФОРМАЦИЯ О КОМПАНИИ",wifi:"📶 Wi-Fi",copy:"Скопировать пароль",links:"✦ Контакты и ссылки",address:"📍 Адрес",gallery:"📷 Галерея",reviews:"⭐ Отзывы",review:"Посмотреть отзывы ↗",share:"↗ Поделиться страницей",footer:"Удобная информация о компании в одном касании",pass:"Пароль:",nopass:"Пароль не указан",copied:"Пароль скопирован!",labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps"],error:"Не удалось загрузить компанию"},
-kg:{top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",wifi:"📶 Wi-Fi",copy:"Сырсөздү көчүрүү",links:"✦ Байланыш жана шилтемелер",address:"📍 Дарек",gallery:"📷 Сүрөттөр",reviews:"⭐ Пикирлер",review:"Пикирлерди көрүү ↗",share:"↗ Баракты бөлүшүү",footer:"Компания тууралуу маалымат бир тийүүдө",pass:"Сырсөз:",nopass:"Сырсөз көрсөтүлгөн эмес",copied:"Сырсөз көчүрүлдү!",labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps"],error:"Компанияны жүктөө мүмкүн болгон жок"},
-en:{top:"BUSINESS INFORMATION",wifi:"📶 Wi-Fi",copy:"Copy password",links:"✦ Contacts & links",address:"📍 Address",gallery:"📷 Gallery",reviews:"⭐ Reviews",review:"View reviews ↗",share:"↗ Share page",footer:"Business information in one tap",pass:"Password:",nopass:"Password not provided",copied:"Password copied!",labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps"],error:"Could not load business"}
+ru:{top:"ИНФОРМАЦИЯ О КОМПАНИИ",wifi:"📶 Wi-Fi",copy:"Скопировать пароль",links:"✦ Контакты и ссылки",address:"📍 Адрес",reviews:"⭐ Отзывы",review:"Посмотреть отзывы ↗",share:"↗ Поделиться страницей",footer:"Удобная информация о компании в одном касании",pass:"Пароль:",nopass:"Пароль не указан",copied:"Пароль скопирован!",labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps"],error:"Не удалось загрузить компанию"},
+kg:{top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",wifi:"📶 Wi-Fi",copy:"Сырсөздү көчүрүү",links:"✦ Байланыш жана шилтемелер",address:"📍 Дарек",reviews:"⭐ Пикирлер",review:"Пикирлерди көрүү ↗",share:"↗ Баракты бөлүшүү",footer:"Компания тууралуу маалымат бир тийүүдө",pass:"Сырсөз:",nopass:"Сырсөз көрсөтүлгөн эмес",copied:"Сырсөз көчүрүлдү!",labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps"],error:"Компанияны жүктөө мүмкүн болгон жок"},
+en:{top:"BUSINESS INFORMATION",wifi:"📶 Wi-Fi",copy:"Copy password",links:"✦ Contacts & links",address:"📍 Address",reviews:"⭐ Reviews",review:"View reviews ↗",share:"↗ Share page",footer:"Business information in one tap",pass:"Password:",nopass:"Password not provided",copied:"Password copied!",labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps"],error:"Could not load business"}
 };
 
 const ICONS={
@@ -176,7 +169,6 @@ document.getElementById("wifiTitle").textContent=t.wifi;
 document.getElementById("copyButton").textContent=t.copy;
 document.getElementById("linksTitle").textContent=t.links;
 document.getElementById("addressTitle").textContent=t.address;
-document.getElementById("galleryTitle").textContent=t.gallery;
 document.getElementById("reviewsTitle").textContent=t.reviews;
 document.getElementById("reviews").textContent=t.review;
 document.getElementById("shareButton").textContent=t.share;
@@ -192,21 +184,6 @@ const ico=document.createElement("span");ico.className="link-icon";ico.innerHTML
 const name=document.createElement("span");name.className="link-label";name.textContent=label;
 const arrow=document.createElement("span");arrow.className="link-arrow";arrow.textContent="↗";
 a.append(ico,name,arrow);container.appendChild(a);
-}
-
-function renderGallery(data){
-const section=document.getElementById("gallerySection");
-const container=document.getElementById("gallery");
-container.innerHTML="";
-let photos=data;
-if(typeof photos==="string"){try{photos=JSON.parse(photos)}catch(e){photos=[]}}
-if(!Array.isArray(photos)||!photos.length){section.style.display="none";return;}
-photos.forEach(item=>{
-const url=typeof item==="string"?item:item?.url;
-if(!url)return;
-const img=document.createElement("img");img.src=url;img.alt="Фото компании";img.loading="lazy";container.appendChild(img);
-});
-section.style.display=container.children.length?"block":"none";
 }
 
 function renderBusiness(d){
@@ -248,7 +225,6 @@ document.getElementById("linksSection").style.display=links.children.length?"blo
 
 document.getElementById("addressSection").style.display=d.address?"block":"none";
 document.getElementById("address").textContent=d.address||"";
-renderGallery(d.gallery);
 
 if(d.reviews_url){
 const r=document.getElementById("reviews");r.href=d.reviews_url;document.getElementById("reviewsSection").style.display="block";
@@ -268,7 +244,6 @@ if(!data)throw new Error("Ресторан не найден в базе дан�
 renderBusiness(data);
 status.textContent="";
 
-/* СЧЁТЧИК ПОСЕЩЕНИЙ */
 const {error:visitError}=await client.from("visits").insert({business_id:data.id});
 if(visitError)console.error("Visit tracking error:",visitError);
 
