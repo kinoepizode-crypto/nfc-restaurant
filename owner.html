@@ -72,14 +72,6 @@ label{display:block;font-weight:bold;margin-top:12px;font-size:13px}
 </div>
 
 <div class="card">
-<h2>Галерея</h2>
-<p class="small">Выберите фотографии. Загрузка будет показывать прогресс.</p>
-<input id="galleryFiles" type="file" accept="image/*" multiple>
-<div id="galleryPreview"></div>
-<button class="gray" onclick="clearGallery()">Очистить галерею</button>
-</div>
-
-<div class="card">
 <h2>Wi-Fi</h2>
 <input id="wifi_name" placeholder="Название Wi-Fi">
 <input id="wifi_password" placeholder="Пароль">
@@ -145,8 +137,6 @@ detectSessionInUrl:false
 
 let businessId=null;
 let currentBusiness=null;
-let galleryUrls=[];
-let selectedGallery=[];
 let logoUrl="";
 let coverUrl="";
 let busy=false;
@@ -216,10 +206,6 @@ coverUrl=data.cover_url||"";
 
 showPreview("logoPreview",logoUrl);
 showPreview("coverPreview",coverUrl);
-
-galleryUrls=Array.isArray(data.gallery)?data.gallery:[];
-selectedGallery=[];
-showGallery();
 
 document.getElementById("login").style.display="none";
 document.getElementById("panel").style.display="block";
@@ -318,37 +304,6 @@ document.getElementById("coverFile").addEventListener("change",function(){
 if(this.files[0])showPreview("coverPreview",URL.createObjectURL(this.files[0]));
 });
 
-document.getElementById("galleryFiles").addEventListener("change",function(){
-selectedGallery=Array.from(this.files||[]);
-showGallery();
-});
-
-function showGallery(){
-const div=document.getElementById("galleryPreview");
-div.innerHTML="";
-
-galleryUrls.forEach(url=>{
-const img=document.createElement("img");
-img.src=url;
-img.className="preview";
-div.appendChild(img);
-});
-
-selectedGallery.forEach(file=>{
-const img=document.createElement("img");
-img.src=URL.createObjectURL(file);
-img.className="preview";
-div.appendChild(img);
-});
-}
-
-function clearGallery(){
-galleryUrls=[];
-selectedGallery=[];
-document.getElementById("galleryFiles").value="";
-showGallery();
-}
-
 async function save(){
 if(busy)return;
 if(!businessId){
@@ -392,14 +347,6 @@ message("Загрузка обложки...");
 updates.cover_url=await uploadImage(cf);
 }
 
-updates.gallery=[...galleryUrls];
-
-for(let i=0;i<selectedGallery.length;i++){
-message("Галерея: фото "+(i+1)+" из "+selectedGallery.length);
-const url=await uploadImage(selectedGallery[i]);
-updates.gallery.push(url);
-}
-
 message("Сохранение в базу данных...");
 
 const {error}=await timeout(
@@ -414,17 +361,11 @@ if(error)throw error;
 currentBusiness={...currentBusiness,...updates};
 logoUrl=updates.logo_url;
 coverUrl=updates.cover_url;
-galleryUrls=updates.gallery;
-selectedGallery=[];
-
-document.getElementById("galleryFiles").value="";
 document.getElementById("logoFile").value="";
 document.getElementById("coverFile").value="";
 
 showPreview("logoPreview",logoUrl);
 showPreview("coverPreview",coverUrl);
-showGallery();
-
 message("Успешно сохранено!");
 
 }catch(e){
@@ -551,8 +492,6 @@ async function logout(){
 await client.auth.signOut();
 businessId=null;
 currentBusiness=null;
-galleryUrls=[];
-selectedGallery=[];
 logoUrl="";
 coverUrl="";
 
