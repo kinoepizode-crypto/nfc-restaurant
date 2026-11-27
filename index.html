@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -9,52 +8,40 @@
 <title>NFC SMART</title>
 <style>
 *{box-sizing:border-box}
-:root{--bg:#080909;--panel:#141616;--text:#f5f6f5;--muted:#a0a6a1;--line:#292e2b;--shadow:0 12px 32px #0008}
+:root{--bg:#080909;--panel:#141616;--text:#f5f6f5;--muted:#a0a6a1;--line:#292e2b}
 body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}
 .container{width:min(100% - 30px,680px);margin:auto}
-.brand{font-size:19px;font-weight:900;letter-spacing:2px;color:#fff;padding:24px 2px 20px}
+.brand{font-size:19px;font-weight:900;letter-spacing:2px;padding:24px 2px 20px}
 .brand span{color:#aeb8b0}
 .lang-switch{display:flex;gap:8px;margin-bottom:17px}
 .lang-switch button{border:1px solid var(--line);background:#151817;color:#c6cbc7;padding:10px 16px;border-radius:30px;font-weight:bold}
-.lang-switch button.active{background:#fff;color:#111;border-color:#fff}
-.hero{padding:25px 22px 27px;border-radius:22px;background:linear-gradient(145deg,#1b1e1d,#111313);border:1px solid var(--line);box-shadow:var(--shadow)}
+.lang-switch button.active{background:#fff;color:#111}
+.hero{padding:25px 22px 27px;border-radius:22px;background:linear-gradient(145deg,#1b1e1d,#111313);border:1px solid var(--line)}
 .eyebrow{font-size:10px;font-weight:850;letter-spacing:1.8px;color:#aeb6b0}
-h1{font-size:clamp(29px,7vw,42px);line-height:1.12;margin:14px 0 10px;color:#fff;overflow-wrap:anywhere}
+h1{font-size:clamp(29px,7vw,42px);line-height:1.12;margin:14px 0 10px;overflow-wrap:anywhere}
 .description{font-size:14px;line-height:1.8;color:#c0c6c1;white-space:pre-wrap}
-.category{display:inline-block;margin-top:10px;background:#292e2b;padding:9px 14px;border-radius:30px;font-size:11px;color:#e2e6e3;font-weight:800}
+.category{display:inline-block;margin-top:10px;background:#292e2b;padding:9px 14px;border-radius:30px;font-size:11px}
 .section{margin-top:25px}
-.section-title{font-size:15px;font-weight:850;margin:0 0 13px;color:#f5f6f5;letter-spacing:.2px}
-.card{background:var(--panel);padding:20px;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
-.wifi-name{font-size:16px;font-weight:850;color:#fff}
-.muted{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
-button{cursor:pointer;font-family:inherit}
-.copy{margin-top:15px;border:1px solid #fff;border-radius:13px;background:#fff;color:#111;padding:13px 18px;font-weight:800}
-.links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.link{min-height:76px;display:flex;align-items:center;gap:11px;padding:13px;text-decoration:none;color:#fff;background:var(--panel);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow);transition:background .2s}
-.link:active{background:#242927}
-.link-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:13px;background:#272c29}
-.link-icon svg{width:28px;height:28px}
-.link-label{font-size:12px;font-weight:800;overflow-wrap:anywhere}
-.link-arrow{margin-left:auto;color:#929b94}
-.logo{display:block;max-width:100px;max-height:100px;object-fit:cover;border-radius:18px;margin-bottom:19px}
+.section-title{font-size:15px;font-weight:850;margin:0 0 13px}
+.card{background:var(--panel);padding:20px;border:1px solid var(--line);border-radius:20px}
+.muted{color:var(--muted);font-size:13px}
+.logo{max-width:100px;max-height:100px;object-fit:cover;border-radius:18px;margin-bottom:19px}
 .cover{width:100%;max-height:270px;object-fit:cover;border-radius:15px;margin-bottom:18px}
-.address-card{display:flex;gap:13px;align-items:center}
-.address-icon{font-size:25px}
-.address-text{font-size:14px;line-height:1.7;color:#e1e5e2}
+.links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.link{min-height:76px;display:flex;align-items:center;gap:11px;padding:13px;text-decoration:none;color:#fff;background:var(--panel);border:1px solid var(--line);border-radius:17px}
+.link-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#272c29}
+.link-label{font-size:12px;font-weight:800;overflow-wrap:anywhere}
+.copy,.share-button,.booking-button{width:100%;padding:15px;border:0;border-radius:13px;background:#fff;color:#111;font-weight:850;font-size:14px;margin-top:12px}
+.booking-button{background:#25D366;color:#06150b}
+.field{width:100%;padding:14px;margin:7px 0 12px;border:1px solid var(--line);border-radius:12px;background:#0d1010;color:#fff;font-size:15px}
+.field::placeholder{color:#7d8780}
+.field-label{display:block;font-size:12px;color:#b8c0ba;font-weight:bold;margin-top:5px}
 .review{display:block;text-decoration:none;background:#202522;border:1px solid #343b36;padding:16px;border-radius:14px;color:#fff;font-weight:850}
-.share-button{width:100%;padding:16px;border:1px solid #fff;border-radius:14px;background:#fff;color:#111;font-size:14px;font-weight:850}
 .footer{text-align:center;padding:36px 0 27px;color:#7f8982;font-size:11px}
-.footer strong{color:#d9dfda;letter-spacing:1.5px}
 #status{color:#ffb8a8;text-align:center;font-size:13px;margin:15px;overflow-wrap:anywhere}
 #stars span{cursor:pointer;font-size:36px}
 #feedbackMessage{width:100%;min-height:110px;padding:14px;border-radius:12px;border:1px solid var(--line);font:inherit;background:#0d1010;color:#fff}
-#feedbackMessage::placeholder{color:#7d8780}
-@media(max-width:390px){
-.container{width:calc(100% - 24px)}
-.links{gap:8px}
-.link{padding:10px;gap:8px}
-.link-icon{width:36px;height:36px;flex-basis:36px}
-}
+@media(max-width:390px){.container{width:calc(100% - 24px)}.links{gap:8px}.link{padding:10px;gap:8px}}
 </style>
 </head>
 <body>
@@ -79,17 +66,77 @@ button{cursor:pointer;font-family:inherit}
 </section>
 
 <section id="wifiSection" class="section" style="display:none">
-<h2 class="section-title" id="wifiTitle">📶 Wi-Fi</h2>
+<h2 class="section-title">📶 Wi-Fi</h2>
 <div class="card">
-<p class="wifi-name" id="wifiName"></p>
-<div class="muted" id="wifiPassword"></div>
-<button class="copy" id="copyButton" onclick="copyPassword()">Скопировать пароль</button>
+<strong id="wifiName"></strong>
+<p class="muted" id="wifiPassword"></p>
+<button class="copy" onclick="copyPassword()" id="copyButton">Скопировать пароль</button>
 </div>
 </section>
 
 <section id="linksSection" class="section" style="display:none">
 <h2 class="section-title" id="linksTitle">✦ Контакты и ссылки</h2>
 <div class="links" id="links"></div>
+</section>
+
+<!-- БРОНЬ СТОЛИКА -->
+<section id="restaurantBooking" class="section" style="display:none">
+<h2 class="section-title">🍽️ Забронировать столик</h2>
+<div class="card">
+<label class="field-label">Ваше имя</label>
+<input class="field" id="restaurantName" placeholder="Как вас зовут?">
+<label class="field-label">Номер телефона</label>
+<input class="field" id="restaurantPhone" type="tel" placeholder="+996...">
+<label class="field-label">Дата</label>
+<input class="field" id="restaurantDate" type="date">
+<label class="field-label">Время</label>
+<input class="field" id="restaurantTime" type="time">
+<label class="field-label">Количество гостей</label>
+<select class="field" id="restaurantGuests">
+<option value="1">1 гость</option>
+<option value="2" selected>2 гостя</option>
+<option value="3">3 гостя</option>
+<option value="4">4 гостя</option>
+<option value="5">5 гостей</option>
+<option value="6">6 гостей</option>
+<option value="7">7 гостей</option>
+<option value="8">8 гостей</option>
+<option value="9">9 гостей</option>
+<option value="10">10 гостей</option>
+</select>
+<label class="field-label">Комментарий (необязательно)</label>
+<input class="field" id="restaurantComment" placeholder="Пожелания к брони">
+<button class="booking-button" onclick="sendRestaurantBooking()">Забронировать через WhatsApp</button>
+<p class="muted">Бронь подтвердит владелец заведения в WhatsApp.</p>
+</div>
+</section>
+
+<!-- ЗАПИСЬ В БАРБЕРШОП -->
+<section id="barberBooking" class="section" style="display:none">
+<h2 class="section-title">💈 Записаться на услугу</h2>
+<div class="card">
+<label class="field-label">Выберите услугу</label>
+<select class="field" id="barberService">
+<option>Мужская стрижка</option>
+<option>Стрижка машинкой</option>
+<option>Оформление бороды</option>
+<option>Стрижка + борода</option>
+<option>Детская стрижка</option>
+<option>Другая услуга</option>
+</select>
+<label class="field-label">Мастер (необязательно)</label>
+<input class="field" id="barberMaster" placeholder="Имя мастера">
+<label class="field-label">Ваше имя</label>
+<input class="field" id="barberName" placeholder="Как вас зовут?">
+<label class="field-label">Номер телефона</label>
+<input class="field" id="barberPhone" type="tel" placeholder="+996...">
+<label class="field-label">Дата</label>
+<input class="field" id="barberDate" type="date">
+<label class="field-label">Время</label>
+<input class="field" id="barberTime" type="time">
+<button class="booking-button" onclick="sendBarberBooking()">Записаться через WhatsApp</button>
+<p class="muted">Время записи подтвердит мастер в WhatsApp.</p>
+</div>
 </section>
 
 <section id="ratingSection" class="section">
@@ -105,22 +152,19 @@ button{cursor:pointer;font-family:inherit}
 </div>
 <div id="ratingForm" style="display:none">
 <textarea id="feedbackMessage" placeholder="Расскажите, что можно улучшить..."></textarea>
-<button class="share-button" style="margin-top:12px" onclick="sendFeedback()">Отправить отзыв</button>
+<button class="share-button" onclick="sendFeedback()">Отправить отзыв</button>
 </div>
 <div id="ratingMessage" style="text-align:center;font-size:14px;margin-top:12px"></div>
 </div>
 </section>
 
 <section id="addressSection" class="section" style="display:none">
-<h2 class="section-title" id="addressTitle">📍 Адрес</h2>
-<div class="card address-card">
-<div class="address-icon">📍</div>
-<div class="address-text" id="address"></div>
-</div>
+<h2 class="section-title">📍 Адрес</h2>
+<div class="card" id="address"></div>
 </section>
 
 <section id="reviewsSection" class="section" style="display:none">
-<h2 class="section-title" id="reviewsTitle">⭐ Отзывы</h2>
+<h2 class="section-title">⭐ Отзывы</h2>
 <a class="review" id="reviews" target="_blank" rel="noopener noreferrer">Посмотреть отзывы ↗</a>
 </section>
 
@@ -132,7 +176,7 @@ button{cursor:pointer;font-family:inherit}
 <div id="status"></div>
 <footer class="footer">
 <strong>NFC SMART</strong>
-<div style="margin-top:8px" id="footerText">Удобная информация о компании в одном касании</div>
+<div style="margin-top:8px">Удобная информация о компании в одном касании</div>
 </footer>
 </div>
 
@@ -148,15 +192,14 @@ const requestedSlug=new URLSearchParams(location.search).get("slug");
 let wifiPass="",activeLang="ru",loadedBusiness=null,selectedRating=0;
 
 const T={
-ru:{top:"ИНФОРМАЦИЯ О КОМПАНИИ",wifi:"📶 Wi-Fi",copy:"Скопировать пароль",links:"✦ Контакты и ссылки",address:"📍 Адрес",reviews:"⭐ Отзывы",review:"Посмотреть отзывы ↗",share:"↗ Поделиться страницей",footer:"Удобная информация о компании в одном касании",pass:"Пароль:",nopass:"Пароль не указан",copied:"Пароль скопирован!",labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps"],error:"Не удалось загрузить компанию"},
-kg:{top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",wifi:"📶 Wi-Fi",copy:"Сырсөздү көчүрүү",links:"✦ Байланыш жана шилтемелер",address:"📍 Дарек",reviews:"⭐ Пикирлер",review:"Пикирлерди көрүү ↗",share:"↗ Баракты бөлүшүү",footer:"Компания тууралуу маалымат бир тийүүдө",pass:"Сырсөз:",nopass:"Сырсөз көрсөтүлгөн эмес",copied:"Сырсөз көчүрүлдү!",labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps"],error:"Компанияны жүктөө мүмкүн болгон жок"},
-en:{top:"BUSINESS INFORMATION",wifi:"📶 Wi-Fi",copy:"Copy password",links:"✦ Contacts & links",address:"📍 Address",reviews:"⭐ Reviews",review:"View reviews ↗",share:"↗ Share page",footer:"Business information in one tap",pass:"Password:",nopass:"Password not provided",copied:"Password copied!",labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps"],error:"Could not load business"}
+ru:{top:"ИНФОРМАЦИЯ О КОМПАНИИ",wifi:"📶 Wi-Fi",copy:"Скопировать пароль",links:"✦ Контакты и ссылки",address:"📍 Адрес",reviews:"⭐ Отзывы",review:"Посмотреть отзывы ↗",share:"↗ Поделиться страницей",pass:"Пароль:",nopass:"Пароль не указан",copied:"Пароль скопирован!",labels:["Меню и услуги","Позвонить","Instagram","WhatsApp","Google Maps"],error:"Не удалось загрузить компанию"},
+kg:{top:"КОМПАНИЯ ЖӨНҮНӨ МААЛЫМАТ",wifi:"📶 Wi-Fi",copy:"Сырсөздү көчүрүү",links:"✦ Байланыш жана шилтемелер",address:"📍 Дарек",reviews:"⭐ Пикирлер",review:"Пикирлерди көрүү ↗",share:"↗ Баракты бөлүшүү",pass:"Сырсөз:",nopass:"Сырсөз көрсөтүлгөн эмес",copied:"Сырсөз көчүрүлдү!",labels:["Меню жана кызматтар","Чалуу","Instagram","WhatsApp","Google Maps"],error:"Компанияны жүктөө мүмкүн болгон жок"},
+en:{top:"BUSINESS INFORMATION",wifi:"📶 Wi-Fi",copy:"Copy password",links:"✦ Contacts & links",address:"📍 Address",reviews:"⭐ Reviews",review:"View reviews ↗",share:"↗ Share page",pass:"Password:",nopass:"Password not provided",copied:"Password copied!",labels:["Menu & services","Call","Instagram","WhatsApp","Google Maps"],error:"Could not load business"}
 };
 
 const ICONS={
-instagram:`<svg viewBox="0 0 48 48"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#ffb600"/><stop offset=".5" stop-color="#ff3040"/><stop offset="1" stop-color="#a02be8"/></linearGradient></defs><rect x="4" y="4" width="40" height="40" rx="12" fill="url(#ig)"/><rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="white" stroke-width="3"/><circle cx="24" cy="24" r="6" fill="none" stroke="white" stroke-width="3"/><circle cx="32" cy="16" r="2" fill="white"/></svg>`,
-whatsapp:`<svg viewBox="0 0 48 48"><circle cx="24" cy="22" r="19" fill="#25D366"/><path d="M13 39l3-8A18 18 0 1 1 22 40l-9-1z" fill="#25D366"/><path d="M17 13c-2 0-4 3-4 6 0 7 9 16 17 16 3 0 6-2 6-4l-1-2-5-2-2 2c-1 1-2 1-3 0-3-1-6-4-7-7l2-2-2-5z" fill="white"/></svg>`,
-googlemaps:`<svg viewBox="0 0 48 48"><path d="M24 3C15 3 8 10 8 19c0 11 16 26 16 26s16-15 16-26C40 10 33 3 24 3z" fill="#34A853"/><path d="M24 3C15 3 8 10 8 19c0 4 2 9 5 13l11-13z" fill="#4285F4"/><path d="M24 3c9 0 16 7 16 16 0 5-2 9-5 13L24 19z" fill="#EA4335"/><path d="M13 32l11-13 11 13C30 40 24 45 24 45s-6-5-11-13z" fill="#FBBC04"/><circle cx="24" cy="19" r="7" fill="white"/><circle cx="24" cy="19" r="4" fill="#4285F4"/></svg>`
+instagram:`<svg viewBox="0 0 48 48"><rect x="4" y="4" width="40" height="40" rx="12" fill="#d94a91"/><rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="white" stroke-width="3"/><circle cx="24" cy="24" r="6" fill="none" stroke="white" stroke-width="3"/></svg>`,
+whatsapp:`<svg viewBox="0 0 48 48"><circle cx="24" cy="22" r="19" fill="#25D366"/><path d="M13 39l3-8A18 18 0 1 1 22 40l-9-1z" fill="#25D366"/><path d="M17 13c-2 0-4 3-4 6 0 7 9 16 17 16 3 0 6-2 6-4l-1-2-5-2-2 2c-1 1-2 1-3 0-3-1-6-4-7-7l2-2-2-5z" fill="white"/></svg>`
 };
 
 function setLang(lang){
@@ -165,14 +208,9 @@ document.documentElement.lang=lang;
 ["ru","kg","en"].forEach(x=>document.getElementById("btn"+x).classList.toggle("active",x===lang));
 const t=T[lang];
 document.getElementById("eyebrow").textContent=t.top;
-document.getElementById("wifiTitle").textContent=t.wifi;
 document.getElementById("copyButton").textContent=t.copy;
 document.getElementById("linksTitle").textContent=t.links;
-document.getElementById("addressTitle").textContent=t.address;
-document.getElementById("reviewsTitle").textContent=t.reviews;
-document.getElementById("reviews").textContent=t.review;
 document.getElementById("shareButton").textContent=t.share;
-document.getElementById("footerText").textContent=t.footer;
 if(loadedBusiness)renderBusiness(loadedBusiness);
 }
 
@@ -182,8 +220,75 @@ const a=document.createElement("a");
 a.className="link";a.href=url;a.target="_blank";a.rel="noopener noreferrer";
 const ico=document.createElement("span");ico.className="link-icon";ico.innerHTML=ICONS[icon]||icon;
 const name=document.createElement("span");name.className="link-label";name.textContent=label;
-const arrow=document.createElement("span");arrow.className="link-arrow";arrow.textContent="↗";
+const arrow=document.createElement("span");arrow.textContent="↗";
 a.append(ico,name,arrow);container.appendChild(a);
+}
+
+function getWhatsAppNumber(raw){
+let value=String(raw||"").trim();
+if(/^https?:\/\//i.test(value)){
+try{
+const u=new URL(value);
+if(u.hostname.includes("wa.me"))return u.pathname.replace(/\D/g,"");
+const phone=u.searchParams.get("phone");
+if(phone)return phone.replace(/\D/g,"");
+}catch(e){}
+}
+return value.replace(/\D/g,"");
+}
+
+function openWhatsApp(message){
+const number=getWhatsAppNumber(loadedBusiness?.whatsapp);
+if(!number){
+alert("Владелец пока не указал номер WhatsApp. Попробуйте связаться по телефону.");
+return;
+}
+const url="https://wa.me/"+number+"?text="+encodeURIComponent(message);
+window.open(url,"_blank","noopener,noreferrer");
+}
+
+function setDateLimits(){
+const today=new Date();
+const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+["restaurantDate","barberDate"].forEach(id=>{
+document.getElementById(id).min=localToday;
+});
+}
+
+function sendRestaurantBooking(){
+const name=document.getElementById("restaurantName").value.trim();
+const phone=document.getElementById("restaurantPhone").value.trim();
+const date=document.getElementById("restaurantDate").value;
+const time=document.getElementById("restaurantTime").value;
+const guests=document.getElementById("restaurantGuests").value;
+const comment=document.getElementById("restaurantComment").value.trim();
+if(!name||!phone||!date||!time){alert("Заполните имя, телефон, дату и время.");return}
+const message=
+"Здравствуйте! Хочу забронировать столик.\n"+
+"Заведение: "+(loadedBusiness?.name||"")+"\n"+
+"Имя: "+name+"\nТелефон: "+phone+
+"\nДата: "+date+"\nВремя: "+time+
+"\nКоличество гостей: "+guests+
+(comment?"\nКомментарий: "+comment:"");
+openWhatsApp(message);
+}
+
+function sendBarberBooking(){
+const service=document.getElementById("barberService").value;
+const master=document.getElementById("barberMaster").value.trim();
+const name=document.getElementById("barberName").value.trim();
+const phone=document.getElementById("barberPhone").value.trim();
+const date=document.getElementById("barberDate").value;
+const time=document.getElementById("barberTime").value;
+if(!name||!phone||!date||!time){alert("Заполните имя, телефон, дату и время.");return}
+const message=
+"Здравствуйте! Хочу записаться.\n"+
+"Барбершоп: "+(loadedBusiness?.name||"")+
+"\nУслуга: "+service+
+(master?"\nМастер: "+master:"")+
+"\nИмя: "+name+"\nТелефон: "+phone+
+"\nДата: "+date+"\nВремя: "+time;
+openWhatsApp(message);
 }
 
 function renderBusiness(d){
@@ -204,6 +309,13 @@ const category=document.getElementById("category");
 category.style.display="none";
 if(d.category){category.textContent=d.category;category.style.display="inline-block"}
 
+const categoryText=String(d.category||"").toLowerCase();
+const isRestaurant=/ресторан|кафе|restaurant|cafe|бистро|ресторант/.test(categoryText);
+const isBarber=/барбер|barber|парикмах|салон красоты|beauty salon/.test(categoryText);
+
+document.getElementById("restaurantBooking").style.display=isRestaurant?"block":"none";
+document.getElementById("barberBooking").style.display=isBarber?"block":"none";
+
 document.getElementById("wifiSection").style.display=(d.wifi_name||d.wifi_password)?"block":"none";
 document.getElementById("wifiName").textContent=d.wifi_name||"Wi-Fi";
 wifiPass=d.wifi_password||"";
@@ -212,13 +324,13 @@ document.getElementById("wifiPassword").textContent=wifiPass?T[activeLang].pass+
 const links=document.getElementById("links");
 links.innerHTML="";
 const instagram=d.instagram?(d.instagram.startsWith("http")?d.instagram:"https://instagram.com/"+d.instagram.replace("@","")):null;
-const whatsapp=d.whatsapp?(d.whatsapp.startsWith("http")?d.whatsapp:"https://wa.me/"+d.whatsapp.replace(/\D/g,"")):null;
+const whatsapp=d.whatsapp?(d.whatsapp.startsWith("http")?d.whatsapp:"https://wa.me/"+getWhatsAppNumber(d.whatsapp)):null;
 const items=[
 [T[activeLang].labels[0],d.menu_url,"📋"],
 [T[activeLang].labels[1],d.phone?"tel:"+d.phone:null,"📞"],
 [T[activeLang].labels[2],instagram,"instagram"],
 [T[activeLang].labels[3],whatsapp,"whatsapp"],
-[T[activeLang].labels[4],d.maps_url,"googlemaps"]
+[T[activeLang].labels[4],d.maps_url,"📍"]
 ];
 items.forEach(x=>addLink(links,x[0],x[1],x[2]));
 document.getElementById("linksSection").style.display=links.children.length?"block":"none";
@@ -227,30 +339,31 @@ document.getElementById("addressSection").style.display=d.address?"block":"none"
 document.getElementById("address").textContent=d.address||"";
 
 if(d.reviews_url){
-const r=document.getElementById("reviews");r.href=d.reviews_url;document.getElementById("reviewsSection").style.display="block";
-}else{document.getElementById("reviewsSection").style.display="none"}
+const r=document.getElementById("reviews");
+r.href=d.reviews_url;
+document.getElementById("reviewsSection").style.display="block";
+}else{
+document.getElementById("reviewsSection").style.display="none";
+}
 }
 
 async function load(){
 const name=document.getElementById("name");
 const status=document.getElementById("status");
 try{
-if(!window.supabase)throw new Error("Не загрузилась библиотека Supabase. Обновите страницу.");
 let q=client.from("businesses").select("*");
 q=requestedSlug?q.eq("slug",requestedSlug):q.eq("id",demoBusinessId);
 const {data,error}=await q.maybeSingle();
 if(error)throw error;
-if(!data)throw new Error("Ресторан не найден в базе данных.");
+if(!data)throw new Error("Компания не найдена в базе данных.");
 renderBusiness(data);
 status.textContent="";
-
 const {error:visitError}=await client.from("visits").insert({business_id:data.id});
-if(visitError)console.error("Visit tracking error:",visitError);
-
+if(visitError)console.error(visitError);
 }catch(e){
 name.textContent=T[activeLang].error;
 status.textContent=e.message||"Ошибка загрузки";
-console.error("NFC SMART:",e);
+console.error(e);
 }
 }
 
@@ -263,7 +376,7 @@ catch(e){prompt(T[activeLang].pass,wifiPass)}
 async function sharePage(){
 const data={title:document.getElementById("name").textContent,text:T[activeLang].top,url:location.href};
 try{
-if(navigator.share){await navigator.share(data)}
+if(navigator.share)await navigator.share(data);
 else{await navigator.clipboard.writeText(location.href);alert("Ссылка скопирована!")}
 }catch(e){
 if(e.name!=="AbortError"){
@@ -275,7 +388,10 @@ catch(err){prompt("Скопируйте ссылку:",location.href)}
 
 function chooseRating(r){
 selectedRating=r;
-document.querySelectorAll("#stars span").forEach((s,i)=>{s.textContent=i<r?"★":"☆";s.style.color=i<r?"#c49a40":"#777"});
+document.querySelectorAll("#stars span").forEach((s,i)=>{
+s.textContent=i<r?"★":"☆";
+s.style.color=i<r?"#c49a40":"#777";
+});
 const form=document.getElementById("ratingForm");
 const msg=document.getElementById("ratingMessage");
 msg.textContent="";
@@ -293,13 +409,16 @@ if(selectedRating<1||selectedRating>3){msg.textContent="Выберите оце�
 if(message.length<2){msg.textContent="Пожалуйста, напишите ваше замечание.";return}
 if(!loadedBusiness?.id){msg.textContent="Не удалось определить заведение.";return}
 msg.textContent="Отправка...";
-const {error}=await client.from("feedback").insert({business_id:loadedBusiness.id,rating:selectedRating,message:message,status:"new"});
+const {error}=await client.from("feedback").insert({
+business_id:loadedBusiness.id,rating:selectedRating,message:message,status:"new"
+});
 if(error){msg.textContent="Ошибка отправки. Попробуйте ещё раз.";console.error(error);return}
 msg.textContent="Спасибо! Ваше сообщение отправлено владельцу.";
 document.getElementById("feedbackMessage").value="";
 document.getElementById("ratingForm").style.display="none";
 }
 
+setDateLimits();
 setLang("ru");
 load();
 </script>
