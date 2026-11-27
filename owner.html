@@ -11,14 +11,18 @@
 body{margin:0;padding:18px;background:#f4f1e8;color:#26352a;font-family:Arial,sans-serif}
 .container{max-width:650px;margin:auto}
 .card{background:#fffdf8;border:1px solid #dfe5d7;border-radius:20px;padding:20px;margin-bottom:16px}
-h1{font-size:25px;color:#344b35}h2{font-size:18px;color:#344b35;margin-top:0}
+h1{font-size:25px;color:#344b35}
+h2{font-size:18px;color:#344b35;margin-top:0}
 p{line-height:1.6;color:#788476}
 input,textarea,select,button{width:100%;padding:14px;margin:8px 0;border:1px solid #dfe5d7;border-radius:12px;font-size:15px}
 textarea{min-height:90px;resize:vertical}
 button{border:0;background:#647b4f;color:white;font-weight:bold;cursor:pointer}
-button.secondary{background:#344b35}button.gray{background:#788476}button.done{background:#526b46}
+button.secondary{background:#344b35}
+button.gray{background:#788476}
+button.done{background:#526b46}
 label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644f}
-.file{background:#e8eee2}#panel{display:none}
+.file{background:#e8eee2}
+#panel{display:none}
 #status{white-space:pre-wrap;font-size:14px;color:#536b48;margin:12px 0}
 .small{font-size:12px}
 .preview{max-width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-top:8px}
@@ -33,29 +37,38 @@ label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644
 </head>
 <body>
 <div class="container">
-<div class="card"><h1>NFC SMART</h1><p>Панель управления страницей вашего бизнеса</p></div>
+<div class="card">
+<h1>NFC SMART</h1>
+<p>Панель управления страницей вашего бизнеса</p>
+</div>
+
 <div class="card" id="login">
 <h2>Вход владельца</h2>
 <input id="email" type="email" placeholder="Email">
 <input id="password" type="password" placeholder="Пароль">
 <button onclick="login()">Войти</button>
 </div>
+
 <div id="panel">
 <div class="card">
 <h2>🏢 Основная информация</h2>
 <input id="name" placeholder="Название компании">
 <select id="category">
 <option value="">Выберите категорию</option>
-<option>Ресторан</option><option>Кафе</option><option>Стоматология</option>
-<option>Салон красоты</option><option>СТО</option><option>Магазин</option>
+<option>Ресторан</option><option>Кафе</option>
+<option>Стоматология</option><option>Салон красоты</option>
+<option>СТО</option><option>Магазин</option>
 <option>Отель</option><option>Фитнес</option><option>Другое</option>
 </select>
 <textarea id="description" placeholder="Описание компании"></textarea>
-<label>Логотип</label><input class="file" id="logoFile" type="file" accept="image/*">
+<label>Логотип</label>
+<input class="file" id="logoFile" type="file" accept="image/*">
 <img id="logoPreview" class="preview" style="display:none">
-<label>Обложка</label><input class="file" id="coverFile" type="file" accept="image/*">
+<label>Обложка</label>
+<input class="file" id="coverFile" type="file" accept="image/*">
 <img id="coverPreview" class="preview" style="display:none">
 </div>
+
 <div class="card">
 <h2>📷 Галерея</h2>
 <p class="small">Выберите фотографии компании. Можно выбрать несколько.</p>
@@ -63,11 +76,13 @@ label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644
 <div id="galleryPreview"></div>
 <button class="gray" onclick="clearGallery()">Очистить выбранные фото</button>
 </div>
+
 <div class="card">
 <h2>📶 Wi-Fi</h2>
 <input id="wifi_name" placeholder="Название Wi-Fi">
 <input id="wifi_password" placeholder="Пароль Wi-Fi">
 </div>
+
 <div class="card">
 <h2>🔗 Контакты и ссылки</h2>
 <input id="menu_url" placeholder="Меню или сайт">
@@ -79,155 +94,380 @@ label{display:block;font-size:13px;font-weight:bold;margin-top:13px;color:#53644
 <input id="two_gis_url" placeholder="2ГИС">
 <input id="reviews_url" placeholder="Ссылка на отзывы">
 </div>
+
 <div class="card">
 <h2>📊 Статистика посещений</h2>
 <div class="stats-grid">
-<div class="stat-box"><div class="stat-number" id="totalVisits">—</div><div class="stat-label">Всего посещений</div></div>
-<div class="stat-box"><div class="stat-number" id="todayVisits">—</div><div class="stat-label">Сегодня</div></div>
+<div class="stat-box">
+<div class="stat-number" id="totalVisits">—</div>
+<div class="stat-label">Всего посещений</div>
+</div>
+<div class="stat-box">
+<div class="stat-number" id="todayVisits">—</div>
+<div class="stat-label">Сегодня</div>
+</div>
 </div>
 <p class="small">Считаются открытия страницы, а не уникальные посетители.</p>
 <button class="gray" onclick="loadStats()">🔄 Обновить статистику</button>
 </div>
+
 <div class="card" id="feedbackCard">
 <h2>📩 Жалобы клиентов</h2>
 <p class="small">Отзывы клиентов с оценкой 1–3 звезды.</p>
 <button class="gray" onclick="loadFeedback()">🔄 Обновить жалобы</button>
 <div id="feedbackList">Жалобы загружаются...</div>
 </div>
+
 <div class="card">
-<button id="saveButton" onclick="save()">💾 Сохранить всё</button>
+<button onclick="save()">💾 Сохранить всё</button>
 <button class="secondary" onclick="openPage()">🌐 Открыть мою страницу</button>
 <button class="gray" onclick="logout()">Выйти</button>
 </div>
 </div>
 <div id="status"></div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const client=window.supabase.createClient(
 "https://pyeydqohexospkzzehtz.supabase.co",
 "sb_publishable_X_pgMWZNfTyELx6z-Y4f1Q_3qwj6FEc",
-{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}}
-);
-let businessId=null,currentBusiness=null,galleryUrls=[],selectedGallery=[],logoUrl="",coverUrl="",saving=false;
-function message(t){document.getElementById("status").textContent=t}
-function timeout(p,ms,label){
-return Promise.race([p,new Promise((_,reject)=>setTimeout(()=>reject(new Error(label+" — превышено время ожидания")),ms))])
+{
+auth:{
+persistSession:false,
+autoRefreshToken:false,
+detectSessionInUrl:false
 }
+}
+);
+
+let businessId=null;
+let currentBusiness=null;
+let galleryUrls=[];
+let selectedGallery=[];
+let logoUrl="";
+let coverUrl="";
+
+function message(t){
+document.getElementById("status").textContent=t;
+}
+
 async function login(){
 message("Вход...");
 try{
-const {error}=await timeout(client.auth.signInWithPassword({email:document.getElementById("email").value.trim(),password:document.getElementById("password").value}),30000,"Вход");
-if(error)throw error;await loadBusiness()
+const {error}=await client.auth.signInWithPassword({
+email:document.getElementById("email").value.trim(),
+password:document.getElementById("password").value
+});
+if(error)throw error;
+await loadBusiness();
 }catch(e){message("Ошибка: "+e.message)}
 }
+
 async function loadBusiness(){
 message("Загрузка...");
 try{
-const {data:userData,error:userError}=await timeout(client.auth.getUser(),30000,"Проверка пользователя");
-if(userError)throw userError;if(!userData.user)throw new Error("Не удалось определить пользователя");
-const {data:members,error:memberError}=await timeout(client.from("business_members").select("business_id").eq("user_id",userData.user.id),30000,"Загрузка компании");
-if(memberError)throw memberError;if(!members||!members.length)throw new Error("Компания не привязана к аккаунту");
+const {data:userData,error:userError}=await client.auth.getUser();
+if(userError)throw userError;
+if(!userData.user)throw new Error("Не удалось определить пользователя");
+
+const {data:members,error:memberError}=await client
+.from("business_members")
+.select("business_id")
+.eq("user_id",userData.user.id);
+
+if(memberError)throw memberError;
+if(!members||!members.length)throw new Error("Компания не привязана к аккаунту");
+
 businessId=members[0].business_id;
-const {data,error}=await timeout(client.from("businesses").select("*").eq("id",businessId).single(),30000,"Загрузка данных");
-if(error)throw error;currentBusiness=data;
-const fields=["name","description","wifi_name","wifi_password","menu_url","phone","address","instagram","whatsapp","maps_url","two_gis_url","reviews_url"];
-fields.forEach(k=>{const el=document.getElementById(k);if(el)el.value=data[k]||""});
+
+const {data,error}=await client
+.from("businesses")
+.select("*")
+.eq("id",businessId)
+.single();
+
+if(error)throw error;
+currentBusiness=data;
+
+const fields=[
+"name","description","wifi_name","wifi_password",
+"menu_url","phone","address","instagram","whatsapp",
+"maps_url","two_gis_url","reviews_url"
+];
+
+fields.forEach(k=>{
+const el=document.getElementById(k);
+if(el)el.value=data[k]||"";
+});
+
 document.getElementById("category").value=data.category||"";
-logoUrl=data.logo_url||"";coverUrl=data.cover_url||"";
-showPreview("logoPreview",logoUrl);showPreview("coverPreview",coverUrl);
-galleryUrls=Array.isArray(data.gallery)?data.gallery:[];showGallery();
-document.getElementById("login").style.display="none";document.getElementById("panel").style.display="block";
-message("Данные загружены");await loadFeedback();await loadStats();
+
+logoUrl=data.logo_url||"";
+coverUrl=data.cover_url||"";
+
+showPreview("logoPreview",logoUrl);
+showPreview("coverPreview",coverUrl);
+
+galleryUrls=Array.isArray(data.gallery)?data.gallery:[];
+showGallery();
+
+document.getElementById("login").style.display="none";
+document.getElementById("panel").style.display="block";
+
+message("Данные загружены");
+
+await loadFeedback();
+await loadStats();
+
 }catch(e){message("Ошибка: "+e.message)}
 }
+
 function showPreview(id,url){
 const img=document.getElementById(id);
-if(url){img.src=url;img.style.display="block"}else{img.removeAttribute("src");img.style.display="none"}
+if(url){img.src=url;img.style.display="block"}
+else{img.removeAttribute("src");img.style.display="none"}
 }
+
 async function uploadImage(file){
-if(!file)return null;if(file.size>8*1024*1024)throw new Error("Фото больше 8 МБ.");
+if(!file)return null;
+if(file.size>8*1024*1024)throw new Error("Фото больше 8 МБ. Выберите фото меньше.");
 const ext=(file.name.split(".").pop()||"jpg").replace(/[^a-zA-Z0-9]/g,"");
 const path=businessId+"/"+Date.now()+"-"+Math.random().toString(36).slice(2)+"."+ext;
-const {error}=await timeout(client.storage.from("business-images").upload(path,file,{upsert:false}),30000,"Загрузка фото");
+const {error}=await client.storage.from("business-images").upload(path,file,{upsert:false});
 if(error)throw error;
-const {data}=client.storage.from("business-images").getPublicUrl(path);return data.publicUrl
+const {data}=client.storage.from("business-images").getPublicUrl(path);
+return data.publicUrl;
 }
-document.getElementById("logoFile").addEventListener("change",function(){if(this.files[0])showPreview("logoPreview",URL.createObjectURL(this.files[0]))});
-document.getElementById("coverFile").addEventListener("change",function(){if(this.files[0])showPreview("coverPreview",URL.createObjectURL(this.files[0]))});
-document.getElementById("galleryFiles").addEventListener("change",function(){selectedGallery=Array.from(this.files||[]);showGallery()});
+
+document.getElementById("logoFile").addEventListener("change",function(){
+if(this.files[0])showPreview("logoPreview",URL.createObjectURL(this.files[0]));
+});
+
+document.getElementById("coverFile").addEventListener("change",function(){
+if(this.files[0])showPreview("coverPreview",URL.createObjectURL(this.files[0]));
+});
+
+document.getElementById("galleryFiles").addEventListener("change",function(){
+selectedGallery=Array.from(this.files||[]);
+showGallery();
+});
+
 function showGallery(){
-const div=document.getElementById("galleryPreview");div.innerHTML="";
-galleryUrls.forEach(url=>{const img=document.createElement("img");img.src=url;img.className="preview";div.appendChild(img)});
-selectedGallery.forEach(file=>{const img=document.createElement("img");img.src=URL.createObjectURL(file);img.className="preview";div.appendChild(img)})
+const div=document.getElementById("galleryPreview");
+div.innerHTML="";
+galleryUrls.forEach(url=>{
+const img=document.createElement("img");
+img.src=url;img.className="preview";
+div.appendChild(img);
+});
+selectedGallery.forEach(file=>{
+const img=document.createElement("img");
+img.src=URL.createObjectURL(file);
+img.className="preview";
+div.appendChild(img);
+});
 }
-function clearGallery(){galleryUrls=[];selectedGallery=[];document.getElementById("galleryFiles").value="";showGallery()}
+
+function clearGallery(){
+galleryUrls=[];
+selectedGallery=[];
+document.getElementById("galleryFiles").value="";
+showGallery();
+}
+
 async function save(){
-if(saving)return;saving=true;
-const btn=document.getElementById("saveButton");btn.disabled=true;btn.textContent="⏳ Сохранение...";
 message("Сохранение...");
 try{
 const updates={};
-const fields=["name","description","wifi_name","wifi_password","menu_url","phone","address","instagram","whatsapp","maps_url","two_gis_url","reviews_url"];
+
+const fields=[
+"name","description","wifi_name","wifi_password",
+"menu_url","phone","address","instagram","whatsapp",
+"maps_url","two_gis_url","reviews_url"
+];
+
 fields.forEach(k=>updates[k]=document.getElementById(k).value.trim());
-updates.category=document.getElementById("category").value;updates.logo_url=logoUrl;updates.cover_url=coverUrl;
-const logoFile=document.getElementById("logoFile").files[0],coverFile=document.getElementById("coverFile").files[0];
+
+updates.category=document.getElementById("category").value;
+updates.logo_url=logoUrl;
+updates.cover_url=coverUrl;
+
+const logoFile=document.getElementById("logoFile").files[0];
+const coverFile=document.getElementById("coverFile").files[0];
+
 if(logoFile)updates.logo_url=await uploadImage(logoFile);
 if(coverFile)updates.cover_url=await uploadImage(coverFile);
+
 updates.gallery=[...galleryUrls];
-for(const file of selectedGallery)updates.gallery.push(await uploadImage(file));
-const {error}=await timeout(client.from("businesses").update(updates).eq("id",businessId),30000,"Сохранение данных");
+for(const file of selectedGallery){
+const url=await uploadImage(file);
+updates.gallery.push(url);
+}
+
+const {error}=await client
+.from("businesses")
+.update(updates)
+.eq("id",businessId);
+
 if(error)throw error;
-currentBusiness={...currentBusiness,...updates};logoUrl=updates.logo_url;coverUrl=updates.cover_url;galleryUrls=updates.gallery;selectedGallery=[];
-document.getElementById("galleryFiles").value="";document.getElementById("logoFile").value="";document.getElementById("coverFile").value="";
-showPreview("logoPreview",logoUrl);showPreview("coverPreview",coverUrl);showGallery();message("✅ Успешно сохранено!")
-}catch(e){message("❌ Ошибка сохранения: "+e.message)}
-finally{saving=false;btn.disabled=false;btn.textContent="💾 Сохранить всё"}
+
+currentBusiness={...currentBusiness,...updates};
+logoUrl=updates.logo_url;
+coverUrl=updates.cover_url;
+galleryUrls=updates.gallery;
+selectedGallery=[];
+
+document.getElementById("galleryFiles").value="";
+document.getElementById("logoFile").value="";
+document.getElementById("coverFile").value="";
+
+showPreview("logoPreview",logoUrl);
+showPreview("coverPreview",coverUrl);
+showGallery();
+
+message("Успешно сохранено!");
+}catch(e){message("Ошибка сохранения: "+e.message)}
 }
+
 async function loadStats(){
-if(!businessId)return;const a=document.getElementById("totalVisits"),b=document.getElementById("todayVisits");a.textContent="…";b.textContent="…";
+if(!businessId)return;
+const totalEl=document.getElementById("totalVisits");
+const todayEl=document.getElementById("todayVisits");
+totalEl.textContent="…";
+todayEl.textContent="…";
+
 try{
-const {count:total,error:te}=await timeout(client.from("visits").select("*",{count:"exact",head:true}).eq("business_id",businessId),30000,"Статистика");
-if(te)throw te;const start=new Date();start.setHours(0,0,0,0);const end=new Date(start);end.setDate(end.getDate()+1);
-const {count:today,error:de}=await timeout(client.from("visits").select("*",{count:"exact",head:true}).eq("business_id",businessId).gte("created_at",start.toISOString()).lt("created_at",end.toISOString()),30000,"Статистика сегодня");
-if(de)throw de;a.textContent=total??0;b.textContent=today??0
-}catch(e){a.textContent="—";b.textContent="—";message("Ошибка статистики: "+e.message)}
+const {count:total,error:totalError}=await client
+.from("visits").select("*",{count:"exact",head:true})
+.eq("business_id",businessId);
+
+if(totalError)throw totalError;
+
+const start=new Date();
+start.setHours(0,0,0,0);
+const end=new Date(start);
+end.setDate(end.getDate()+1);
+
+const {count:today,error:todayError}=await client
+.from("visits").select("*",{count:"exact",head:true})
+.eq("business_id",businessId)
+.gte("created_at",start.toISOString())
+.lt("created_at",end.toISOString());
+
+if(todayError)throw todayError;
+
+totalEl.textContent=total??0;
+todayEl.textContent=today??0;
+
+}catch(e){
+totalEl.textContent="—";
+todayEl.textContent="—";
+message("Ошибка статистики: "+e.message);
 }
+}
+
 async function loadFeedback(){
-const box=document.getElementById("feedbackList");if(!businessId){box.textContent="Компания не определена";return}
-box.textContent="Загрузка жалоб...";
-try{
-const {data,error}=await timeout(client.from("feedback").select("*").eq("business_id",businessId).order("created_at",{ascending:false}),30000,"Жалобы");
-if(error)throw error;if(!data||!data.length){box.textContent="Жалоб пока нет.";return}
-box.innerHTML="";
-data.forEach(item=>{
-const card=document.createElement("div");card.className="feedback-item";
-const stars=document.createElement("div");stars.textContent="⭐".repeat(item.rating);
-const msg=document.createElement("p");msg.className="feedback-message";msg.textContent=item.message;
-const date=document.createElement("div");date.className="feedback-date";date.textContent=new Date(item.created_at).toLocaleString("ru-RU");
-const status=document.createElement("p");status.textContent=item.status==="processed"?"✅ Обработано":"🆕 Новая жалоба";
-card.append(stars,msg,date,status);
-if(item.status!=="processed"){const button=document.createElement("button");button.className="done";button.textContent="✅ Обработано";button.onclick=()=>markProcessed(item.id);card.appendChild(button)}
-box.appendChild(card)
-})
-}catch(e){box.textContent="Ошибка загрузки: "+e.message}
+const box=document.getElementById("feedbackList");
+
+if(!businessId){
+box.textContent="Компания не определена";
+return;
 }
+
+box.textContent="Загрузка жалоб...";
+
+const {data,error}=await client
+.from("feedback")
+.select("*")
+.eq("business_id",businessId)
+.order("created_at",{ascending:false});
+
+if(error){
+box.textContent="Ошибка загрузки: "+error.message;
+return;
+}
+
+if(!data||!data.length){
+box.textContent="Жалоб пока нет.";
+return;
+}
+
+box.innerHTML="";
+
+data.forEach(item=>{
+const card=document.createElement("div");
+card.className="feedback-item";
+
+const stars=document.createElement("div");
+stars.textContent="⭐".repeat(item.rating);
+
+const messageText=document.createElement("p");
+messageText.className="feedback-message";
+messageText.textContent=item.message;
+
+const date=document.createElement("div");
+date.className="feedback-date";
+date.textContent=new Date(item.created_at).toLocaleString("ru-RU");
+
+const status=document.createElement("p");
+status.textContent=item.status==="processed"?"✅ Обработано":"🆕 Новая жалоба";
+
+card.append(stars,messageText,date,status);
+
+if(item.status!=="processed"){
+const button=document.createElement("button");
+button.className="done";
+button.textContent="✅ Обработано";
+button.onclick=()=>markProcessed(item.id);
+card.appendChild(button);
+}
+
+box.appendChild(card);
+});
+}
+
 async function markProcessed(id){
 message("Обновление статуса...");
-try{
-const {error}=await timeout(client.from("feedback").update({status:"processed"}).eq("id",id).eq("business_id",businessId),30000,"Обновление");
-if(error)throw error;message("Жалоба отмечена как обработанная");await loadFeedback()
-}catch(e){message("Ошибка: "+e.message)}
+
+const {error}=await client
+.from("feedback")
+.update({status:"processed"})
+.eq("id",id)
+.eq("business_id",businessId);
+
+if(error){
+message("Ошибка: "+error.message);
+return;
 }
+
+message("Жалоба отмечена как обработанная");
+await loadFeedback();
+}
+
 function openPage(){
-if(!currentBusiness)return;const slug=currentBusiness.slug;
-if(slug)window.open("https://nfc-restaurant-two.vercel.app/?slug="+encodeURIComponent(slug),"_blank");
-else window.open("https://nfc-restaurant-two.vercel.app/","_blank")
+if(!currentBusiness)return;
+const slug=currentBusiness.slug;
+if(slug){
+window.open("https://nfc-restaurant-two.vercel.app/?slug="+encodeURIComponent(slug),"_blank");
+}else{
+window.open("https://nfc-restaurant-two.vercel.app/","_blank");
 }
+}
+
 async function logout(){
-await client.auth.signOut();businessId=null;currentBusiness=null;galleryUrls=[];selectedGallery=[];logoUrl="";coverUrl="";
-document.getElementById("panel").style.display="none";document.getElementById("login").style.display="block";
-document.getElementById("email").value="";document.getElementById("password").value="";message("Вы вышли")
+await client.auth.signOut();
+businessId=null;
+currentBusiness=null;
+galleryUrls=[];
+selectedGallery=[];
+logoUrl="";
+coverUrl="";
+document.getElementById("panel").style.display="none";
+document.getElementById("login").style.display="block";
+document.getElementById("email").value="";
+document.getElementById("password").value="";
+message("Вы вышли");
 }
 </script>
 </body>
