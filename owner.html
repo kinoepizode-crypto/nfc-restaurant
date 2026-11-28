@@ -1,19 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NFC SMART — Кабинет владельца</title>
+<title>NFC SMART — Кабинет</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;padding:16px;background:#f4f1e8;color:#26352a;font-family:Arial,sans-serif}
 .container{max-width:650px;margin:auto}
-.card{background:#fff;border:1px solid #dfe5d7;border-radius:18px;padding:20px;margin-bottom:16px}
+.card{background:white;border:1px solid #dfe5d7;border-radius:18px;padding:20px;margin-bottom:16px}
 h1,h2{color:#344b35}
 input,textarea,select,button{width:100%;padding:13px;margin:8px 0;border:1px solid #dfe5d7;border-radius:12px;font-size:15px}
 textarea{min-height:90px}
-button{border:0;background:#647b4f;color:white;font-weight:bold}
+button{border:0;background:#647b4f;color:white;font-weight:bold;cursor:pointer}
 .secondary{background:#344b35}
 .gray{background:#788476}
 label{display:block;font-weight:bold;margin-top:12px;font-size:13px}
@@ -48,6 +47,7 @@ label{display:block;font-weight:bold;margin-top:12px;font-size:13px}
 <div class="card">
 <h2>Основная информация</h2>
 <input id="name" placeholder="Название компании">
+
 <select id="category">
 <option value="">Категория</option>
 <option>Ресторан</option>
@@ -62,6 +62,7 @@ label{display:block;font-weight:bold;margin-top:12px;font-size:13px}
 <option>Фитнес</option>
 <option>Другое</option>
 </select>
+
 <textarea id="description" placeholder="Описание"></textarea>
 
 <label>Логотип</label>
@@ -91,7 +92,6 @@ label{display:block;font-weight:bold;margin-top:12px;font-size:13px}
 <input id="reviews_url" placeholder="Ссылка на отзывы">
 </div>
 
-<!-- ПРОГРАММА ЛОЯЛЬНОСТИ -->
 <div class="card">
 <h2>☕ Программа лояльности</h2>
 
@@ -101,31 +101,45 @@ label{display:block;font-weight:bold;margin-top:12px;font-size:13px}
 </label>
 
 <p class="small">
-Клиент покупает заданное количество напитков и получает награду.
-Программа включается только по желанию владельца.
+Клиент получает награду после заданного количества покупок.
 </p>
 
-<label>Количество покупок для награды</label>
+<label>Количество покупок</label>
 <input id="loyalty_goal" type="number" min="1" max="100" value="7">
 
 <label>Награда</label>
-<input id="loyalty_reward" value="Бесплатный 8-й кофе" placeholder="Например: Бесплатный кофе">
-
+<input id="loyalty_reward" value="Бесплатный 8-й кофе">
 </div>
-<!-- КОНЕЦ ПРОГРАММЫ ЛОЯЛЬНОСТИ -->
+
+<div class="card" id="stampCard" style="display:none">
+<h2>🎟 Начисление покупки</h2>
+
+<p class="small">
+Введите код цифровой карты клиента.
+</p>
+
+<input id="customerCode" placeholder="Код карты клиента">
+
+<button onclick="addStamp()">Начислить покупку</button>
+
+<div id="stampResult"></div>
+</div>
 
 <div class="card">
 <h2>Статистика</h2>
+
 <div class="stats-grid">
 <div class="stat-box">
 <div class="stat-number" id="totalVisits">—</div>
 <div class="stat-label">Всего посещений</div>
 </div>
+
 <div class="stat-box">
 <div class="stat-number" id="todayVisits">—</div>
 <div class="stat-label">Сегодня</div>
 </div>
 </div>
+
 <button class="gray" onclick="loadStats()">Обновить статистику</button>
 </div>
 
@@ -173,7 +187,9 @@ document.getElementById("status").textContent=t;
 function timeout(p,ms=30000){
 return Promise.race([
 p,
-new Promise((_,reject)=>setTimeout(()=>reject(new Error("Время ожидания истекло. Проверьте интернет.")),ms))
+new Promise((_,reject)=>
+setTimeout(()=>reject(new Error("Время ожидания истекло")),ms)
+)
 ]);
 }
 
@@ -239,6 +255,7 @@ showPreview("coverPreview",coverUrl);
 document.getElementById("login").style.display="none";
 document.getElementById("panel").style.display="block";
 
+updateStampVisibility();
 message("Данные загружены");
 
 loadFeedback();
@@ -248,6 +265,13 @@ loadStats();
 message("Ошибка: "+e.message);
 }
 }
+
+function updateStampVisibility(){
+const enabled=document.getElementById("loyalty_enabled").checked;
+document.getElementById("stampCard").style.display=enabled?"block":"none";
+}
+
+document.getElementById("loyalty_enabled").addEventListener("change",updateStampVisibility);
 
 function showPreview(id,url){
 const img=document.getElementById(id);
@@ -275,6 +299,7 @@ try{
 const max=1400;
 const scale=Math.min(1,max/Math.max(img.width,img.height));
 const canvas=document.createElement("canvas");
+
 canvas.width=Math.max(1,Math.round(img.width*scale));
 canvas.height=Math.max(1,Math.round(img.height*scale));
 
@@ -360,9 +385,10 @@ updates[k]=document.getElementById(k).value.trim();
 });
 
 updates.category=document.getElementById("category").value;
-
 updates.loyalty_enabled=document.getElementById("loyalty_enabled").checked;
-updates.loyalty_goal=Math.max(1,Math.min(100,parseInt(document.getElementById("loyalty_goal").value,10)||7));
+updates.loyalty_goal=Math.max(1,Math.min(100,
+parseInt(document.getElementById("loyalty_goal").value,10)||7
+));
 updates.loyalty_reward=document.getElementById("loyalty_reward").value.trim()||"Бесплатный 8-й кофе";
 
 updates.logo_url=logoUrl;
@@ -381,7 +407,7 @@ message("Загрузка обложки...");
 updates.cover_url=await uploadImage(cf);
 }
 
-message("Сохранение в базу данных...");
+message("Сохранение...");
 
 const {error}=await timeout(
 client.from("businesses")
@@ -395,17 +421,63 @@ if(error)throw error;
 currentBusiness={...currentBusiness,...updates};
 logoUrl=updates.logo_url;
 coverUrl=updates.cover_url;
+
 document.getElementById("logoFile").value="";
 document.getElementById("coverFile").value="";
 
 showPreview("logoPreview",logoUrl);
 showPreview("coverPreview",coverUrl);
+
 message("Успешно сохранено!");
 
 }catch(e){
 message("Ошибка сохранения: "+e.message);
 }finally{
 busy=false;
+btn.disabled=false;
+}
+}
+
+async function addStamp(){
+const code=document.getElementById("customerCode").value.trim();
+const resultBox=document.getElementById("stampResult");
+
+if(!code){
+resultBox.textContent="Введите код клиента";
+return;
+}
+
+if(!document.getElementById("loyalty_enabled").checked){
+resultBox.textContent="Программа лояльности выключена";
+return;
+}
+
+const btn=document.querySelector("#stampCard button");
+btn.disabled=true;
+resultBox.textContent="Начисление...";
+
+try{
+const {data,error}=await timeout(
+client.rpc("add_loyalty_stamp",{
+p_business_id:businessId,
+p_customer_code:code
+}),
+30000
+);
+
+if(error)throw error;
+
+if(data.reward){
+resultBox.innerHTML="<h3>🎉 Награда заработана!</h3><p>Клиент получил награду!</p><p>Наград всего: "+data.rewards_earned+"</p>";
+}else{
+resultBox.innerHTML="<h3>☕ Покупка начислена!</h3><p>Отметок: "+data.stamps+" из "+data.goal+"</p>";
+}
+
+document.getElementById("customerCode").value="";
+
+}catch(e){
+resultBox.textContent="Ошибка: "+e.message;
+}finally{
 btn.disabled=false;
 }
 }
