@@ -79,7 +79,6 @@ h1{font-size:clamp(29px,7vw,42px);line-height:1.12;margin:14px 0 10px;overflow-w
 <div class="links" id="links"></div>
 </section>
 
-<!-- ПРОГРАММА ЛОЯЛЬНОСТИ ДЛЯ КОФЕЕН -->
 <section id="loyaltySection" class="section" style="display:none">
 <h2 class="section-title">☕ Программа лояльности</h2>
 <div class="card" style="text-align:center">
@@ -91,7 +90,6 @@ h1{font-size:clamp(29px,7vw,42px);line-height:1.12;margin:14px 0 10px;overflow-w
 </div>
 </section>
 
-<!-- БРОНЬ СТОЛИКА -->
 <section id="restaurantBooking" class="section" style="display:none">
 <h2 class="section-title">🍽️ Забронировать столик</h2>
 <div class="card">
@@ -123,7 +121,6 @@ h1{font-size:clamp(29px,7vw,42px);line-height:1.12;margin:14px 0 10px;overflow-w
 </div>
 </section>
 
-<!-- ЗАПИСЬ В БАРБЕРШОП -->
 <section id="barberBooking" class="section" style="display:none">
 <h2 class="section-title">💈 Записаться на услугу</h2>
 <div class="card">
@@ -434,4 +431,8 @@ if(selectedRating<1||selectedRating>3){msg.textContent="Выберите оце�
 if(message.length<2){msg.textContent="Пожалуйста, напишите ваше замечание.";return}
 if(!loadedBusiness?.id){msg.textContent="Не удалось определить заведение.";return}
 msg.textContent="Отправка...";
-const {error}=await client.from("feedback")
+const {error}=await client.from("feedback").insert({
+business_id:loadedBusiness.id,
+rating:selectedRating,
+message:message,
+status:"new
