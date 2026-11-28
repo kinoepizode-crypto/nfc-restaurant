@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NFC SMART — Карта лояльности</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Arial,sans-serif;
+  background:#101318;color:white;
+  min-height:100vh;padding:20px;
+}
+.container{max-width:420px;margin:40px auto}
+.card{
+  background:linear-gradient(145deg,#1b1e27,#292d39);
+  border:1px solid #343946;border-radius:24px;
+  padding:26px;box-shadow:0 15px 40px #0004;
+}
+.logo{font-size:14px;color:#aaa;margin-bottom:20px}
+h1{font-size:27px;margin:0 0 12px}
+p{color:#b5bac5;line-height:1.5}
+input{
+  width:100%;padding:15px;border-radius:12px;
+  border:1px solid #383e4b;background:#171a21;
+  color:white;font-size:16px;margin:10px 0;
+}
+button{
+  width:100%;padding:15px;border:0;border-radius:12px;
+  background:white;color:black;font-size:16px;
+  font-weight:bold;margin-top:10px;
+}
+.stamps{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:12px;margin:25px 0;
+}
+.stamp{
+  height:65px;border-radius:15px;
+  border:1px dashed #646b79;
+  display:flex;align-items:center;justify-content:center;
+  font-size:23px;color:#858b98;
+}
+.stamp.active{background:#d9ffe1;color:#15271a;border:0}
+.note{font-size:12px;text-align:center;color:#818896}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="logo">NFC SMART · LOYALTY</div>
+    <h1>Карта лояльности ☕</h1>
+    <p>7 покупок — 8-й кофе бесплатно!</p>
+
+    <div class="stamps">
+      <div class="stamp">☕</div>
+      <div class="stamp">☕</div>
+      <div class="stamp">☕</div>
+      <div class="stamp">☕</div>
+      <div class="stamp">☕</div>
+      <div class="stamp">☕</div>
+      <div class="stamp">☕</div>
+      <div class="stamp">🎁</div>
+    </div>
+
+    <input id="business" placeholder="Название кофейни или ссылка">
+    <input id="code" placeholder="Код вашей карты (если есть)">
+
+    <button onclick="alert('Подключение карт будет добавлено следующим шагом.')">
+      Моя карта
+    </button>
+
+    <button onclick="alert('Безопасное создание карты подключим следующим шагом.')">
+      Получить карту
+    </button>
+
+    <p class="note">
+      Карта будет доступна на телефоне.
+    </p>
+  </div>
+</div>
+</body>
+</html>
