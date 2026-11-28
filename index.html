@@ -79,6 +79,18 @@ h1{font-size:clamp(29px,7vw,42px);line-height:1.12;margin:14px 0 10px;overflow-w
 <div class="links" id="links"></div>
 </section>
 
+<!-- ПРОГРАММА ЛОЯЛЬНОСТИ ДЛЯ КОФЕЕН -->
+<section id="loyaltySection" class="section" style="display:none">
+<h2 class="section-title">☕ Программа лояльности</h2>
+<div class="card" style="text-align:center">
+<div style="font-size:42px">🎁</div>
+<h2 style="margin:10px 0;font-size:30px">7 + 1</h2>
+<p class="muted">Совершайте покупки и получайте награду!</p>
+<div id="loyaltyGoal" style="font-size:18px;font-weight:bold;margin:15px 0"></div>
+<div id="loyaltyReward" style="color:#c9d5cb;font-weight:bold"></div>
+</div>
+</section>
+
 <!-- БРОНЬ СТОЛИКА -->
 <section id="restaurantBooking" class="section" style="display:none">
 <h2 class="section-title">🍽️ Забронировать столик</h2>
@@ -310,6 +322,19 @@ category.style.display="none";
 if(d.category){category.textContent=d.category;category.style.display="inline-block"}
 
 const categoryText=String(d.category||"").toLowerCase();
+
+const isCoffeeShop=/кофейн|coffee shop|coffeehouse/.test(categoryText);
+const loyaltySection=document.getElementById("loyaltySection");
+
+if(isCoffeeShop && d.loyalty_enabled===true){
+const goal=Number(d.loyalty_goal)||7;
+document.getElementById("loyaltyGoal").textContent=goal+" покупок — и награда!";
+document.getElementById("loyaltyReward").textContent=d.loyalty_reward||"Бесплатный 8-й кофе";
+loyaltySection.style.display="block";
+}else{
+loyaltySection.style.display="none";
+}
+
 const isRestaurant=/ресторан|кафе|restaurant|cafe|бистро|ресторант/.test(categoryText);
 const isBarber=/барбер|barber|парикмах|салон красоты|beauty salon/.test(categoryText);
 
@@ -409,18 +434,4 @@ if(selectedRating<1||selectedRating>3){msg.textContent="Выберите оце�
 if(message.length<2){msg.textContent="Пожалуйста, напишите ваше замечание.";return}
 if(!loadedBusiness?.id){msg.textContent="Не удалось определить заведение.";return}
 msg.textContent="Отправка...";
-const {error}=await client.from("feedback").insert({
-business_id:loadedBusiness.id,rating:selectedRating,message:message,status:"new"
-});
-if(error){msg.textContent="Ошибка отправки. Попробуйте ещё раз.";console.error(error);return}
-msg.textContent="Спасибо! Ваше сообщение отправлено владельцу.";
-document.getElementById("feedbackMessage").value="";
-document.getElementById("ratingForm").style.display="none";
-}
-
-setDateLimits();
-setLang("ru");
-load();
-</script>
-</body>
-</html>
+const {error}=await client.from("feedback")
