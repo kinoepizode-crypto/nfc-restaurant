@@ -91,6 +91,29 @@ label{display:block;font-weight:bold;margin-top:12px;font-size:13px}
 <input id="reviews_url" placeholder="Ссылка на отзывы">
 </div>
 
+<!-- ПРОГРАММА ЛОЯЛЬНОСТИ -->
+<div class="card">
+<h2>☕ Программа лояльности</h2>
+
+<label style="display:flex;align-items:center;gap:10px">
+<input id="loyalty_enabled" type="checkbox" style="width:auto">
+Включить программу 7+1
+</label>
+
+<p class="small">
+Клиент покупает заданное количество напитков и получает награду.
+Программа включается только по желанию владельца.
+</p>
+
+<label>Количество покупок для награды</label>
+<input id="loyalty_goal" type="number" min="1" max="100" value="7">
+
+<label>Награда</label>
+<input id="loyalty_reward" value="Бесплатный 8-й кофе" placeholder="Например: Бесплатный кофе">
+
+</div>
+<!-- КОНЕЦ ПРОГРАММЫ ЛОЯЛЬНОСТИ -->
+
 <div class="card">
 <h2>Статистика</h2>
 <div class="stats-grid">
@@ -202,6 +225,10 @@ if(el)el.value=data[k]||"";
 });
 
 document.getElementById("category").value=data.category||"";
+
+document.getElementById("loyalty_enabled").checked=!!data.loyalty_enabled;
+document.getElementById("loyalty_goal").value=data.loyalty_goal||7;
+document.getElementById("loyalty_reward").value=data.loyalty_reward||"Бесплатный 8-й кофе";
 
 logoUrl=data.logo_url||"";
 coverUrl=data.cover_url||"";
@@ -333,6 +360,11 @@ updates[k]=document.getElementById(k).value.trim();
 });
 
 updates.category=document.getElementById("category").value;
+
+updates.loyalty_enabled=document.getElementById("loyalty_enabled").checked;
+updates.loyalty_goal=Math.max(1,Math.min(100,parseInt(document.getElementById("loyalty_goal").value,10)||7));
+updates.loyalty_reward=document.getElementById("loyalty_reward").value.trim()||"Бесплатный 8-й кофе";
+
 updates.logo_url=logoUrl;
 updates.cover_url=coverUrl;
 
