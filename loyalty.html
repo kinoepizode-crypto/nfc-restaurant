@@ -3,81 +3,87 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NFC SMART — Карта лояльности</title>
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0;font-family:Arial,sans-serif;
-  background:#101318;color:white;
-  min-height:100vh;padding:20px;
+margin:0;background:#101318;color:white;
+font-family:Arial,sans-serif;padding:20px
 }
-.container{max-width:420px;margin:40px auto}
+.container{max-width:420px;margin:35px auto}
 .card{
-  background:linear-gradient(145deg,#1b1e27,#292d39);
-  border:1px solid #343946;border-radius:24px;
-  padding:26px;box-shadow:0 15px 40px #0004;
+background:linear-gradient(145deg,#222632,#151820);
+border:1px solid #343a47;border-radius:24px;padding:25px
 }
-.logo{font-size:14px;color:#aaa;margin-bottom:20px}
+.logo{color:#aaa;font-size:13px;margin-bottom:25px}
 h1{font-size:27px;margin:0 0 12px}
-p{color:#b5bac5;line-height:1.5}
-input{
-  width:100%;padding:15px;border-radius:12px;
-  border:1px solid #383e4b;background:#171a21;
-  color:white;font-size:16px;margin:10px 0;
-}
-button{
-  width:100%;padding:15px;border:0;border-radius:12px;
-  background:white;color:black;font-size:16px;
-  font-weight:bold;margin-top:10px;
-}
+p{color:#b0b7c4;line-height:1.5}
 .stamps{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:12px;margin:25px 0;
+display:grid;grid-template-columns:repeat(4,1fr);
+gap:10px;margin:25px 0
 }
 .stamp{
-  height:65px;border-radius:15px;
-  border:1px dashed #646b79;
-  display:flex;align-items:center;justify-content:center;
-  font-size:23px;color:#858b98;
+height:65px;border:1px dashed #606878;
+border-radius:15px;display:flex;
+align-items:center;justify-content:center;font-size:23px
 }
-.stamp.active{background:#d9ffe1;color:#15271a;border:0}
-.note{font-size:12px;text-align:center;color:#818896}
+.stamp.active{background:#d9ffe1;color:#17271c;border:0}
+button{
+width:100%;padding:16px;border:0;border-radius:12px;
+background:white;color:#111;font-size:16px;
+font-weight:bold;margin-top:12px
+}
+.note{text-align:center;font-size:12px;color:#888;margin-top:20px}
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="card">
-    <div class="logo">NFC SMART · LOYALTY</div>
-    <h1>Карта лояльности ☕</h1>
-    <p>7 покупок — 8-й кофе бесплатно!</p>
+<div class="card">
 
-    <div class="stamps">
-      <div class="stamp">☕</div>
-      <div class="stamp">☕</div>
-      <div class="stamp">☕</div>
-      <div class="stamp">☕</div>
-      <div class="stamp">☕</div>
-      <div class="stamp">☕</div>
-      <div class="stamp">☕</div>
-      <div class="stamp">🎁</div>
-    </div>
+<div class="logo">NFC SMART</div>
 
-    <input id="business" placeholder="Название кофейни или ссылка">
-    <input id="code" placeholder="Код вашей карты (если есть)">
+<h1>☕ Карта лояльности</h1>
+<p>7 покупок — 8-й кофе бесплатно!</p>
 
-    <button onclick="alert('Подключение карт будет добавлено следующим шагом.')">
-      Моя карта
-    </button>
-
-    <button onclick="alert('Безопасное создание карты подключим следующим шагом.')">
-      Получить карту
-    </button>
-
-    <p class="note">
-      Карта будет доступна на телефоне.
-    </p>
-  </div>
+<div class="stamps">
+<div class="stamp">☕</div>
+<div class="stamp">☕</div>
+<div class="stamp">☕</div>
+<div class="stamp">☕</div>
+<div class="stamp">☕</div>
+<div class="stamp">☕</div>
+<div class="stamp">☕</div>
+<div class="stamp">🎁</div>
 </div>
+
+<div id="message">
+<p>Создай свою карту лояльности.</p>
+</div>
+
+<button onclick="createCard()">Получить карту</button>
+
+<div class="note">
+NFC SMART · Loyalty
+</div>
+
+</div>
+</div>
+
+<script>
+function createCard(){
+let code=localStorage.getItem("loyalty_code");
+
+if(!code){
+code="LS-"+Math.random().toString(36).substring(2,10).toUpperCase();
+localStorage.setItem("loyalty_code",code);
+}
+
+document.getElementById("message").innerHTML=
+'<p>Ваша карта создана!</p>'+
+'<p style="text-align:center;font-size:24px;color:white;font-weight:bold">'+code+'</p>'+
+'<p>Сохраните этот код, чтобы не потерять карту.</p>';
+}
+</script>
 </body>
 </html>
